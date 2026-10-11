@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOLOR - Bauhaus Color Matcher</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* --- RESET & BAUHAUS CORE --- */
+        :root {
+            --bg-color: #ffffff;
+            --card-light-grey: #f4f4f4;
+            
+            --text-black: #000000;
+            --text-muted: #666666;
+            
+            --subfiksi-blue: #003380;
+            --subfiksi-orange: #ff6600;
+            
+            --border-bold: 3px solid #000000;
+            --border-thin: 1px solid #000000;
+
+            --sat-bg: linear-gradient(to right, hsl(180, 0%, 50%), hsl(180, 100%, 50%));
+            --light-bg: linear-gradient(to right, #000000, hsl(180, 50%, 50%), #ffffff);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-black);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .game-wrapper {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* --- HEADER & TITLE --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: var(--border-bold);
+        }
+
+        .game-title {
+            font-weight: 900;
+            font-size: 36px;
+            color: var(--subfiksi-blue);
+            letter-spacing: -2px;
+        }
+
+        .stats-group { display: flex; gap: 15px; align-items: center; text-align: right; }
+        .label { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+        .value { font-size: 20px; font-weight: 800; color: var(--text-black); }
+        .value span { font-weight: 400; font-size: 12px; color: var(--text-muted); }
+
+        .nav-btn {
+            background-color: var(--text-black);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .nav-btn:hover { background-color: var(--subfiksi-blue); }
+
+        /* Progress Bar */
+        .progress-timeline { width: 100%; height: 6px; background-color: var(--card-light-grey); margin-bottom: 30px; }
+        .progress-fill { height: 100%; width: 10%; background-color: var(--subfiksi-orange); transition: width 0.3s ease; }
+
+        /* --- MAIN PANELS (GRID GEOMETRIS) --- */
+        .panels-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+
+        .panel {
+            background-color: var(--bg-color);
+            border: var(--border-bold);
+            min-height: 460px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; border-bottom: var(--border-thin); background-color: var(--card-light-grey);
+        }
+        .panel-title { font-size: 12px; font-weight: 700; color: var(--text-black); }
+        .badge { background-color: var(--text-black); color: var(--bg-color); padding: 4px 10px; font-size: 10px; font-weight: 700; }
+
+        /* Panel Kiri: Target Display */
+        .target-info { flex: 1; display: flex; flex-direction: column; }
+        #target-color-display { width: 100%; flex: 1; min-height: 250px; border-bottom: var(--border-thin); background-color: #eee; }
+        .target-text-block { padding: 15px 20px; background-color: var(--bg-color); }
+        .target-text-block p { font-size: 11px; line-height: 1.4; color: var(--text-muted); text-transform: none; font-weight: 400;}
+
+        /* Panel Kanan: Selection Preview (DI ATAS) */
+        .selection-preview-block { display: flex; flex-direction: column; flex: 1; }
+        .preview-text-bar {
+            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
+            background-color: var(--bg-color); border-bottom: var(--border-thin);
+        }
+        .preview-label { font-size: 10px; font-weight: 700; color: var(--text-muted); }
+        .panel-title-values { font-size: 14px; font-weight: 800; color: var(--text-black); }
+        #current-selection-box { width: 100%; flex: 1; min-height: 220px; background-color: #ccc; } /* UKURAN DIPERBESAR DI SINI */
+
+        /* Panel Kanan: Slider Controls (DI BAWAH) */
+        .controls-card {
+            background-color: var(--card-light-grey);
+            border-top: var(--border-thin);
+            padding: 20px;
+        }
+        .control-group { margin-bottom: 20px; }
+        .control-group:last-child { margin-bottom: 0; }
+        .control-label-row { display: flex; justify-content: flex-start; font-size: 11px; font-weight: 700; margin-bottom: 8px; color: var(--text-black); }
+
+        /* Sliders */
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; cursor: pointer; }
+        input[type=range]:focus { outline: none; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 12px; border: var(--border-thin); background-color: #ddd; }
+        #hue-slider::-webkit-slider-runnable-track { background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000); }
+        #sat-slider::-webkit-slider-runnable-track { background: var(--sat-bg); }
+        #light-slider::-webkit-slider-runnable-track { background: var(--light-bg); }
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px; width: 14px; background-color: var(--text-black); border: var(--border-thin);
+            -webkit-appearance: none; margin-top: -7px; transition: background 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover { background-color: var(--subfiksi-blue); }
+
+        /* Tombol Submit */
+        .submit-btn {
+            width: 100%; height: 60px; background-color: var(--subfiksi-orange); color: #ffffff;
+            border: none; border-top: var(--border-thin); font-size: 18px; font-weight: 800; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; transition: background-color 0.2s;
+        }
+        .submit-btn:hover { background-color: var(--subfiksi-blue); }
+
+        /* --- MODAL UI --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(3px); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-card { background-color: var(--bg-color); padding: 0; border: var(--border-bold); text-align: center; width: 95%; max-width: 450px; max-height: 90vh; overflow-y: auto; }
+        .modal-card-header { padding: 15px; border-bottom: var(--border-thin); background-color: var(--card-light-grey); }
+        .modal-title { font-size: 16px; font-weight: 700; color: var(--text-black); }
+        .modal-body { padding: 30px 20px; }
+        .modal-score-big { font-size: 72px; font-weight: 900; color: var(--subfiksi-blue); line-height: 1; margin-bottom: 5px; letter-spacing: -3px;}
+        .modal-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;}
+        
+        .modal-details { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 25px; }
+        .detail-box { flex: 1; background: var(--card-light-grey); padding: 15px; border: var(--border-thin); font-size: 11px; color: var(--text-muted); text-transform: none; font-weight: 400;}
+        .detail-box span { display: block; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-black); letter-spacing: 1px;}
+        .color-preview { width: 100%; height: 50px; border: var(--border-thin); margin-bottom: 8px; }
+        
+        .summary-area { display: none; background-color: #ffffff; padding: 20px; text-align: left; border: var(--border-thin); margin-bottom: 20px;}
+        .summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: var(--border-thin); }
+        .summary-header h4 { font-size: 14px; font-weight: 700; color: #000;}
+        .summary-header .score-final { color: var(--subfiksi-orange); font-weight: 800; font-size: 16px;}
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .summary-item { background: var(--card-light-grey); padding: 8px; border: var(--border-thin); display: flex; justify-content: space-between; align-items: center; }
+        .summary-item-round { font-size: 11px; font-weight: 700; color: var(--text-muted); width: 25px; }
+        .summary-colors { display: flex; gap: 4px; }
+        .summary-color-box { width: 22px; height: 22px; border: var(--border-thin); }
+        .summary-item-score { font-size: 11px; font-weight: 700; color: #000; width: 35px; text-align: right; }
+
+        .modal-footer { padding: 15px; border-top: var(--border-thin); display: flex; flex-direction: column; gap: 10px; }
+        .modal-btn { width: 100%; padding: 16px; background-color: var(--subfiksi-blue); color: white; border: none; font-size: 14px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+        .modal-btn:hover { background-color: var(--text-black); }
+        .btn-secondary { background-color: var(--card-light-grey); color: #000; border: var(--border-thin); }
+        .btn-secondary:hover { background-color: #ddd; }
+
+        @media (max-width: 768px) {
+            body { align-items: flex-start; padding: 15px 10px; }
+            header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .panels-container { grid-template-columns: 1fr; gap: 15px;}
+            .panel { min-height: 400px; }
+            #target-color-display { min-height: 150px; }
+            #current-selection-box { min-height: 150px; } /* Menyesuaikan di mobile */
+            .modal-card { width: 98%; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="modal-overlay" id="result-modal">
+        <div class="modal-card">
+            <div class="modal-card-header"><h3 class="modal-title" id="modal-title">Round Complete!</h3></div>
+            <div class="modal-body">
+                <div class="modal-score-big" id="modal-accuracy">95%</div>
+                <p class="modal-subtitle" id="modal-subtitle-text">Accuracy</p>
+                
+                <div class="modal-details" id="modal-details-container">
+                    <div class="detail-box">
+                        <span>Target</span>
+                        <div id="modal-target-color" class="color-preview"></div>
+                        <small id="modal-target-text">H:100 S:50 L:50</small>
+                    </div>
+                    <div class="detail-box">
+                        <span>You</span>
+                        <div id="modal-player-color" class="color-preview"></div>
+                        <small id="modal-player-text">H:105 S:45 L:50</small>
+                    </div>
+                </div>
+
+                <div id="capture-area" class="summary-area">
+                    <div class="summary-header">
+                        <h4>KOLOR SUMMARY</h4>
+                        <div class="score-final" id="summary-final-score">0 pts</div>
+                    </div>
+                    <div class="summary-grid" id="summary-list"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn btn-secondary" id="download-btn" style="display: none;">📷 Download PNG</button>
+                <button class="modal-btn" id="modal-next-btn">Next Round</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-wrapper">
+        <header>
+            <h1 class="game-title">KOLOR</h1>
+            <div class="stats-group">
+                <div><div class="label">Progress</div><div class="value">Round <span id="current-round">1</span><span> / 10</span></div></div>
+                <div><div class="label">Score</div><div class="value" id="total-score">0 <span>pts</span></div></div>
+                <button class="nav-btn" onclick="resetGame()">New game</button>
+            </div>
+        </header>
+
+        <div class="progress-timeline"><div class="progress-fill" id="progress-bar"></div></div>
+
+        <div class="panels-container">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Target Color</div>
+                    <div class="badge" id="badge-left">1/10</div>
+                </div>
+                <div class="target-info">
+                    <div id="target-color-display"></div> 
+                </div>
+                <div class="target-text-block">
+                    <p>Adjust the sliders on the right to match this color as closely as possible. Submit when ready.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Your Selection</div>
+                    <div class="badge" id="badge-right">1/10</div>
+                </div>
+
+                <div class="selection-preview-block">
+                    <div class="preview-text-bar">
+                        <div class="panel-title-values">YOUR MIX</div>
+                        <div class="preview-label">PREVIEW</div>
+                    </div>
+                    <div id="current-selection-box"></div>
+                </div>
+
+                <div class="controls-card">
+                    <div class="control-group">
+                        <div class="control-label-row"><span>Hue</span></div>
+                        <input type="range" id="hue-slider" min="0" max="360" value="180">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label-row"><span>Saturation</span></div>
+                        <input type="range" id="sat-slider" min="0" max="100" value="50">
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label-row"><span>Lightness</span></div>
+                        <input type="range" id="light-slider" min="0" max="100" value="50">
+                    </div>
+                </div>
+
+                <button class="submit-btn" id="btn-submit">✓ SUBMIT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const targetColorDisplay = document.getElementById('target-color-display');
+        const currentSelectionBox = document.getElementById('current-selection-box');
+        const hueSlider = document.getElementById('hue-slider');
+        const satSlider = document.getElementById('sat-slider');
+        const lightSlider = document.getElementById('light-slider');
+        
+        const currentRoundText = document.getElementById('current-round');
+        const totalScoreText = document.getElementById('total-score');
+        const progressBar = document.getElementById('progress-bar');
+        const badgeLeft = document.getElementById('badge-left');
+        const badgeRight = document.getElementById('badge-right');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        const modalOverlay = document.getElementById('result-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalAccuracy = document.getElementById('modal-accuracy');
+        const modalSubtitleText = document.getElementById('modal-subtitle-text');
+        const modalDetailsContainer = document.getElementById('modal-details-container');
+        const modalTargetColor = document.getElementById('modal-target-color');
+        const modalTargetText = document.getElementById('modal-target-text');
+        const modalPlayerColor = document.getElementById('modal-player-color');
+        const modalPlayerText = document.getElementById('modal-player-text');
+        const modalNextBtn = document.getElementById('modal-next-btn');
+        
+        const captureArea = document.getElementById('capture-area');
+        const summaryList = document.getElementById('summary-list');
+        const summaryFinalScore = document.getElementById('summary-final-score');
+        const downloadBtn = document.getElementById('download-btn');
+
+        let round = 1;
+        let score = 0;
+        let targetH, targetS, targetL;
+        let gameHistory = []; 
+
+        function initRound() {
+            if(round > 10) return;
+
+            currentRoundText.innerText = round;
+            badgeLeft.innerText = `${round}/10`;
+            badgeRight.innerText = `${round}/10`;
+            progressBar.style.width = `${round * 10}%`;
+
+            targetH = Math.floor(Math.random() * 361);
+            targetS = Math.floor(Math.random() * 71) + 20; 
+            targetL = Math.floor(Math.random() * 61) + 20; 
+
+            targetColorDisplay.style.backgroundColor = `hsl(${targetH}, ${targetS}%, ${targetL}%)`;
+
+            hueSlider.value = 180;
+            satSlider.value = 50;
+            lightSlider.value = 50;
+
+            updatePlayerSelection();
+        }
+
+        function updatePlayerSelection() {
+            const h = hueSlider.value;
+            const s = satSlider.value;
+            const l = lightSlider.value;
+
+            currentSelectionBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
+            
+            document.documentElement.style.setProperty('--sat-bg', `linear-gradient(to right, hsl(${h}, 0%, ${l}%), hsl(${h}, 100%, ${l}%))`);
+            document.documentElement.style.setProperty('--light-bg', `linear-gradient(to right, #000000, hsl(${h}, ${s}%, 50%), #ffffff)`);
+        }
+
+        function submitSelection() {
+            const pH = parseInt(hueSlider.value);
+            const pS = parseInt(satSlider.value);
+            const pL = parseInt(lightSlider.value);
+
+            let diffH = Math.abs(targetH - pH);
+            if (diffH > 180) diffH = 360 - diffH;
+
+            const errH = diffH / 180;
+            const errS = Math.abs(targetS - pS) / 100;
+            const errL = Math.abs(targetL - pL) / 100;
+
+            const totalError = (errH + errS + errL) / 3;
+            let roundScore = Math.round((1 - totalError) * 100);
+            if (roundScore < 0) roundScore = 0;
+
+            score += roundScore;
+            totalScoreText.innerHTML = `${score} <span>pts</span>`;
+
+            gameHistory.push({
+                roundNum: round,
+                targetColor: `hsl(${targetH}, ${targetS}%, ${targetL}%)`,
+                playerColor: `hsl(${pH}, ${pS}%, ${pL}%)`,
+                acc: roundScore
+            });
+
+            if (round < 10) {
+                modalTitle.innerText = `Ronde ${round} Selesai`;
+                modalAccuracy.innerText = `${roundScore}%`;
+                modalSubtitleText.innerText = "Akurasi Warna";
+                modalDetailsContainer.style.display = "flex";
+                captureArea.style.display = "none";
+                downloadBtn.style.display = "none";
+                modalNextBtn.innerText = "Lanjut Ronde";
+                
+                modalTargetColor.style.backgroundColor = gameHistory[round-1].targetColor;
+                modalTargetText.innerText = `H:${targetH} S:${targetS} L:${targetL}`;
+                modalPlayerColor.style.backgroundColor = gameHistory[round-1].playerColor;
+                modalPlayerText.innerText = `H:${pH} S:${pS} L:${pL}`;
+            } else {
+                modalTitle.innerText = "Game Selesai!";
+                modalAccuracy.innerText = score;
+                modalSubtitleText.innerText = "Total Skor KOLOR";
+                modalDetailsContainer.style.display = "none";
+                
+                summaryList.innerHTML = "";
+                gameHistory.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'summary-item';
+                    row.innerHTML = `
+                        <div class="summary-item-round">R${item.roundNum}</div>
+                        <div class="summary-colors">
+                            <div class="summary-color-box" style="background: ${item.targetColor};" title="Target"></div>
+                            <div class="summary-color-box" style="background: ${item.playerColor};" title="You"></div>
+                        </div>
+                        <div class="summary-item-score">${item.acc}%</div>
+                    `;
+                    summaryList.appendChild(row);
+                });
+
+                summaryFinalScore.innerText = `${score} pts`;
+                captureArea.style.display = "block";
+                downloadBtn.style.display = "block";
+                modalNextBtn.innerText = "Main Lagi";
+            }
+
+            modalOverlay.classList.add('active');
+        }
+
+        function resetGame() {
+            round = 1;
+            score = 0;
+            gameHistory = [];
+            totalScoreText.innerHTML = `0 <span>pts</span>`;
+            modalOverlay.classList.remove('active');
+            initRound();
+        }
+
+        modalNextBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+            setTimeout(() => {
+                if (round >= 10) { resetGame(); } 
+                else { round++; initRound(); }
+            }, 300);
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = "Processing...";
+            downloadBtn.disabled = true;
+
+            html2canvas(document.getElementById('capture-area'), {
+                backgroundColor: "#ffffff",
+                scale: 2 
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `KOLOR_Subfiksi_Score_${score}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            });
+        });
+
+        hueSlider.addEventListener('input', updatePlayerSelection);
+        satSlider.addEventListener('input', updatePlayerSelection);
+        lightSlider.addEventListener('input', updatePlayerSelection);
+        btnSubmit.addEventListener('click', submitSelection);
+
+        window.onload = initRound;
+    </script>
+</body>
+</html>
