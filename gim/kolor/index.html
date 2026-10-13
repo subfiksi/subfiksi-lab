@@ -1,480 +1,1545 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOLOR - Bauhaus Color Matcher</title>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>KOLOR MATCHER | Subfiksi LAB!</title>
+  
+  <!-- Font Tipografi Subfiksi -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- html2canvas untuk Ekspor Sertifikat PNG -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <style>
-        /* --- RESET & BAUHAUS CORE --- */
-        :root {
-            --bg-color: #ffffff;
-            --card-light-grey: #f4f4f4;
-            
-            --text-black: #000000;
-            --text-muted: #666666;
-            
-            --subfiksi-blue: #003380;
-            --subfiksi-orange: #ff6600;
-            
-            --border-bold: 3px solid #000000;
-            --border-thin: 1px solid #000000;
+  <style>
+    /* ==========================================================================
+       SUBFIKSI DESIGN SYSTEM (SDS) — VARIABEL & RESET
+       ========================================================================== */
+    :root {
+      --sfx-white: #ffffff;
+      --sfx-bg: #f8fafc;
+      --sfx-card-bg: #ffffff;
+      --sfx-border: #e2e8f0;
+      --sfx-border-dark: #cbd5e1;
+      --sfx-blue: #003380;
+      --sfx-blue-dark: #0a1f44;
+      --sfx-orange: #ff6600;
+      --sfx-orange-hover: #e65c00;
+      --sfx-charcoal: #0f172a;
+      --sfx-muted: #64748b;
+      --sfx-green: #16a34a;
 
-            --sat-bg: linear-gradient(to right, hsl(180, 0%, 50%), hsl(180, 100%, 50%));
-            --light-bg: linear-gradient(to right, #000000, hsl(180, 50%, 50%), #ffffff);
-        }
+      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-subtle: 0 4px 16px rgba(0, 51, 128, 0.05);
+      --shadow-modal: 0 20px 48px -8px rgba(0, 51, 128, 0.18), 0 4px 16px rgba(0, 0, 0, 0.06);
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-black);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-        }
+      --sat-bg: linear-gradient(to right, hsl(180, 0%, 50%), hsl(180, 100%, 50%));
+      --light-bg: linear-gradient(to right, #000000, hsl(180, 50%, 50%), #ffffff);
+    }
 
-        .game-wrapper {
-            width: 100%;
-            max-width: 900px;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* --- HEADER & TITLE --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: var(--border-bold);
-        }
+    body {
+      font-family: var(--font-main);
+      background-color: var(--sfx-bg);
+      color: var(--sfx-charcoal);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-user-select: none;
+      overscroll-behavior: contain;
+      -webkit-tap-highlight-color: transparent;
+      padding: 16px;
+    }
 
-        .game-title {
-            font-weight: 900;
-            font-size: 36px;
-            color: var(--subfiksi-blue);
-            letter-spacing: -2px;
-        }
+    /* Container Aplikasi Utama */
+    .sfx-app-wrapper {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
 
-        .stats-group { display: flex; gap: 15px; align-items: center; text-align: right; }
-        .label { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
-        .value { font-size: 20px; font-weight: 800; color: var(--text-black); }
-        .value span { font-weight: 400; font-size: 12px; color: var(--text-muted); }
+    /* ==========================================================================
+       HEADER & TOP APP BAR
+       ========================================================================== */
+    .sfx-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: var(--sfx-white);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-subtle);
+    }
 
-        .nav-btn {
-            background-color: var(--text-black);
-            color: var(--bg-color);
-            border: none;
-            padding: 10px 20px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .nav-btn:hover { background-color: var(--subfiksi-blue); }
+    .sfx-brand-col {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-        /* Progress Bar */
-        .progress-timeline { width: 100%; height: 6px; background-color: var(--card-light-grey); margin-bottom: 30px; }
-        .progress-fill { height: 100%; width: 10%; background-color: var(--subfiksi-orange); transition: width 0.3s ease; }
+    .sfx-brand-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      background: #eff6ff;
+      color: var(--sfx-blue);
+      border: 1px solid #bfdbfe;
+      letter-spacing: 0.04em;
+    }
 
-        /* --- MAIN PANELS (GRID GEOMETRIS) --- */
-        .panels-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+    .sfx-app-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--sfx-blue);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
 
-        .panel {
-            background-color: var(--bg-color);
-            border: var(--border-bold);
-            min-height: 460px;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+    .sfx-app-subtitle {
+      font-size: 0.75rem;
+      color: var(--sfx-muted);
+      font-weight: 500;
+      display: none;
+    }
 
-        .panel-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; border-bottom: var(--border-thin); background-color: var(--card-light-grey);
-        }
-        .panel-title { font-size: 12px; font-weight: 700; color: var(--text-black); }
-        .badge { background-color: var(--text-black); color: var(--bg-color); padding: 4px 10px; font-size: 10px; font-weight: 700; }
+    @media (min-width: 600px) {
+      .sfx-app-subtitle { display: inline-block; }
+    }
 
-        /* Panel Kiri: Target Display */
-        .target-info { flex: 1; display: flex; flex-direction: column; }
-        #target-color-display { width: 100%; flex: 1; min-height: 250px; border-bottom: var(--border-thin); background-color: #eee; }
-        .target-text-block { padding: 15px 20px; background-color: var(--bg-color); }
-        .target-text-block p { font-size: 11px; line-height: 1.4; color: var(--text-muted); text-transform: none; font-weight: 400;}
+    .sfx-stats-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-        /* Panel Kanan: Selection Preview (DI ATAS) */
-        .selection-preview-block { display: flex; flex-direction: column; flex: 1; }
-        .preview-text-bar {
-            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
-            background-color: var(--bg-color); border-bottom: var(--border-thin);
-        }
-        .preview-label { font-size: 10px; font-weight: 700; color: var(--text-muted); }
-        .panel-title-values { font-size: 14px; font-weight: 800; color: var(--text-black); }
-        #current-selection-box { width: 100%; flex: 1; min-height: 220px; background-color: #ccc; } /* UKURAN DIPERBESAR DI SINI */
+    .sfx-stat-box {
+      text-align: right;
+    }
 
-        /* Panel Kanan: Slider Controls (DI BAWAH) */
-        .controls-card {
-            background-color: var(--card-light-grey);
-            border-top: var(--border-thin);
-            padding: 20px;
-        }
-        .control-group { margin-bottom: 20px; }
-        .control-group:last-child { margin-bottom: 0; }
-        .control-label-row { display: flex; justify-content: flex-start; font-size: 11px; font-weight: 700; margin-bottom: 8px; color: var(--text-black); }
+    .sfx-stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 2px;
+    }
 
-        /* Sliders */
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; cursor: pointer; }
-        input[type=range]:focus { outline: none; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 12px; border: var(--border-thin); background-color: #ddd; }
-        #hue-slider::-webkit-slider-runnable-track { background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000); }
-        #sat-slider::-webkit-slider-runnable-track { background: var(--sat-bg); }
-        #light-slider::-webkit-slider-runnable-track { background: var(--light-bg); }
-        input[type=range]::-webkit-slider-thumb {
-            height: 24px; width: 14px; background-color: var(--text-black); border: var(--border-thin);
-            -webkit-appearance: none; margin-top: -7px; transition: background 0.1s;
-        }
-        input[type=range]::-webkit-slider-thumb:hover { background-color: var(--subfiksi-blue); }
+    .sfx-stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--sfx-charcoal);
+      line-height: 1;
+    }
 
-        /* Tombol Submit */
-        .submit-btn {
-            width: 100%; height: 60px; background-color: var(--subfiksi-orange); color: #ffffff;
-            border: none; border-top: var(--border-thin); font-size: 18px; font-weight: 800; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; transition: background-color 0.2s;
-        }
-        .submit-btn:hover { background-color: var(--subfiksi-blue); }
+    .sfx-stat-val span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--sfx-muted);
+    }
 
-        /* --- MODAL UI --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(3px); display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .modal-card { background-color: var(--bg-color); padding: 0; border: var(--border-bold); text-align: center; width: 95%; max-width: 450px; max-height: 90vh; overflow-y: auto; }
-        .modal-card-header { padding: 15px; border-bottom: var(--border-thin); background-color: var(--card-light-grey); }
-        .modal-title { font-size: 16px; font-weight: 700; color: var(--text-black); }
-        .modal-body { padding: 30px 20px; }
-        .modal-score-big { font-size: 72px; font-weight: 900; color: var(--subfiksi-blue); line-height: 1; margin-bottom: 5px; letter-spacing: -3px;}
-        .modal-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;}
-        
-        .modal-details { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 25px; }
-        .detail-box { flex: 1; background: var(--card-light-grey); padding: 15px; border: var(--border-thin); font-size: 11px; color: var(--text-muted); text-transform: none; font-weight: 400;}
-        .detail-box span { display: block; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; color: var(--text-black); letter-spacing: 1px;}
-        .color-preview { width: 100%; height: 50px; border: var(--border-thin); margin-bottom: 8px; }
-        
-        .summary-area { display: none; background-color: #ffffff; padding: 20px; text-align: left; border: var(--border-thin); margin-bottom: 20px;}
-        .summary-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: var(--border-thin); }
-        .summary-header h4 { font-size: 14px; font-weight: 700; color: #000;}
-        .summary-header .score-final { color: var(--subfiksi-orange); font-weight: 800; font-size: 16px;}
-        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .summary-item { background: var(--card-light-grey); padding: 8px; border: var(--border-thin); display: flex; justify-content: space-between; align-items: center; }
-        .summary-item-round { font-size: 11px; font-weight: 700; color: var(--text-muted); width: 25px; }
-        .summary-colors { display: flex; gap: 4px; }
-        .summary-color-box { width: 22px; height: 22px; border: var(--border-thin); }
-        .summary-item-score { font-size: 11px; font-weight: 700; color: #000; width: 35px; text-align: right; }
+    .sfx-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-        .modal-footer { padding: 15px; border-top: var(--border-thin); display: flex; flex-direction: column; gap: 10px; }
-        .modal-btn { width: 100%; padding: 16px; background-color: var(--subfiksi-blue); color: white; border: none; font-size: 14px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .modal-btn:hover { background-color: var(--text-black); }
-        .btn-secondary { background-color: var(--card-light-grey); color: #000; border: var(--border-thin); }
-        .btn-secondary:hover { background-color: #ddd; }
+    .sfx-btn-icon-nav {
+      background: #ffffff;
+      color: var(--sfx-charcoal);
+      border: 1px solid var(--sfx-border);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-main);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
 
-        @media (max-width: 768px) {
-            body { align-items: flex-start; padding: 15px 10px; }
-            header { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .panels-container { grid-template-columns: 1fr; gap: 15px;}
-            .panel { min-height: 400px; }
-            #target-color-display { min-height: 150px; }
-            #current-selection-box { min-height: 150px; } /* Menyesuaikan di mobile */
-            .modal-card { width: 98%; }
-            .summary-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    .sfx-btn-icon-nav:hover {
+      background: #f1f5f9;
+      border-color: var(--sfx-border-dark);
+      color: var(--sfx-blue);
+    }
+
+    /* Progress Timeline Bar */
+    .sfx-timeline-track {
+      width: 100%;
+      height: 5px;
+      background-color: var(--sfx-border);
+      border-radius: 999px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .sfx-timeline-fill {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, var(--sfx-blue), var(--sfx-orange));
+      border-radius: 999px;
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ==========================================================================
+       GRID KOMPARASI WARNA (PANEL KIRI & KANAN)
+       ========================================================================== */
+    .sfx-game-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .sfx-panel {
+      background: var(--sfx-white);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .sfx-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--sfx-border);
+    }
+
+    .sfx-panel-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--sfx-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sfx-panel-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: var(--sfx-charcoal);
+      color: #ffffff;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Panel Kiri: Target Warna */
+    .sfx-target-canvas-box {
+      flex: 1;
+      min-height: 230px;
+      position: relative;
+      background-color: #e2e8f0;
+      transition: background-color 0.25s ease;
+    }
+
+    .sfx-canvas-overlay-tag {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.04em;
+    }
+
+    .sfx-panel-note {
+      padding: 12px 16px;
+      background: #ffffff;
+      border-top: 1px solid var(--sfx-border);
+      font-size: 0.78rem;
+      color: var(--sfx-muted);
+      line-height: 1.45;
+    }
+
+    /* Panel Kanan: Racikan Warna Pemain */
+    .sfx-mix-canvas-box {
+      width: 100%;
+      height: 150px;
+      position: relative;
+      background-color: #94a3b8;
+      border-bottom: 1px solid var(--sfx-border);
+      transition: background-color 0.1s ease;
+    }
+
+    .sfx-mix-values-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--sfx-border);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-mix-values-code {
+      font-weight: 700;
+      color: var(--sfx-blue);
+    }
+
+    /* Slider Controls */
+    .sfx-controls-card {
+      padding: 14px 16px;
+      background: #fafbfc;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sfx-slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sfx-slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+      text-transform: uppercase;
+    }
+
+    .sfx-slider-val-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--sfx-muted);
+    }
+
+    /* Styling Range Slider */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 28px;
+      background: transparent;
+      cursor: pointer;
+      touch-action: pan-x;
+    }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 6px;
+      border: 1px solid var(--sfx-border-dark);
+      background-color: #cbd5e1;
+    }
+
+    #hue-slider::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    }
+
+    #sat-slider::-webkit-slider-runnable-track {
+      background: var(--sat-bg);
+    }
+
+    #light-slider::-webkit-slider-runnable-track {
+      background: var(--light-bg);
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      height: 24px;
+      width: 18px;
+      background-color: var(--sfx-charcoal);
+      border: 2px solid #ffffff;
+      border-radius: 4px;
+      -webkit-appearance: none;
+      margin-top: -6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.1s, background-color 0.1s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      background-color: var(--sfx-orange);
+      transform: scale(1.1);
+    }
+
+    input[type=range]::-webkit-slider-thumb:active {
+      background-color: var(--sfx-blue);
+      transform: scale(1.15);
+    }
+
+    /* Tombol Submit Utama */
+    .sfx-submit-btn {
+      width: 100%;
+      height: 52px;
+      background-color: var(--sfx-orange);
+      color: #ffffff;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .sfx-submit-btn:hover {
+      background-color: var(--sfx-orange-hover);
+    }
+
+    .sfx-submit-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* ==========================================================================
+       MODAL UNIVERSAL & OVERLAY
+       ========================================================================== */
+    .sfx-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .sfx-modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sfx-modal-card {
+      background: var(--sfx-white);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-modal);
+      overflow: hidden;
+      animation: sfxPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes sfxPop {
+      from { transform: scale(0.96) translateY(8px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .sfx-modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--sfx-border);
+      flex-shrink: 0;
+    }
+
+    .sfx-modal-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--sfx-blue);
+      letter-spacing: -0.01em;
+    }
+
+    .sfx-modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--sfx-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    .sfx-modal-close-btn:hover {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .sfx-modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      text-align: center;
+    }
+
+    .sfx-modal-footer {
+      padding: 14px 18px;
+      background: #fafbfc;
+      border-top: 1px solid var(--sfx-border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .sfx-btn-action {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      border: none;
+    }
+
+    .sfx-btn-primary {
+      background: var(--sfx-blue);
+      color: #ffffff;
+    }
+
+    .sfx-btn-primary:hover {
+      background: var(--sfx-blue-dark);
+    }
+
+    .sfx-btn-secondary {
+      background: #ffffff;
+      color: var(--sfx-charcoal);
+      border: 1px solid var(--sfx-border);
+    }
+
+    .sfx-btn-secondary:hover {
+      background: #f1f5f9;
+      border-color: var(--sfx-border-dark);
+    }
+
+    /* Modal Hasil Ronde */
+    .sfx-score-big {
+      font-family: var(--font-mono);
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--sfx-blue);
+      line-height: 1;
+      margin-bottom: 4px;
+      letter-spacing: -0.04em;
+    }
+
+    .sfx-score-subtitle {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    .sfx-round-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .sfx-color-compare-card {
+      background: #fafbfc;
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: left;
+    }
+
+    .sfx-color-compare-card span {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .sfx-compare-swatch {
+      width: 100%;
+      height: 48px;
+      border-radius: 4px;
+      border: 1px solid var(--sfx-border);
+      margin-bottom: 6px;
+    }
+
+    .sfx-compare-hsl {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+    }
+
+    /* ==========================================================================
+       SERTIFIKAT HASIL UJI KEPEKAAN WARNA (SWISS CERTIFICATE)
+       ========================================================================== */
+    #sfx-certificate-wrap {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+      margin-bottom: 18px;
+      text-align: left;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sfx-cert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--sfx-charcoal);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .sfx-cert-title-col h3 {
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--sfx-blue);
+      letter-spacing: -0.02em;
+    }
+
+    .sfx-cert-title-col p {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--sfx-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .sfx-cert-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      background: var(--sfx-orange);
+      color: #ffffff;
+      border-radius: 4px;
+    }
+
+    .sfx-cert-player-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 14px;
+    }
+
+    .sfx-cert-player-name {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-cert-player-date {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--sfx-muted);
+    }
+
+    .sfx-cert-summary-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+
+    .sfx-cert-total-val {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--sfx-blue);
+      line-height: 1;
+    }
+
+    .sfx-cert-grade {
+      text-align: right;
+    }
+
+    .sfx-cert-grade-title {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--sfx-orange);
+      text-transform: uppercase;
+    }
+
+    .sfx-cert-grade-acc {
+      font-size: 0.72rem;
+      color: var(--sfx-muted);
+    }
+
+    /* 10 Ronde Swatch Grid */
+    .sfx-cert-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .sfx-cert-item {
+      background: #ffffff;
+      border: 1px solid var(--sfx-border);
+      border-radius: 4px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sfx-cert-round-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
+      width: 24px;
+    }
+
+    .sfx-cert-color-pair {
+      display: flex;
+      gap: 3px;
+    }
+
+    .sfx-cert-color-chip {
+      width: 22px;
+      height: 22px;
+      border-radius: 3px;
+      border: 1px solid var(--sfx-border);
+    }
+
+    .sfx-cert-item-acc {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--sfx-charcoal);
+      width: 36px;
+      text-align: right;
+    }
+
+    .sfx-cert-footer {
+      border-top: 1px dashed var(--sfx-border);
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--sfx-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Form Input Inisial Nama */
+    .sfx-save-score-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .sfx-name-input {
+      flex: 1;
+      padding: 10px 14px;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-sm);
+      outline: none;
+    }
+
+    .sfx-name-input:focus {
+      border-color: var(--sfx-blue);
+      box-shadow: 0 0 0 2px rgba(0, 51, 128, 0.1);
+    }
+
+    .sfx-btn-save-score {
+      padding: 10px 18px;
+      background: var(--sfx-charcoal);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .sfx-btn-save-score:hover {
+      background: var(--sfx-blue);
+    }
+
+    /* ==========================================================================
+       TABEL PAPAN SKOR (LEADERBOARD)
+       ========================================================================== */
+    .sfx-leaderboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .sfx-lb-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-sm);
+      transition: background 0.15s ease;
+    }
+
+    .sfx-lb-row.top-1 {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .sfx-lb-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sfx-lb-rank {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 800;
+      width: 26px;
+      color: var(--sfx-muted);
+    }
+
+    .sfx-lb-row.top-1 .sfx-lb-rank {
+      color: #d97706;
+    }
+
+    .sfx-lb-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-lb-meta {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--sfx-muted);
+    }
+
+    .sfx-lb-score {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--sfx-blue);
+      text-align: right;
+    }
+
+    .sfx-lb-acc {
+      font-size: 0.68rem;
+      color: var(--sfx-muted);
+    }
+
+    .sfx-lb-empty {
+      padding: 30px 16px;
+      text-align: center;
+      color: var(--sfx-muted);
+      font-size: 0.85rem;
+    }
+
+    /* ==========================================================================
+       RESPONSIVITAS MOBILE (SMARTPHONE)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .sfx-top-bar {
+        padding: 10px 14px;
+        margin-bottom: 12px;
+      }
+
+      .sfx-game-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .sfx-target-canvas-box {
+        min-height: 160px;
+      }
+
+      .sfx-mix-canvas-box {
+        height: 120px;
+      }
+
+      .sfx-controls-card {
+        padding: 12px 14px;
+        gap: 10px;
+      }
+
+      .sfx-cert-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sfx-score-big {
+        font-size: 3.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="modal-overlay" id="result-modal">
-        <div class="modal-card">
-            <div class="modal-card-header"><h3 class="modal-title" id="modal-title">Round Complete!</h3></div>
-            <div class="modal-body">
-                <div class="modal-score-big" id="modal-accuracy">95%</div>
-                <p class="modal-subtitle" id="modal-subtitle-text">Accuracy</p>
-                
-                <div class="modal-details" id="modal-details-container">
-                    <div class="detail-box">
-                        <span>Target</span>
-                        <div id="modal-target-color" class="color-preview"></div>
-                        <small id="modal-target-text">H:100 S:50 L:50</small>
-                    </div>
-                    <div class="detail-box">
-                        <span>You</span>
-                        <div id="modal-player-color" class="color-preview"></div>
-                        <small id="modal-player-text">H:105 S:45 L:50</small>
-                    </div>
-                </div>
+  <!-- MODAL: HASIL AKURASI RONDE & GAME OVER -->
+  <div class="sfx-modal-backdrop" id="result-modal">
+    <div class="sfx-modal-card">
+      <div class="sfx-modal-head">
+        <span class="sfx-modal-title" id="modal-title">Ronde Selesai</span>
+        <button type="button" class="sfx-modal-close-btn" onclick="closeResultModal()">✕</button>
+      </div>
 
-                <div id="capture-area" class="summary-area">
-                    <div class="summary-header">
-                        <h4>KOLOR SUMMARY</h4>
-                        <div class="score-final" id="summary-final-score">0 pts</div>
-                    </div>
-                    <div class="summary-grid" id="summary-list"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn btn-secondary" id="download-btn" style="display: none;">📷 Download PNG</button>
-                <button class="modal-btn" id="modal-next-btn">Next Round</button>
-            </div>
+      <div class="sfx-modal-body">
+        <div class="sfx-score-big" id="modal-accuracy">95%</div>
+        <div class="sfx-score-subtitle" id="modal-subtitle-text">Akurasi Warna</div>
+
+        <!-- Detail Perbandingan Ronde Berjalan -->
+        <div class="sfx-round-details-grid" id="modal-details-container">
+          <div class="sfx-color-compare-card">
+            <span>Target Spektrum</span>
+            <div id="modal-target-color" class="sfx-compare-swatch"></div>
+            <div id="modal-target-text" class="sfx-compare-hsl">H:180 S:50 L:50</div>
+          </div>
+          <div class="sfx-color-compare-card">
+            <span>Racikan Kamu</span>
+            <div id="modal-player-color" class="sfx-compare-swatch"></div>
+            <div id="modal-player-text" class="sfx-compare-hsl">H:180 S:50 L:50</div>
+          </div>
         </div>
+
+        <!-- Form Simpan Skor ke Leaderboard (Hanya muncul di Game Over) -->
+        <div id="save-score-section" style="display: none;">
+          <p style="font-size: 0.78rem; color: var(--sfx-muted); margin-bottom: 8px; text-align: left;">
+            Catatkan rekor kamu ke <strong>Papan Skor</strong>:
+          </p>
+          <div class="sfx-save-score-form">
+            <input type="text" id="player-name-input" class="sfx-name-input" placeholder="Inisial / Nama kamu..." maxlength="15">
+            <button type="button" class="sfx-btn-save-score" onclick="savePlayerScore()">Simpan Skor</button>
+          </div>
+        </div>
+
+        <!-- SERTIFIKAT HASIL UJI KEPEKAAN WARNA (TANGKAP VIA HTML2CANVAS) -->
+        <div id="sfx-certificate-wrap">
+          <div class="sfx-cert-header">
+            <div class="sfx-cert-title-col">
+              <h3>KOLOR MATCHER — HASIL UJI SPEKTRUM</h3>
+              <p>Chromatic Spectrum Test • Subfiksi LAB!</p>
+            </div>
+            <div class="sfx-cert-badge">RESMI</div>
+          </div>
+
+          <div class="sfx-cert-player-row">
+            <div>
+              <div style="font-size: 0.65rem; color: var(--sfx-muted); font-family: var(--font-mono); text-transform: uppercase;">PENGUJI</div>
+              <div class="sfx-cert-player-name" id="cert-player-name">Anonim</div>
+            </div>
+            <div class="sfx-cert-player-date" id="cert-date">13 OKT 2026</div>
+          </div>
+
+          <div class="sfx-cert-summary-hero">
+            <div>
+              <div style="font-size: 0.65rem; color: var(--sfx-blue); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase;">TOTAL SKOR</div>
+              <div class="sfx-cert-total-val" id="cert-final-score">950 pts</div>
+            </div>
+            <div class="sfx-cert-grade">
+              <div class="sfx-cert-grade-title" id="cert-grade-title">TETRACHROMAT</div>
+              <div class="sfx-cert-grade-acc" id="cert-grade-acc">95.0% Akurasi Rata-rata</div>
+            </div>
+          </div>
+
+          <div class="sfx-cert-grid" id="cert-round-list"></div>
+
+          <div class="sfx-cert-footer">
+            <span>© 2026 SUBFIKSI • subfiksi.com</span>
+            <span>MODUL LAB! 01</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sfx-modal-footer">
+        <button type="button" class="sfx-btn-action sfx-btn-secondary" id="download-btn" style="display: none;" onclick="downloadCertificatePNG()">
+          <span>📷</span> <span>Unduh Sertifikat PNG</span>
+        </button>
+        <button type="button" class="sfx-btn-action sfx-btn-primary" id="modal-next-btn" onclick="handleModalNext()">
+          Lanjut Ronde
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PAPAN SKOR TERTINGGI (LEADERBOARD) -->
+  <div class="sfx-modal-backdrop" id="leaderboard-modal">
+    <div class="sfx-modal-card">
+      <div class="sfx-modal-head">
+        <span class="sfx-modal-title">🏆 Papan Skor KOLOR MATCHER</span>
+        <button type="button" class="sfx-modal-close-btn" onclick="closeLeaderboardModal()">✕</button>
+      </div>
+      <div class="sfx-modal-body">
+        <p style="font-size: 0.78rem; color: var(--sfx-muted); margin-bottom: 14px; text-align: left;">
+          Daftar rekor kepekaan warna tertinggi yang pernah tercatat di perangkat ini:
+        </p>
+        <div class="sfx-leaderboard-list" id="leaderboard-list"></div>
+      </div>
+      <div class="sfx-modal-footer">
+        <button type="button" class="sfx-btn-action sfx-btn-secondary" onclick="clearLeaderboard()">
+          <span>🗑</span> <span>Bersihkan Riwayat Skor</span>
+        </button>
+        <button type="button" class="sfx-btn-action sfx-btn-primary" onclick="closeLeaderboardModal()">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTAINER UTAMA APLIKASI -->
+  <div class="sfx-app-wrapper">
+    <!-- Top Bar -->
+    <header class="sfx-top-bar">
+      <div class="sfx-brand-col">
+        <span class="sfx-brand-tag">⚡ LAB!</span>
+        <div>
+          <h1 class="sfx-app-title">KOLOR MATCHER</h1>
+        </div>
+      </div>
+
+      <div class="sfx-stats-group">
+        <div class="sfx-stat-box">
+          <div class="sfx-stat-label">Ronde</div>
+          <div class="sfx-stat-val"><span id="current-round">1</span><span> / 10</span></div>
+        </div>
+        <div class="sfx-stat-box">
+          <div class="sfx-stat-label">Total Skor</div>
+          <div class="sfx-stat-val" id="total-score">0 <span>pts</span></div>
+        </div>
+      </div>
+
+      <div class="sfx-top-actions">
+        <button type="button" class="sfx-btn-icon-nav" onclick="openLeaderboardModal()" title="Lihat Papan Skor">
+          <span>🏆</span> <span>Skor</span>
+        </button>
+        <button type="button" class="sfx-btn-icon-nav" onclick="resetGame()" title="Mulai Permainan Baru">
+          <span>↺</span> <span>Reset</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress Timeline -->
+    <div class="sfx-timeline-track">
+      <div class="sfx-timeline-fill" id="progress-bar"></div>
     </div>
 
-    <div class="game-wrapper">
-        <header>
-            <h1 class="game-title">KOLOR</h1>
-            <div class="stats-group">
-                <div><div class="label">Progress</div><div class="value">Round <span id="current-round">1</span><span> / 10</span></div></div>
-                <div><div class="label">Score</div><div class="value" id="total-score">0 <span>pts</span></div></div>
-                <button class="nav-btn" onclick="resetGame()">New game</button>
-            </div>
-        </header>
-
-        <div class="progress-timeline"><div class="progress-fill" id="progress-bar"></div></div>
-
-        <div class="panels-container">
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-title">Target Color</div>
-                    <div class="badge" id="badge-left">1/10</div>
-                </div>
-                <div class="target-info">
-                    <div id="target-color-display"></div> 
-                </div>
-                <div class="target-text-block">
-                    <p>Adjust the sliders on the right to match this color as closely as possible. Submit when ready.</p>
-                </div>
-            </div>
-
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-title">Your Selection</div>
-                    <div class="badge" id="badge-right">1/10</div>
-                </div>
-
-                <div class="selection-preview-block">
-                    <div class="preview-text-bar">
-                        <div class="panel-title-values">YOUR MIX</div>
-                        <div class="preview-label">PREVIEW</div>
-                    </div>
-                    <div id="current-selection-box"></div>
-                </div>
-
-                <div class="controls-card">
-                    <div class="control-group">
-                        <div class="control-label-row"><span>Hue</span></div>
-                        <input type="range" id="hue-slider" min="0" max="360" value="180">
-                    </div>
-                    <div class="control-group">
-                        <div class="control-label-row"><span>Saturation</span></div>
-                        <input type="range" id="sat-slider" min="0" max="100" value="50">
-                    </div>
-                    <div class="control-group">
-                        <div class="control-label-row"><span>Lightness</span></div>
-                        <input type="range" id="light-slider" min="0" max="100" value="50">
-                    </div>
-                </div>
-
-                <button class="submit-btn" id="btn-submit">✓ SUBMIT</button>
-            </div>
+    <!-- Grid Komparasi Permainan -->
+    <main class="sfx-game-grid">
+      <!-- Panel Kiri: Target Warna -->
+      <section class="sfx-panel">
+        <div class="sfx-panel-header">
+          <div class="sfx-panel-title">
+            <span>🎯</span> <span>Target Spektrum</span>
+          </div>
+          <div class="sfx-panel-badge" id="badge-left">1/10</div>
         </div>
-    </div>
 
-    <script>
-        const targetColorDisplay = document.getElementById('target-color-display');
-        const currentSelectionBox = document.getElementById('current-selection-box');
-        const hueSlider = document.getElementById('hue-slider');
-        const satSlider = document.getElementById('sat-slider');
-        const lightSlider = document.getElementById('light-slider');
-        
-        const currentRoundText = document.getElementById('current-round');
-        const totalScoreText = document.getElementById('total-score');
-        const progressBar = document.getElementById('progress-bar');
-        const badgeLeft = document.getElementById('badge-left');
-        const badgeRight = document.getElementById('badge-right');
-        const btnSubmit = document.getElementById('btn-submit');
+        <div class="sfx-target-canvas-box" id="target-color-display">
+          <span class="sfx-canvas-overlay-tag">TARGET</span>
+        </div>
 
-        const modalOverlay = document.getElementById('result-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalAccuracy = document.getElementById('modal-accuracy');
-        const modalSubtitleText = document.getElementById('modal-subtitle-text');
-        const modalDetailsContainer = document.getElementById('modal-details-container');
-        const modalTargetColor = document.getElementById('modal-target-color');
-        const modalTargetText = document.getElementById('modal-target-text');
-        const modalPlayerColor = document.getElementById('modal-player-color');
-        const modalPlayerText = document.getElementById('modal-player-text');
-        const modalNextBtn = document.getElementById('modal-next-btn');
-        
-        const captureArea = document.getElementById('capture-area');
-        const summaryList = document.getElementById('summary-list');
-        const summaryFinalScore = document.getElementById('summary-final-score');
-        const downloadBtn = document.getElementById('download-btn');
+        <div class="sfx-panel-note">
+          Cocokkan spektrum warna target di atas menggunakan panel kontrol di sebelah kanan. Tekan tombol <strong>Kirim Racikan</strong> jika menurutmu warnanya sudah presisi.
+        </div>
+      </section>
 
-        let round = 1;
-        let score = 0;
-        let targetH, targetS, targetL;
-        let gameHistory = []; 
+      <!-- Panel Kanan: Racikan Warna Pemain -->
+      <section class="sfx-panel">
+        <div class="sfx-panel-header">
+          <div class="sfx-panel-title">
+            <span>🧪</span> <span>Racikan Kamu</span>
+          </div>
+          <div class="sfx-panel-badge" id="badge-right">1/10</div>
+        </div>
 
-        function initRound() {
-            if(round > 10) return;
+        <div class="sfx-mix-canvas-box" id="current-selection-box"></div>
 
-            currentRoundText.innerText = round;
-            badgeLeft.innerText = `${round}/10`;
-            badgeRight.innerText = `${round}/10`;
-            progressBar.style.width = `${round * 10}%`;
+        <div class="sfx-mix-values-bar">
+          <span>NILAI HSL:</span>
+          <span class="sfx-mix-values-code" id="live-hsl-text">H: 180° | S: 50% | L: 50%</span>
+        </div>
 
-            targetH = Math.floor(Math.random() * 361);
-            targetS = Math.floor(Math.random() * 71) + 20; 
-            targetL = Math.floor(Math.random() * 61) + 20; 
+        <!-- Slider Kontrol -->
+        <div class="sfx-controls-card">
+          <div class="sfx-slider-row">
+            <div class="sfx-slider-label-row">
+              <span>Hue (Corak Warna)</span>
+              <span class="sfx-slider-val-tag" id="hue-val-tag">180°</span>
+            </div>
+            <input type="range" id="hue-slider" min="0" max="360" value="180" aria-label="Hue Slider">
+          </div>
 
-            targetColorDisplay.style.backgroundColor = `hsl(${targetH}, ${targetS}%, ${targetL}%)`;
+          <div class="sfx-slider-row">
+            <div class="sfx-slider-label-row">
+              <span>Saturation (Kejenuhan)</span>
+              <span class="sfx-slider-val-tag" id="sat-val-tag">50%</span>
+            </div>
+            <input type="range" id="sat-slider" min="0" max="100" value="50" aria-label="Saturation Slider">
+          </div>
 
-            hueSlider.value = 180;
-            satSlider.value = 50;
-            lightSlider.value = 50;
+          <div class="sfx-slider-row">
+            <div class="sfx-slider-label-row">
+              <span>Lightness (Kecerahan)</span>
+              <span class="sfx-slider-val-tag" id="light-val-tag">50%</span>
+            </div>
+            <input type="range" id="light-slider" min="0" max="100" value="50" aria-label="Lightness Slider">
+          </div>
+        </div>
 
-            updatePlayerSelection();
+        <button type="button" class="sfx-submit-btn" id="btn-submit" onclick="submitSelection()">
+          <span>✓</span> <span>KIRIM RACIKAN</span>
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       LOGIKA GAME ENGINE, LEADERBOARD, & PROTOKOL SFX_LAB_RESIZE
+       ========================================================================== -->
+  <script>
+    // Konstanta & Referensi Elemen DOM
+    const targetColorDisplay = document.getElementById('target-color-display');
+    const currentSelectionBox = document.getElementById('current-selection-box');
+    const hueSlider = document.getElementById('hue-slider');
+    const satSlider = document.getElementById('sat-slider');
+    const lightSlider = document.getElementById('light-slider');
+    const hueValTag = document.getElementById('hue-val-tag');
+    const satValTag = document.getElementById('sat-val-tag');
+    const lightValTag = document.getElementById('light-val-tag');
+    const liveHslText = document.getElementById('live-hsl-text');
+
+    const currentRoundText = document.getElementById('current-round');
+    const totalScoreText = document.getElementById('total-score');
+    const progressBar = document.getElementById('progress-bar');
+    const badgeLeft = document.getElementById('badge-left');
+    const badgeRight = document.getElementById('badge-right');
+
+    const resultModal = document.getElementById('result-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalAccuracy = document.getElementById('modal-accuracy');
+    const modalSubtitleText = document.getElementById('modal-subtitle-text');
+    const modalDetailsContainer = document.getElementById('modal-details-container');
+    const modalTargetColor = document.getElementById('modal-target-color');
+    const modalTargetText = document.getElementById('modal-target-text');
+    const modalPlayerColor = document.getElementById('modal-player-color');
+    const modalPlayerText = document.getElementById('modal-player-text');
+    const modalNextBtn = document.getElementById('modal-next-btn');
+
+    const saveScoreSection = document.getElementById('save-score-section');
+    const playerNameInput = document.getElementById('player-name-input');
+    const sfxCertificateWrap = document.getElementById('sfx-certificate-wrap');
+    const certPlayerName = document.getElementById('cert-player-name');
+    const certDate = document.getElementById('cert-date');
+    const certFinalScore = document.getElementById('cert-final-score');
+    const certGradeTitle = document.getElementById('cert-grade-title');
+    const certGradeAcc = document.getElementById('cert-grade-acc');
+    const certRoundList = document.getElementById('cert-round-list');
+    const downloadBtn = document.getElementById('download-btn');
+
+    const leaderboardModal = document.getElementById('leaderboard-modal');
+    const leaderboardList = document.getElementById('leaderboard-list');
+
+    // State Permainan
+    let round = 1;
+    let score = 0;
+    let targetH, targetS, targetL;
+    let gameHistory = [];
+    const STORAGE_KEY = 'SFX_KOLOR_LEADERBOARD_V1';
+
+    // Inisialisasi Ronde Baru
+    function initRound() {
+      if (round > 10) return;
+
+      currentRoundText.innerText = round;
+      badgeLeft.innerText = `${round}/10`;
+      badgeRight.innerText = `${round}/10`;
+      progressBar.style.width = `${round * 10}%`;
+
+      // HSL Target Acak dengan saturasi & lightness yang nyaman
+      targetH = Math.floor(Math.random() * 361);
+      targetS = Math.floor(Math.random() * 71) + 20; // 20% - 90%
+      targetL = Math.floor(Math.random() * 61) + 20; // 20% - 80%
+
+      targetColorDisplay.style.backgroundColor = `hsl(${targetH}, ${targetS}%, ${targetL}%)`;
+
+      // Reset posisi slider ke netral
+      hueSlider.value = 180;
+      satSlider.value = 50;
+      lightSlider.value = 50;
+
+      updatePlayerSelection();
+    }
+
+    // Pembaruan Live Swatch Pemain
+    function updatePlayerSelection() {
+      const h = hueSlider.value;
+      const s = satSlider.value;
+      const l = lightSlider.value;
+
+      hueValTag.textContent = `${h}°`;
+      satValTag.textContent = `${s}%`;
+      lightValTag.textContent = `${l}%`;
+      liveHslText.textContent = `H: ${h}° | S: ${s}% | L: ${l}%`;
+
+      currentSelectionBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
+
+      // Update trek slider CSS
+      document.documentElement.style.setProperty('--sat-bg', `linear-gradient(to right, hsl(${h}, 0%, ${l}%), hsl(${h}, 100%, ${l}%))`);
+      document.documentElement.style.setProperty('--light-bg', `linear-gradient(to right, #000000, hsl(${h}, ${s}%, 50%), #ffffff)`);
+    }
+
+    // Evaluasi Akurasi Warna
+    function submitSelection() {
+      const pH = parseInt(hueSlider.value);
+      const pS = parseInt(satSlider.value);
+      const pL = parseInt(lightSlider.value);
+
+      let diffH = Math.abs(targetH - pH);
+      if (diffH > 180) diffH = 360 - diffH;
+
+      const errH = diffH / 180;
+      const errS = Math.abs(targetS - pS) / 100;
+      const errL = Math.abs(targetL - pL) / 100;
+
+      // Akurasi gabungan berbobot
+      const totalError = (errH * 0.45 + errS * 0.25 + errL * 0.30);
+      let roundScore = Math.round((1 - totalError) * 100);
+      if (roundScore < 0) roundScore = 0;
+
+      score += roundScore;
+      totalScoreText.innerHTML = `${score} <span>pts</span>`;
+
+      gameHistory.push({
+        roundNum: round,
+        targetColor: `hsl(${targetH}, ${targetS}%, ${targetL}%)`,
+        playerColor: `hsl(${pH}, ${pS}%, ${pL}%)`,
+        targetH, targetS, targetL,
+        playerH: pH, playerS: pS, playerL: pL,
+        acc: roundScore
+      });
+
+      if (round < 10) {
+        // Ronde 1 - 9
+        modalTitle.innerText = `Ronde ${round} Selesai`;
+        modalAccuracy.innerText = `${roundScore}%`;
+        modalSubtitleText.innerText = "Akurasi Spektrum";
+        modalDetailsContainer.style.display = "grid";
+        saveScoreSection.style.display = "none";
+        sfxCertificateWrap.style.display = "none";
+        downloadBtn.style.display = "none";
+        modalNextBtn.innerText = "Lanjut Ronde Berikutnya →";
+
+        modalTargetColor.style.backgroundColor = gameHistory[round - 1].targetColor;
+        modalTargetText.innerText = `H:${targetH}° S:${targetS}% L:${targetL}%`;
+        modalPlayerColor.style.backgroundColor = gameHistory[round - 1].playerColor;
+        modalPlayerText.innerText = `H:${pH}° S:${pS}% L:${pL}%`;
+      } else {
+        // Game Over (Ronde 10 Selesai)
+        renderGameOverScreen();
+      }
+
+      resultModal.classList.add('active');
+    }
+
+    // Render Layar Game Over & Sertifikat
+    function renderGameOverScreen() {
+      modalTitle.innerText = "🎉 Pengujian Spektrum Selesai!";
+      modalAccuracy.innerText = `${score}`;
+      modalSubtitleText.innerText = "Total Poin Akurasi (Maks 1000)";
+      modalDetailsContainer.style.display = "none";
+      modalNextBtn.innerText = "↺ Main Lagi Dari Awal";
+
+      // Hitung Predikat Akurasi
+      const avgAcc = (score / 10).toFixed(1);
+      let grade = "APPRENTICE MIXER";
+      if (score >= 930) grade = "TETRACHROMAT MASTER";
+      else if (score >= 850) grade = "EXPERT CHROMATIST";
+      else if (score >= 750) grade = "SHARP PERCEIVER";
+      else if (score >= 600) grade = "COLOR APPRENTICE";
+
+      // Render Sertifikat
+      certFinalScore.innerText = `${score} pts`;
+      certGradeTitle.innerText = grade;
+      certGradeAcc.innerText = `${avgAcc}% Akurasi Rata-rata`;
+      
+      const now = new Date();
+      const months = ["JAN", "FEB", "MAR", "APR", "MEI", "JUN", "JUL", "AGU", "SEP", "OKT", "NOV", "DES"];
+      certDate.innerText = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+      certRoundList.innerHTML = '';
+      gameHistory.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'sfx-cert-item';
+        row.innerHTML = `
+          <span class="sfx-cert-round-tag">R${item.roundNum}</span>
+          <div class="sfx-cert-color-pair">
+            <div class="sfx-cert-color-chip" style="background: ${item.targetColor};" title="Target"></div>
+            <div class="sfx-cert-color-chip" style="background: ${item.playerColor};" title="Racikan"></div>
+          </div>
+          <span class="sfx-cert-item-acc">${item.acc}%</span>
+        `;
+        certRoundList.appendChild(row);
+      });
+
+      saveScoreSection.style.display = "block";
+      sfxCertificateWrap.style.display = "block";
+      downloadBtn.style.display = "inline-flex";
+
+      // Pasang inisial nama jika tersimpan sebelumnya
+      const lastName = localStorage.getItem('SFX_KOLOR_LAST_NAME') || '';
+      if (lastName) {
+        playerNameInput.value = lastName;
+        certPlayerName.innerText = lastName;
+      }
+    }
+
+    // Simpan Skor Pemain ke Papan Skor (Leaderboard LocalStorage)
+    function savePlayerScore() {
+      const name = playerNameInput.value.trim() || 'Anonim';
+      certPlayerName.innerText = name;
+      localStorage.setItem('SFX_KOLOR_LAST_NAME', name);
+
+      const newEntry = {
+        name: name,
+        score: score,
+        acc: (score / 10).toFixed(1),
+        date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+        timestamp: Date.now()
+      };
+
+      const lb = getLeaderboardData();
+      lb.push(newEntry);
+      // Urutkan berdasarkan skor tertinggi
+      lb.sort((a, b) => b.score - a.score);
+      // Batasi 10 skor terbaik
+      const trimmed = lb.slice(0, 10);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+
+      alert(`✅ Rekor kamu [${score} pts] berhasil dicatat ke Papan Skor!`);
+      saveScoreSection.style.display = "none";
+    }
+
+    // Modal Next Handler
+    function handleModalNext() {
+      resultModal.classList.remove('active');
+      setTimeout(() => {
+        if (round >= 10) {
+          resetGame();
+        } else {
+          round++;
+          initRound();
         }
+      }, 250);
+    }
 
-        function updatePlayerSelection() {
-            const h = hueSlider.value;
-            const s = satSlider.value;
-            const l = lightSlider.value;
+    function closeResultModal() {
+      resultModal.classList.remove('active');
+    }
 
-            currentSelectionBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
-            
-            document.documentElement.style.setProperty('--sat-bg', `linear-gradient(to right, hsl(${h}, 0%, ${l}%), hsl(${h}, 100%, ${l}%))`);
-            document.documentElement.style.setProperty('--light-bg', `linear-gradient(to right, #000000, hsl(${h}, ${s}%, 50%), #ffffff)`);
-        }
+    function resetGame() {
+      round = 1;
+      score = 0;
+      gameHistory = [];
+      totalScoreText.innerHTML = `0 <span>pts</span>`;
+      resultModal.classList.remove('active');
+      initRound();
+    }
 
-        function submitSelection() {
-            const pH = parseInt(hueSlider.value);
-            const pS = parseInt(satSlider.value);
-            const pL = parseInt(lightSlider.value);
+    // Unduh Sertifikat sebagai PNG
+    function downloadCertificatePNG() {
+      const btn = downloadBtn;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = "<span>⏳</span> <span>Memproses Sertifikat...</span>";
+      btn.disabled = true;
 
-            let diffH = Math.abs(targetH - pH);
-            if (diffH > 180) diffH = 360 - diffH;
+      const certEl = document.getElementById('sfx-certificate-wrap');
 
-            const errH = diffH / 180;
-            const errS = Math.abs(targetS - pS) / 100;
-            const errL = Math.abs(targetL - pL) / 100;
+      html2canvas(certEl, {
+        backgroundColor: "#ffffff",
+        scale: 2.5, // Kualitas cetak jernih tinggi
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        const safeName = (playerNameInput.value.trim() || 'Pemain').replace(/\s+/g, '_');
+        link.download = `KOLOR_Sertifikat_${safeName}_${score}pts.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }).catch(err => {
+        alert("Gagal mengunduh sertifikat: " + err.message);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      });
+    }
 
-            const totalError = (errH + errS + errL) / 3;
-            let roundScore = Math.round((1 - totalError) * 100);
-            if (roundScore < 0) roundScore = 0;
+    // ==========================================================================
+    // SISTEM LEADERBOARD
+    // ==========================================================================
+    function getLeaderboardData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
 
-            score += roundScore;
-            totalScoreText.innerHTML = `${score} <span>pts</span>`;
+    function openLeaderboardModal() {
+      renderLeaderboardUI();
+      leaderboardModal.classList.add('active');
+    }
 
-            gameHistory.push({
-                roundNum: round,
-                targetColor: `hsl(${targetH}, ${targetS}%, ${targetL}%)`,
-                playerColor: `hsl(${pH}, ${pS}%, ${pL}%)`,
-                acc: roundScore
-            });
+    function closeLeaderboardModal() {
+      leaderboardModal.classList.remove('active');
+    }
 
-            if (round < 10) {
-                modalTitle.innerText = `Ronde ${round} Selesai`;
-                modalAccuracy.innerText = `${roundScore}%`;
-                modalSubtitleText.innerText = "Akurasi Warna";
-                modalDetailsContainer.style.display = "flex";
-                captureArea.style.display = "none";
-                downloadBtn.style.display = "none";
-                modalNextBtn.innerText = "Lanjut Ronde";
-                
-                modalTargetColor.style.backgroundColor = gameHistory[round-1].targetColor;
-                modalTargetText.innerText = `H:${targetH} S:${targetS} L:${targetL}`;
-                modalPlayerColor.style.backgroundColor = gameHistory[round-1].playerColor;
-                modalPlayerText.innerText = `H:${pH} S:${pS} L:${pL}`;
-            } else {
-                modalTitle.innerText = "Game Selesai!";
-                modalAccuracy.innerText = score;
-                modalSubtitleText.innerText = "Total Skor KOLOR";
-                modalDetailsContainer.style.display = "none";
-                
-                summaryList.innerHTML = "";
-                gameHistory.forEach(item => {
-                    const row = document.createElement('div');
-                    row.className = 'summary-item';
-                    row.innerHTML = `
-                        <div class="summary-item-round">R${item.roundNum}</div>
-                        <div class="summary-colors">
-                            <div class="summary-color-box" style="background: ${item.targetColor};" title="Target"></div>
-                            <div class="summary-color-box" style="background: ${item.playerColor};" title="You"></div>
-                        </div>
-                        <div class="summary-item-score">${item.acc}%</div>
-                    `;
-                    summaryList.appendChild(row);
-                });
+    function renderLeaderboardUI() {
+      const data = getLeaderboardData();
+      if (!data || data.length === 0) {
+        leaderboardList.innerHTML = `
+          <div class="sfx-lb-empty">
+            Belum ada rekor tersimpan.<br/>Selesaikan 10 ronde untuk mencatat skor terbaikmu di sini!
+          </div>
+        `;
+        return;
+      }
 
-                summaryFinalScore.innerText = `${score} pts`;
-                captureArea.style.display = "block";
-                downloadBtn.style.display = "block";
-                modalNextBtn.innerText = "Main Lagi";
-            }
+      let html = '';
+      data.forEach((item, idx) => {
+        const isTop = idx === 0 ? 'top-1' : '';
+        const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`;
+        html += `
+          <div class="sfx-lb-row ${isTop}">
+            <div class="sfx-lb-left">
+              <div class="sfx-lb-rank">${medal}</div>
+              <div>
+                <div class="sfx-lb-name">${escapeHtml(item.name)}</div>
+                <div class="sfx-lb-meta">${item.date} • ${item.acc}% akurasi</div>
+              </div>
+            </div>
+            <div>
+              <div class="sfx-lb-score">${item.score} <span style="font-size: 0.65rem; color: var(--sfx-muted);">pts</span></div>
+            </div>
+          </div>
+        `;
+      });
+      leaderboardList.innerHTML = html;
+    }
 
-            modalOverlay.classList.add('active');
-        }
+    function clearLeaderboard() {
+      if (!confirm('Apakah kamu yakin ingin mereset dan membersihkan seluruh riwayat Papan Skor di perangkat ini?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      renderLeaderboardUI();
+    }
 
-        function resetGame() {
-            round = 1;
-            score = 0;
-            gameHistory = [];
-            totalScoreText.innerHTML = `0 <span>pts</span>`;
-            modalOverlay.classList.remove('active');
-            initRound();
-        }
+    function escapeHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
-        modalNextBtn.addEventListener('click', () => {
-            modalOverlay.classList.remove('active');
-            setTimeout(() => {
-                if (round >= 10) { resetGame(); } 
-                else { round++; initRound(); }
-            }, 300);
-        });
+    // Listener Kontrol
+    hueSlider.addEventListener('input', updatePlayerSelection);
+    satSlider.addEventListener('input', updatePlayerSelection);
+    lightSlider.addEventListener('input', updatePlayerSelection);
 
-        downloadBtn.addEventListener('click', () => {
-            const originalText = downloadBtn.innerHTML;
-            downloadBtn.innerHTML = "Processing...";
-            downloadBtn.disabled = true;
+    // ==========================================================================
+    // PROTOKOL KOMUNIKASI HOST-CHILD (ZERO-SCROLLBAR DENGAN SUBFIKSI WEBSITE)
+    // ==========================================================================
+    function sfxReportHeight() {
+      if (window.parent && window.parent !== window) {
+        const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        window.parent.postMessage({ type: 'SFX_LAB_RESIZE', height: h }, '*');
+      }
+    }
 
-            html2canvas(document.getElementById('capture-area'), {
-                backgroundColor: "#ffffff",
-                scale: 2 
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `KOLOR_Subfiksi_Score_${score}.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                downloadBtn.innerHTML = originalText;
-                downloadBtn.disabled = false;
-            });
-        });
-
-        hueSlider.addEventListener('input', updatePlayerSelection);
-        satSlider.addEventListener('input', updatePlayerSelection);
-        lightSlider.addEventListener('input', updatePlayerSelection);
-        btnSubmit.addEventListener('click', submitSelection);
-
-        window.onload = initRound;
-    </script>
+    window.addEventListener('load', () => {
+      initRound();
+      sfxReportHeight();
+    });
+    window.addEventListener('resize', sfxReportHeight);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(sfxReportHeight).observe(document.body);
+    }
+  </script>
 </body>
 </html>
+
