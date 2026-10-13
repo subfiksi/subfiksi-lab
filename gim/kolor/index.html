@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>KOLOR MATCHER | Subfiksi LAB!</title>
   
   <!-- Font Tipografi Subfiksi -->
@@ -50,32 +50,32 @@
       padding: 0;
     }
 
-    html, body {
-      max-width: 100vw;
-      overflow-x: hidden;
+    html {
+      height: auto;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     body {
       font-family: var(--font-main);
       background-color: var(--sfx-bg);
       color: var(--sfx-charcoal);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      user-select: none;
-      -webkit-user-select: none;
-      overscroll-behavior: contain;
+      margin: 0;
+      padding: 16px 16px 50px 16px; /* Ruang napas bawah agar nyaman di-scroll */
+      min-height: 100%;
+      height: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
       -webkit-tap-highlight-color: transparent;
-      padding: 16px;
     }
 
-    /* Penyesuaian khusus ketika berada di dalam iframe runner desktop */
+    /* Penyesuaian khusus ketika berjalan di dalam iframe runner desktop Blogger */
     html.sfx-in-iframe,
     html.sfx-in-iframe body {
       min-height: 0 !important;
       height: auto !important;
       background-color: #ffffff !important;
-      padding: 12px 14px;
+      padding: 12px 14px 20px 14px !important;
     }
 
     html.sfx-in-iframe .sfx-app-wrapper {
@@ -90,11 +90,10 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      flex: 1;
     }
 
     /* ==========================================================================
-       HEADER & TOP APP BAR (RESPONSIF PENUH TANPA OVERFLOW)
+       HEADER & TOP APP BAR (SIMETRIS DI DESKTOP & LEGA DI MOBILE)
        ========================================================================== */
     .sfx-top-bar {
       background: var(--sfx-white);
@@ -102,17 +101,19 @@
       border-radius: var(--radius-md);
       margin-bottom: 14px;
       box-shadow: var(--shadow-subtle);
-      padding: 14px 18px;
+      padding: 12px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 16px;
     }
 
-    .sfx-top-row-main {
+    /* Kolom 1: Brand / Judul */
+    .sfx-brand-col {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
     .sfx-brand-tag {
@@ -140,10 +141,11 @@
       white-space: nowrap;
     }
 
+    /* Kolom 2: Status Ronde & Skor (Tengah di Desktop) */
     .sfx-stats-group {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 20px;
     }
 
     .sfx-stat-box {
@@ -175,6 +177,7 @@
       color: var(--sfx-muted);
     }
 
+    /* Kolom 3: Tombol Aksi (Kanan di Desktop) */
     .sfx-top-actions {
       display: flex;
       align-items: center;
@@ -197,6 +200,7 @@
       gap: 5px;
       white-space: nowrap;
       transition: all 0.15s ease;
+      user-select: none;
     }
 
     .sfx-btn-icon-nav:hover {
@@ -205,56 +209,73 @@
       color: var(--sfx-blue);
     }
 
-    /* Responsivitas Top Bar Khusus HP (< 680px) */
+    /* ==========================================================================
+       RESPONSIVITAS KHUSUS HP (< 680px): DUA BARIS LEGA ANTI-OVERFLOW
+       ========================================================================== */
     @media (max-width: 680px) {
       .sfx-top-bar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "brand actions"
+          "stats stats";
+        gap: 8px;
         padding: 10px 12px;
       }
 
-      .sfx-top-bar-row-1 {
+      .sfx-brand-col {
+        grid-area: brand;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        width: 100%;
+        gap: 6px;
+        min-width: 0;
       }
 
       .sfx-brand-tag {
         font-size: 0.65rem;
-        padding: 2px 6px;
+        padding: 2px 5px;
+        flex-shrink: 0;
       }
 
       .sfx-app-title {
-        font-size: 1.05rem;
+        font-size: clamp(0.88rem, 3.8vw, 1.05rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .sfx-top-actions {
-        gap: 6px;
+        grid-area: actions;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-shrink: 0;
       }
 
       .sfx-btn-icon-nav {
-        padding: 5px 9px;
+        padding: 5px 8px;
         font-size: 0.72rem;
+        gap: 3px;
       }
 
       .sfx-stats-group {
+        grid-area: stats;
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        padding: 8px 12px;
         background: #f8fafc;
         border: 1px solid var(--sfx-border);
         border-radius: var(--radius-sm);
-        gap: 8px;
+        padding: 6px 12px;
       }
 
       .sfx-stat-box {
         display: flex;
         align-items: baseline;
-        gap: 6px;
+        gap: 5px;
         text-align: left;
       }
 
@@ -264,7 +285,7 @@
       }
 
       .sfx-stat-val {
-        font-size: 0.95rem;
+        font-size: 0.92rem;
       }
     }
 
@@ -434,10 +455,10 @@
     input[type=range] {
       -webkit-appearance: none;
       width: 100%;
-      height: 28px;
+      height: 32px;
       background: transparent;
       cursor: pointer;
-      touch-action: pan-x;
+      touch-action: pan-y; /* Memungkinkan sentuhan jari tetap bisa scroll vertikal halaman */
     }
 
     input[type=range]:focus {
@@ -489,12 +510,12 @@
     /* Tombol Submit Utama */
     .sfx-submit-btn {
       width: 100%;
-      height: 48px;
+      height: 50px;
       background-color: var(--sfx-orange);
       color: #ffffff;
       border: none;
       font-family: var(--font-main);
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 800;
       letter-spacing: 0.03em;
       cursor: pointer;
@@ -503,6 +524,7 @@
       align-items: center;
       gap: 8px;
       transition: background-color 0.15s ease, transform 0.1s ease;
+      user-select: none;
     }
 
     .sfx-submit-btn:hover {
@@ -987,29 +1009,111 @@
     }
 
     /* ==========================================================================
-       RESPONSIVITAS MOBILE (SMARTPHONE)
+       RESPONSIVITAS MOBILE (PANEL-PANEL PERMAINAN BERDAMPINGAN / DUEL)
        ========================================================================== */
     @media (max-width: 768px) {
       body {
-        padding: 8px 8px 18px 8px;
+        padding: 10px 10px 50px 10px; /* Padding bawah yang lega dan natural */
+      }
+
+      /* Tampilan Berdampingan (Side-by-Side) di Ponsel agar Target & Racikan Terlihat Bersamaan */
+      .sfx-panel {
+        display: contents !important;
       }
 
       .sfx-game-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-areas:
+          "head-target head-mix"
+          "box-target  box-mix"
+          "values      values"
+          "controls    controls"
+          "submit      submit" !important;
+        gap: 0 !important;
+        background: var(--sfx-white);
+        border: 1px solid var(--sfx-border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-subtle);
+      }
+
+      .sfx-panel-header.sfx-target-header {
+        grid-area: head-target;
+        border-right: 1px solid var(--sfx-border);
+        border-bottom: 1px solid var(--sfx-border);
+        padding: 8px 10px;
+      }
+
+      .sfx-panel-header.sfx-mix-header {
+        grid-area: head-mix;
+        border-bottom: 1px solid var(--sfx-border);
+        padding: 8px 10px;
+      }
+
+      .sfx-panel-title {
+        font-size: 0.68rem;
+        gap: 4px;
+      }
+
+      .sfx-panel-badge {
+        font-size: 0.62rem;
+        padding: 1px 5px;
       }
 
       .sfx-target-canvas-box {
-        min-height: 140px;
+        grid-area: box-target;
+        min-height: 100px !important;
+        height: 100px !important;
+        border-right: 1px solid var(--sfx-border);
+        border-bottom: 1px solid var(--sfx-border);
       }
 
       .sfx-mix-canvas-box {
-        height: 120px;
+        grid-area: box-mix;
+        min-height: 100px !important;
+        height: 100px !important;
+        border-bottom: 1px solid var(--sfx-border);
+      }
+
+      .sfx-panel-note {
+        display: none !important; /* Disembunyikan di HP agar hemat ruang vertikal */
+      }
+
+      .sfx-mix-values-bar {
+        grid-area: values;
+        padding: 6px 12px;
+        font-size: 0.68rem;
+        border-bottom: 1px solid var(--sfx-border);
       }
 
       .sfx-controls-card {
+        grid-area: controls;
         padding: 10px 12px;
-        gap: 10px;
+        gap: 8px;
+        border-bottom: 1px solid var(--sfx-border);
+      }
+
+      .sfx-slider-row {
+        gap: 2px;
+      }
+
+      .sfx-slider-label-row {
+        font-size: 0.66rem;
+      }
+
+      .sfx-slider-val-tag {
+        font-size: 0.66rem;
+      }
+
+      input[type=range] {
+        height: 28px;
+      }
+
+      .sfx-submit-btn {
+        grid-area: submit;
+        height: 48px;
+        font-size: 0.9rem;
       }
 
       .sfx-cert-grid {
@@ -1017,7 +1121,7 @@
       }
 
       .sfx-score-big {
-        font-size: 2.8rem;
+        font-size: 3rem;
       }
     }
   </style>
@@ -1136,33 +1240,34 @@
 
   <!-- CONTAINER UTAMA APLIKASI -->
   <div class="sfx-app-wrapper">
-    <!-- Top Bar Responsif (2 Baris Elegan di HP, 1 Baris Sejajar di Desktop) -->
+    <!-- Top Bar: 1 Baris Seimbang di Desktop (Kiri - Tengah - Kanan), 2 Baris Lega di HP -->
     <header class="sfx-top-bar">
-      <div class="sfx-top-bar-row-1">
-        <div class="sfx-top-row-main">
-          <span class="sfx-brand-tag">⚡ LAB!</span>
-          <h1 class="sfx-app-title">KOLOR MATCHER</h1>
-        </div>
-
-        <div class="sfx-top-actions">
-          <button type="button" class="sfx-btn-icon-nav" onclick="openLeaderboardModal()" title="Lihat Papan Skor">
-            <span>🏆</span> <span>Skor</span>
-          </button>
-          <button type="button" class="sfx-btn-icon-nav" onclick="resetGame()" title="Mulai Permainan Baru">
-            <span>↺</span> <span>Reset</span>
-          </button>
-        </div>
+      <!-- Sisi Kiri: Brand & Judul -->
+      <div class="sfx-brand-col">
+        <span class="sfx-brand-tag">⚡ LAB!</span>
+        <h1 class="sfx-app-title">KOLOR MATCHER</h1>
       </div>
 
+      <!-- Sisi Tengah: Status Ronde & Skor -->
       <div class="sfx-stats-group">
         <div class="sfx-stat-box">
-          <span class="sfx-stat-label">Ronde:</span>
+          <span class="sfx-stat-label">Ronde</span>
           <span class="sfx-stat-val"><span id="current-round">1</span><span> / 10</span></span>
         </div>
         <div class="sfx-stat-box">
-          <span class="sfx-stat-label">Total Skor:</span>
+          <span class="sfx-stat-label">Total Skor</span>
           <span class="sfx-stat-val" id="total-score">0 <span>pts</span></span>
         </div>
+      </div>
+
+      <!-- Sisi Kanan: Tombol Aksi -->
+      <div class="sfx-top-actions">
+        <button type="button" class="sfx-btn-icon-nav" onclick="openLeaderboardModal()" title="Lihat Papan Skor">
+          <span>🏆</span> <span>Skor</span>
+        </button>
+        <button type="button" class="sfx-btn-icon-nav" onclick="resetGame()" title="Mulai Permainan Baru">
+          <span>↺</span> <span>Reset</span>
+        </button>
       </div>
     </header>
 
@@ -1175,7 +1280,7 @@
     <main class="sfx-game-grid">
       <!-- Panel Kiri: Target Warna -->
       <section class="sfx-panel">
-        <div class="sfx-panel-header">
+        <div class="sfx-panel-header sfx-target-header">
           <div class="sfx-panel-title">
             <span>🎯</span> <span>Target Spektrum</span>
           </div>
@@ -1193,7 +1298,7 @@
 
       <!-- Panel Kanan: Racikan Warna Pemain -->
       <section class="sfx-panel">
-        <div class="sfx-panel-header">
+        <div class="sfx-panel-header sfx-mix-header">
           <div class="sfx-panel-title">
             <span>🧪</span> <span>Racikan Kamu</span>
           </div>
@@ -1243,7 +1348,7 @@
 
   <!-- ==========================================================================
        LOGIKA GAME ENGINE, LEADERBOARD, & PROTOKOL RESIZE ANTI-LOOP
-       ========================================================================== */ -->
+       ========================================================================== -->
   <script>
     // Deteksi jika berjalan di dalam iframe runner desktop
     const isInIframe = (window.self !== window.top);
