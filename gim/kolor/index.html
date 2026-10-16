@@ -642,57 +642,83 @@
     }
 
     /* ==========================================================================
-       RESPONSIVITAS HANDPHONE & TABLET (ANTI-SUMPEK, LEGA & NYAMAN DI MATA)
+       RESPONSIVITAS HANDPHONE & TABLET (TATA LETAK ATAS-BAWAH & ZERO OVERFLOW)
        ========================================================================== */
     @media (max-width: 768px) {
       body {
-        padding: 12px 12px 40px 12px;
+        padding: 10px 10px 36px 10px;
       }
 
-      /* Top Bar Handphone: 2 Baris Ringkas & Bersih */
+      /* Top Bar Handphone: 2 Baris Proporsional, Anti-Tabrakan & Rapi */
       .sfx-top-bar {
         display: grid;
         grid-template-columns: 1fr auto;
         grid-template-areas:
           "brand actions"
           "stats stats";
-        gap: 10px;
-        padding: 12px 14px;
+        gap: 8px 10px;
+        padding: 10px 14px;
         border-radius: 14px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
 
       .sfx-brand-col {
         grid-area: brand;
-        gap: 7px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
         min-width: 0;
+        overflow: hidden;
       }
 
       .sfx-brand-tag {
-        font-size: 0.68rem;
-        padding: 4px 6px;
+        font-size: 0.66rem;
+        padding: 3px 6px;
+        border-radius: 6px;
+        flex-shrink: 0;
       }
 
       .sfx-app-title {
-        font-size: 1.45rem;
-        gap: 5px;
+        font-size: 1.25rem;
+        letter-spacing: 0.02em;
+        gap: 4px;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .sfx-top-actions {
         grid-area: actions;
+        display: flex;
+        align-items: center;
         gap: 6px;
+        flex-shrink: 0;
       }
 
       .sfx-btn-icon-nav {
-        padding: 6px 10px;
-        font-size: 0.78rem;
+        padding: 6px 9px;
+        font-size: 0.74rem;
+        font-weight: 600;
         border-radius: 8px;
         gap: 4px;
+        white-space: nowrap;
       }
 
       .sfx-nav-svg {
         width: 14px;
         height: 14px;
+      }
+
+      /* Pada layar ponsel sempit (<= 380px), sembunyikan teks tombol aksi agar jadi tombol ikon ramping */
+      @media (max-width: 380px) {
+        .sfx-btn-icon-nav span {
+          display: none;
+        }
+        .sfx-btn-icon-nav {
+          padding: 6px 8px;
+        }
+        .sfx-app-title {
+          font-size: 1.15rem;
+        }
       }
 
       .sfx-stats-group {
@@ -705,124 +731,147 @@
 
       .sfx-stat-box {
         justify-content: space-between;
-        padding: 7px 12px;
+        padding: 6px 12px;
         border-radius: 8px;
       }
 
       .sfx-timeline-track {
         height: 5px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
       }
 
-      /* Kartu Utama di HP: Satu Kartu Putih Lega dengan 2 Swatch Berdampingan (Gap 12px) */
-      .sfx-panel {
-        display: contents !important;
-      }
-
+      /* Tata Letak Atas-Bawah (Stack Vertikal Alami): Zero Frame Overflow */
       .sfx-game-grid {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        grid-template-areas:
-          "head-target head-mix"
-          "box-target  box-mix"
-          "hsl-pill    hsl-pill"
-          "controls    controls"
-          "submit      submit" !important;
-        column-gap: 12px !important;
-        row-gap: 0 !important;
-        background: var(--sfx-white);
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100%;
+      }
+
+      .sfx-panel {
+        display: flex !important;
+        flex-direction: column !important;
+        background: var(--sfx-white) !important;
         border: var(--flat-border) !important;
-        border-radius: 16px !important;
-        padding: 16px !important;
+        border-radius: 14px !important;
         box-shadow: var(--flat-shadow) !important;
       }
 
+      /* Panel 1 (Atas): Warna Target */
+      .sfx-panel-target {
+        padding: 12px 14px 14px 14px !important;
+        gap: 8px !important;
+      }
+
       .sfx-panel-header.sfx-target-header {
-        grid-area: head-target;
-        margin-bottom: 8px;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 0 !important;
       }
 
-      .sfx-panel-header.sfx-mix-header {
-        grid-area: head-mix;
-        margin-bottom: 8px;
+      .sfx-title-pill.sfx-pill-target {
+        display: inline-flex !important;
+        font-size: 0.68rem;
+        padding: 2px 8px;
+        border-radius: 6px;
       }
 
-      /* Sembunyikan pill sekunder di header HP agar judul pendek & tidak pernah terpotong */
-      .sfx-title-pill {
-        display: none !important;
-      }
-
-      .sfx-panel-sub {
-        font-size: 0.84rem;
-      }
-
-      /* Pindahkan pill kode HSL ke bawah kedua kotak warna agar lega di HP */
-      .sfx-mix-values-code {
-        grid-area: hsl-pill;
-        display: block;
-        text-align: center;
-        margin-top: 12px;
-        padding: 6px 10px;
-        font-size: 0.74rem;
-        background: #f8fafc;
-        color: var(--sfx-slate);
-        border-color: var(--sfx-border);
-        border-radius: 8px;
-      }
-
-      /* Dua Kotak Warna Berdampingan dengan Sudut Membulat & Jarak 12px (Tidak Sumpek) */
       .sfx-target-canvas-box {
-        grid-area: box-target;
-        min-height: 124px !important;
-        height: 124px !important;
-        border-radius: 12px !important;
-      }
-
-      .sfx-mix-canvas-box {
-        grid-area: box-mix;
-        min-height: 124px !important;
-        height: 124px !important;
-        border-radius: 12px !important;
+        width: 100% !important;
+        min-height: 68px !important;
+        height: 68px !important;
+        border-radius: 10px !important;
+        margin: 0 !important;
       }
 
       .sfx-panel-note {
         display: none !important;
       }
 
+      /* Panel 2 (Bawah): Konsol Racikan & Slider */
+      .sfx-panel-mix {
+        padding: 12px 14px 16px 14px !important;
+        gap: 10px !important;
+      }
+
+      .sfx-panel-header.sfx-mix-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin-bottom: 0 !important;
+      }
+
+      .sfx-panel-sub {
+        font-size: 0.88rem !important;
+        font-weight: 700 !important;
+      }
+
+      /* Kode Formula HSL Berada Nyaman di Pojok Kanan Header Racikan */
+      .sfx-mix-values-code {
+        display: inline-block !important;
+        text-align: right !important;
+        margin: 0 !important;
+        padding: 3px 8px !important;
+        font-size: 0.72rem !important;
+        background: #f0f9ff !important;
+        color: var(--c-sky) !important;
+        border: 1px solid #bae6fd !important;
+        border-radius: 6px !important;
+        white-space: nowrap !important;
+      }
+
+      .sfx-mix-canvas-box {
+        width: 100% !important;
+        min-height: 68px !important;
+        height: 68px !important;
+        border-radius: 10px !important;
+        margin: 0 !important;
+      }
+
+      /* Kontrol Slider Rapi & Responsif Sentuhan */
       .sfx-controls-card {
-        grid-area: controls;
-        padding: 16px 0 18px 0;
-        gap: 14px;
+        padding: 4px 0 2px 0 !important;
+        gap: 10px !important;
       }
 
       .sfx-slider-row {
-        gap: 5px;
+        gap: 4px;
+      }
+
+      .sfx-slider-label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .sfx-slider-name {
-        font-size: 0.8rem;
+        font-size: 0.78rem;
+        font-weight: 700;
       }
 
       .sfx-slider-val-tag {
-        font-size: 0.75rem;
-        padding: 2px 7px;
+        font-size: 0.74rem;
+        padding: 2px 6px;
       }
 
       input[type=range] {
-        height: 30px;
+        height: 28px;
       }
 
       input[type=range]::-webkit-slider-thumb {
-        height: 24px;
-        width: 24px;
-        margin-top: -7px;
+        height: 22px;
+        width: 22px;
+        margin-top: -6px;
       }
 
       .sfx-submit-btn {
-        grid-area: submit;
-        height: 48px;
-        font-size: 0.92rem;
-        border-radius: 12px;
+        height: 46px !important;
+        font-size: 0.92rem !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
+        margin-top: 4px !important;
       }
     }
 
@@ -1562,7 +1611,7 @@
     <!-- Grid Komparasi Permainan -->
     <main class="sfx-game-grid">
       <!-- Panel Kiri: Target Warna -->
-      <section class="sfx-panel">
+      <section class="sfx-panel sfx-panel-target">
         <div class="sfx-panel-header sfx-target-header">
           <div class="sfx-panel-title">
             <span class="sfx-color-dot sfx-dot-target"></span>
@@ -1580,7 +1629,7 @@
       </section>
 
       <!-- Panel Kanan: Racikan Warna Pemain -->
-      <section class="sfx-panel">
+      <section class="sfx-panel sfx-panel-mix">
         <div class="sfx-panel-header sfx-mix-header">
           <div class="sfx-panel-title">
             <span class="sfx-color-dot sfx-dot-mix"></span>
