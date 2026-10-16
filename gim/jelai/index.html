@@ -187,8 +187,8 @@
     }
 
     #next-canvas-mobile {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       display: block;
     }
 
@@ -515,13 +515,13 @@
     .sfx-next-and-stats {
       padding: 18px 20px;
       display: grid;
-      grid-template-columns: 112px 1fr;
+      grid-template-columns: 116px 1fr;
       gap: 16px;
       align-items: stretch;
     }
 
     .sfx-next-box {
-      width: 112px;
+      width: 116px;
       background: var(--sfx-bg);
       border: 1px solid var(--sfx-border);
       border-radius: var(--radius-md);
@@ -534,6 +534,7 @@
     }
 
     .sfx-next-caption {
+      font-family: var(--font-mono);
       font-size: 0.68rem;
       font-weight: 700;
       color: var(--sfx-muted);
@@ -542,8 +543,8 @@
     }
 
     #next-canvas {
-      width: 68px;
-      height: 68px;
+      width: 72px;
+      height: 72px;
       display: block;
     }
 
@@ -1155,30 +1156,41 @@
     }
 
     .cert-score-box {
-      display: inline-block;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 300px;
+      margin: 0 auto 14px auto;
       background: #fff7ed;
       border: 2px solid #fed7aa;
       border-radius: 16px;
-      padding: 14px 32px;
-      margin-bottom: 14px;
+      padding: 16px 24px;
+      text-align: center;
     }
 
     .cert-score-val {
-      font-family: 'Londrina Solid', cursive, sans-serif;
+      display: block;
+      width: 100%;
+      font-family: 'Londrina Solid', 'Inter', sans-serif;
       font-size: 3.1rem;
       font-weight: 900;
       color: #ff6600;
-      line-height: 1;
+      line-height: 1.05;
+      text-align: center;
     }
 
     .cert-score-label {
+      display: block;
+      width: 100%;
       font-family: 'Inter', sans-serif;
       font-size: 0.75rem;
       font-weight: 700;
       color: #9a3412;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-top: 4px;
+      margin-top: 6px;
+      text-align: center;
     }
 
     .cert-rank-title {
@@ -1363,7 +1375,7 @@
         <h1 class="sfx-app-title" aria-label="JELAI">
           <span class="c-1">J</span><span class="c-2">E</span><span class="c-3">L</span><span class="c-4">A</span><span class="c-5">I</span>
         </h1>
-        <span class="sfx-sub-pill">Alkimia Jeli Kenyal</span>
+        <span class="sfx-sub-pill">Alkimia Huruf Jeli</span>
       </div>
 
       <div class="sfx-stats-group">
@@ -1379,8 +1391,8 @@
           <span class="sfx-stat-label">Combo</span>
           <span class="sfx-stat-value" id="top-combo">1x</span>
         </div>
-        <div class="sfx-mobile-next-pill" title="Jeli Berikutnya">
-          <span class="sfx-mobile-next-label">Next</span>
+        <div class="sfx-mobile-next-pill" title="Huruf Jeli Berikutnya">
+          <span class="sfx-mobile-next-label" id="mobile-next-letter">Next: J</span>
           <canvas id="next-canvas-mobile" width="56" height="56"></canvas>
         </div>
       </div>
@@ -1420,7 +1432,7 @@
             <span class="sfx-card-dot orange"></span>
             Wadah Jeli
           </span>
-          <span class="sfx-hint-tag" id="jar-status-tag">Sambungkan Kiri ↔ Kanan</span>
+          <span class="sfx-hint-tag" id="jar-status-tag">Kepingan Huruf J · E · L · A · I</span>
         </div>
 
         <div class="sfx-jar-body">
@@ -1469,13 +1481,13 @@
           <div class="sfx-card-header">
             <span class="sfx-card-title">
               <span class="sfx-card-dot blue"></span>
-              Jeli Berikutnya & Statistik
+              Huruf Berikutnya & Statistik
             </span>
             <span class="sfx-hint-tag" id="flavor-count-tag">4 Varian Aktif</span>
           </div>
           <div class="sfx-next-and-stats">
             <div class="sfx-next-box">
-              <span class="sfx-next-caption">Berikutnya</span>
+              <span class="sfx-next-caption" id="desktop-next-letter">HURUF J</span>
               <canvas id="next-canvas" width="96" height="96"></canvas>
             </div>
             <div class="sfx-stats-grid">
@@ -1553,7 +1565,7 @@
                 </span>
               </div>
               <div class="sfx-key-item">
-                <span>Putar Jeli</span>
+                <span>Putar Huruf</span>
                 <span class="sfx-kbd-group">
                   <kbd class="sfx-kbd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></kbd>
                   <kbd class="sfx-kbd">R</kbd>
@@ -1579,7 +1591,7 @@
                 📜 Klaim Sertifikat
               </button>
               <button class="sfx-btn-main" id="btn-drop-desktop" type="button">
-                Jatuhkan Jeli
+                Jatuhkan Huruf
               </button>
             </div>
           </div>
@@ -1592,17 +1604,17 @@
   <div class="sfx-modal-overlay" id="guide-modal">
     <div class="sfx-modal-card">
       <span class="sfx-modal-badge">Panduan Singkat</span>
-      <h2 class="sfx-modal-title">Cara Kerja Alkimia Jeli</h2>
+      <h2 class="sfx-modal-title">Cara Kerja Alkimia JELAI</h2>
       <p class="sfx-modal-desc" style="margin-bottom: 12px;">
-        Susun kepingan jeli kenyal dan sambungkan warna yang sama dari tepi kiri hingga tepi kanan wadah.
+        Jatuhkan kepingan huruf <strong>J · E · L · A · I</strong> yang kenyal dan sambungkan warna yang sama dari tepi kiri hingga tepi kanan wadah.
       </p>
 
       <div class="sfx-guide-steps">
         <div class="sfx-guide-step-card">
           <div class="sfx-step-icon s1">01</div>
           <div class="sfx-step-text">
-            <h4>Meleleh & Menyatu Seperti Selai</h4>
-            <p>Saat mendarat, jeli akan sedikit melorot kental mengisi celah di bawahnya. Jeli dengan warna yang sama akan menyatu menjadi satu gumpalan utuh.</p>
+            <h4>Huruf J-E-L-A-I yang Meleleh & Menyatu</h4>
+            <p>Setiap kepingan berbentuk huruf <strong>J, E, L, A,</strong> atau <strong>I</strong>. Saat mendarat, huruf jeli akan melorot kental seperti selai dan menyatu dengan warna yang sama.</p>
           </div>
         </div>
         <div class="sfx-guide-step-card">
@@ -1736,12 +1748,12 @@
 
   <script>
     // ============================================================================
-    // KONFIGURASI JELAI — VISCOUS AGAR / JAM TETRIS ENGINE
+    // KONFIGURASI JELAI — VISCOUS AGAR / JAM LETTER ENGINE (J - E - L - A - I)
     // ============================================================================
-    const COLS = 40;              // 10 blok * 4 sub-sel
-    const ROWS = 72;              // 18 blok * 4 sub-sel
+    const COLS = 40;              // Lebar wadah 40 sub-sel
+    const ROWS = 72;              // Tinggi wadah 72 sub-sel
     const CELL = 8;               // 8px per sub-sel (320 x 576 canvas)
-    const SUB = 4;                // 1 blok tetromino = 4x4 sub-sel jeli
+    const SUB = 3;                // 1 piksel huruf = 3x3 sub-sel jeli (proporsional untuk huruf 3x5)
     const DANGER_ROW = 10;        // Batas atas wadah
 
     const STORAGE_KEY_LB = 'SFX_JELAI_LEADERBOARD_V1';
@@ -1756,15 +1768,58 @@
       { id: 5, name: 'Lemon Yuzu',     main: '#eab308', light: '#fde047', shade: '#ca8a04' }
     ];
 
-    // Bentuk Tetromino (dalam koordinat blok, tiap blok diekspansi jadi 4x4 sub-sel)
-    const SHAPES = [
-      [[1, 1, 1, 1]],
-      [[1, 1], [1, 1]],
-      [[0, 1, 0], [1, 1, 1]],
-      [[1, 0, 0], [1, 1, 1]],
-      [[0, 0, 1], [1, 1, 1]],
-      [[0, 1, 1], [1, 1, 0]],
-      [[1, 1, 0], [0, 1, 1]]
+    // Bentuk Kepingan Huruf Ikonik: J - E - L - A - I
+    const LETTER_SHAPES = [
+      {
+        letter: 'J',
+        blocks: [
+          [0, 0, 1],
+          [0, 0, 1],
+          [0, 0, 1],
+          [1, 0, 1],
+          [1, 1, 1]
+        ]
+      },
+      {
+        letter: 'E',
+        blocks: [
+          [1, 1, 1],
+          [1, 0, 0],
+          [1, 1, 1],
+          [1, 0, 0],
+          [1, 1, 1]
+        ]
+      },
+      {
+        letter: 'L',
+        blocks: [
+          [1, 0, 0],
+          [1, 0, 0],
+          [1, 0, 0],
+          [1, 0, 0],
+          [1, 1, 1]
+        ]
+      },
+      {
+        letter: 'A',
+        blocks: [
+          [0, 1, 0],
+          [1, 0, 1],
+          [1, 1, 1],
+          [1, 0, 1],
+          [1, 0, 1]
+        ]
+      },
+      {
+        letter: 'I',
+        blocks: [
+          [1, 1],
+          [1, 1],
+          [1, 1],
+          [1, 1],
+          [1, 1]
+        ]
+      }
     ];
 
     // State Permainan
@@ -1775,6 +1830,7 @@
 
     let activePiece = null;
     let nextPiece = null;
+    let letterBag = [];
 
     let score = 0;
     let level = 1;
@@ -1809,6 +1865,8 @@
     const elProgressBar = document.getElementById('level-progress-bar');
     const elFlavorTag = document.getElementById('flavor-count-tag');
     const elChipYuzu = document.getElementById('chip-yuzu');
+    const elDesktopNextLetter = document.getElementById('desktop-next-letter');
+    const elMobileNextLetter = document.getElementById('mobile-next-letter');
 
     const elStatPops = document.getElementById('stat-pops');
     const elStatMaxCombo = document.getElementById('stat-max-combo');
@@ -1824,7 +1882,7 @@
     const elBtnSaveScore = document.getElementById('btn-save-score');
 
     // ============================================================================
-    // INISIALISASI GRID & KEPINGAN JELI
+    // INISIALISASI GRID & KEPINGAN HURUF J-E-L-A-I
     // ============================================================================
     function createEmptyGrid() {
       grid = Array.from({ length: ROWS }, () => new Uint8Array(COLS));
@@ -1857,18 +1915,32 @@
       return sub;
     }
 
+    function pullNextLetterDef() {
+      if (letterBag.length === 0) {
+        // Campuran seimbang huruf J, E, L, A, I
+        letterBag = [0, 1, 2, 3, 4];
+        for (let i = letterBag.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [letterBag[i], letterBag[j]] = [letterBag[j], letterBag[i]];
+        }
+      }
+      const idx = letterBag.pop();
+      return LETTER_SHAPES[idx];
+    }
+
     function generateRandomPiece() {
-      const shapeIdx = Math.floor(Math.random() * SHAPES.length);
+      const shapeDef = pullNextLetterDef();
       const flavorCount = getActiveFlavorCount();
       const colorId = Math.floor(Math.random() * flavorCount) + 1;
-      const blocks = SHAPES[shapeIdx].map(row => [...row]);
+      const blocks = shapeDef.blocks.map(row => [...row]);
       const subMatrix = buildSubMatrix(blocks);
       return {
+        letter: shapeDef.letter,
         blocks,
         subMatrix,
         colorId,
         x: Math.floor((COLS - subMatrix[0].length) / 2),
-        y: 2
+        y: 1
       };
     }
 
@@ -1878,7 +1950,7 @@
       }
       activePiece = nextPiece;
       activePiece.x = Math.floor((COLS - activePiece.subMatrix[0].length) / 2);
-      activePiece.y = 2;
+      activePiece.y = 1;
       nextPiece = generateRandomPiece();
       wobbleScaleX = 1.12;
       wobbleScaleY = 0.88;
@@ -2220,7 +2292,7 @@
       // 1. Background Grid Halus & Garis Batas Bahaya
       ctx.strokeStyle = 'rgba(203, 213, 225, 0.25)';
       ctx.lineWidth = 1;
-      for (let x = SUB * CELL; x < canvas.width; x += SUB * CELL) {
+      for (let x = 4 * CELL; x < canvas.width; x += 4 * CELL) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
@@ -2292,7 +2364,7 @@
         }
       }
 
-      // 4. Gambar Bayangan Target Jatuh (Ghost Piece) & Kepingan Jeli Aktif
+      // 4. Gambar Bayangan Target Jatuh (Ghost Piece) & Kepingan Huruf Jeli Aktif
       if (activePiece && popTimer === 0) {
         const { x, y, subMatrix, colorId } = activePiece;
         const flv = FLAVORS[colorId];
@@ -2356,17 +2428,19 @@
       }
     }
 
-    function drawNextPreviewOnCanvas(targetCanvas, targetCtx, cellPx) {
+    function drawNextPreviewOnCanvas(targetCanvas, targetCtx, maxBoxPx) {
       targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
       if (!nextPiece) return;
       const { blocks, colorId } = nextPiece;
       const flv = FLAVORS[colorId];
       const bRows = blocks.length;
       const bCols = blocks[0].length;
+      const maxDim = Math.max(bRows, bCols);
+      const cellPx = Math.floor(maxBoxPx / maxDim);
       const totalW = bCols * cellPx;
       const totalH = bRows * cellPx;
-      const offsetX = (targetCanvas.width - totalW) / 2;
-      const offsetY = (targetCanvas.height - totalH) / 2;
+      const offsetX = Math.floor((targetCanvas.width - totalW) / 2);
+      const offsetY = Math.floor((targetCanvas.height - totalH) / 2);
 
       for (let r = 0; r < bRows; r++) {
         for (let c = 0; c < bCols; c++) {
@@ -2376,20 +2450,24 @@
 
           targetCtx.fillStyle = flv.main;
           targetCtx.beginPath();
-          targetCtx.roundRect(x - 1, y - 1, cellPx + 2, cellPx + 2, 5);
+          targetCtx.roundRect(x - 0.5, y - 0.5, cellPx + 1, cellPx + 1, Math.max(3, Math.floor(cellPx * 0.28)));
           targetCtx.fill();
 
           if (r === 0 || !blocks[r - 1][c]) {
             targetCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-            targetCtx.fillRect(x + 3, y + 2, cellPx - 6, 3);
+            targetCtx.fillRect(x + 2, y + 1.5, Math.max(2, cellPx - 4), 2);
           }
         }
       }
     }
 
     function drawNextPreview() {
-      drawNextPreviewOnCanvas(nextCanvas, nextCtx, 18);
-      drawNextPreviewOnCanvas(nextCanvasMobile, nextCtxMobile, 11);
+      if (nextPiece) {
+        elDesktopNextLetter.textContent = `HURUF "${nextPiece.letter}"`;
+        elMobileNextLetter.textContent = `Next: ${nextPiece.letter}`;
+      }
+      drawNextPreviewOnCanvas(nextCanvas, nextCtx, 68);
+      drawNextPreviewOnCanvas(nextCanvasMobile, nextCtxMobile, 42);
     }
 
     // ============================================================================
@@ -2491,8 +2569,8 @@
     // GAME OVER, LEADERBOARD & SERTIFIKAT PNG
     // ============================================================================
     function getRankPredicate(finalScore) {
-      if (finalScore >= 8000) return { badge: 'MASTER ALKEMIS AGAR', desc: 'Luar biasa! Penguasaan viskositas dan reaksi berantai jelimu setingkat maestro laboratorium.' };
-      if (finalScore >= 4000) return { badge: 'ARSITEK SELAI KENYAL', desc: 'Sangat presisi! Kamu piawai mengatur lelehan jeli hingga menyambung dari ujung ke ujung.' };
+      if (finalScore >= 8000) return { badge: 'MASTER ALKEMIS AGAR', desc: 'Luar biasa! Penguasaan viskositas dan reaksi berantai huruf J-E-L-A-I setingkat maestro laboratorium.' };
+      if (finalScore >= 4000) return { badge: 'ARSITEK SELAI KENYAL', desc: 'Sangat presisi! Kamu piawai mengatur lelehan huruf jeli hingga menyambung dari ujung ke ujung.' };
       if (finalScore >= 1500) return { badge: 'PERACIK JELI MUDA', desc: 'Racikan yang solid! Terus manfaatkan celah lereng untuk memicu Combo beruntun.' };
       return { badge: 'PEMULA GUMPALAN', desc: 'Eksperimen awal yang seru! Susun warna searah dari dinding kiri ke kanan agar cepat pecah.' };
     }
@@ -2523,6 +2601,7 @@
       particles = [];
       popCellsList = [];
       popTimer = 0;
+      letterBag = [];
       score = 0;
       level = 1;
       totalPops = 0;
@@ -2637,11 +2716,25 @@
       document.getElementById('cert-level-val').textContent = level;
 
       try {
+        if (document.fonts && document.fonts.ready) {
+          await document.fonts.ready;
+        }
         const certEl = document.getElementById('sfx-certificate-wrap');
         const canvasOut = await html2canvas(certEl, {
           scale: 2.5,
           backgroundColor: '#ffffff',
-          useCORS: true
+          useCORS: true,
+          scrollX: 0,
+          scrollY: 0,
+          onclone: (clonedDoc) => {
+            const clonedCert = clonedDoc.getElementById('sfx-certificate-wrap');
+            if (clonedCert) {
+              clonedCert.style.position = 'relative';
+              clonedCert.style.left = '0px';
+              clonedCert.style.top = '0px';
+              clonedCert.style.margin = '0';
+            }
+          }
         });
         const link = document.createElement('a');
         link.download = `Sertifikat-Jelai-${playerName.replace(/\s+/g, '-')}.png`;
