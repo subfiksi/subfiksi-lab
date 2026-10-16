@@ -1,0 +1,2833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Subfiksi LAB! — JELAI (Jelly Physics Puzzle)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&family=Londrina+Solid:wght@400;900&display=swap" rel="stylesheet">
+  <!-- Library html2canvas untuk cetak Sertifikat PNG -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <style>
+    :root {
+      --sfx-white: #ffffff;
+      --sfx-bg: #f8fafc;
+      --sfx-card-bg: #ffffff;
+      --sfx-border: #e2e8f0;
+      --sfx-border-subtle: #f1f5f9;
+      --sfx-blue: #003380;
+      --sfx-blue-light: #eff6ff;
+      --sfx-blue-accent: #2563eb;
+      --sfx-orange: #ff6600;
+      --sfx-orange-hover: #e65c00;
+      --sfx-orange-soft: #fff7ed;
+      --sfx-charcoal: #0f172a;
+      --sfx-muted: #64748b;
+      --sfx-green: #10b981;
+      --sfx-pink: #f43f5e;
+      --sfx-yellow: #eab308;
+
+      --font-display: 'Londrina Solid', cursive, sans-serif;
+      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
+
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-card: 0 10px 30px -10px rgba(15, 23, 42, 0.06), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--sfx-bg);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(255, 102, 0, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+      color: var(--sfx-charcoal);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-user-select: none;
+      overscroll-behavior: contain;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .sfx-app-container {
+      width: 100%;
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    /* ==================== TOP BAR ==================== */
+    .sfx-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+      background: var(--sfx-white);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-card);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sfx-brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sfx-app-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .sfx-app-title span {
+      display: inline-block;
+    }
+    .sfx-app-title .c-1 { color: #ff6600; }
+    .sfx-app-title .c-2 { color: #2563eb; }
+    .sfx-app-title .c-3 { color: #10b981; }
+    .sfx-app-title .c-4 { color: #f43f5e; }
+    .sfx-app-title .c-5 { color: #eab308; }
+
+    .sfx-sub-pill {
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--sfx-muted);
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .sfx-stats-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .sfx-stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+    }
+
+    .sfx-stat-pill.level-pill {
+      background: var(--sfx-blue-light);
+      color: var(--sfx-blue);
+    }
+
+    .sfx-stat-pill.score-pill {
+      background: var(--sfx-orange-soft);
+      color: #c2410c;
+    }
+
+    .sfx-stat-pill.combo-pill {
+      background: #fdf2f8;
+      color: #be185d;
+    }
+
+    .sfx-stat-label {
+      font-family: var(--font-main);
+      font-weight: 600;
+      font-size: 0.72rem;
+      opacity: 0.85;
+    }
+
+    .sfx-stat-value {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    /* Mobile inline Next preview in top bar (hidden on desktop) */
+    .sfx-mobile-next-pill {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 10px;
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      border-radius: 10px;
+    }
+
+    .sfx-mobile-next-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
+    }
+
+    #next-canvas-mobile {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+
+    .sfx-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sfx-btn-icon {
+      height: 36px;
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      color: var(--sfx-charcoal);
+      font-family: var(--font-main);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .sfx-btn-icon svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .sfx-btn-icon:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+
+    .sfx-btn-icon:active {
+      transform: translateY(0);
+    }
+
+    /* Tombol Logo Sederhana untuk Cara Kerja (?) */
+    .sfx-btn-icon.guide-btn {
+      width: 36px;
+      padding: 0;
+      background: var(--sfx-blue-light);
+      border-color: #bfdbfe;
+      color: var(--sfx-blue);
+      border-radius: 10px;
+    }
+
+    .sfx-btn-icon.guide-btn:hover {
+      background: #dbeafe;
+      border-color: #93c5fd;
+    }
+
+    .sfx-btn-icon.rank-btn {
+      background: #fefce8;
+      border-color: #fde047;
+      color: #854d0e;
+    }
+
+    .sfx-btn-icon.rank-btn:hover {
+      background: #fef9c3;
+    }
+
+    /* ==================== PROGRESS / LEVEL BAR ==================== */
+    .sfx-progress-wrap {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      margin-bottom: 16px;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .sfx-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6600 0%, #f43f5e 50%, #2563eb 100%);
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ==================== WORKSPACE ==================== */
+    .sfx-workspace {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .sfx-card {
+      background: var(--sfx-card-bg);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .sfx-card-header {
+      padding: 14px 20px;
+      background: var(--sfx-white);
+      border-bottom: 1px solid var(--sfx-border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sfx-card-title {
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sfx-card-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .sfx-card-dot.orange { background: var(--sfx-orange); }
+    .sfx-card-dot.blue { background: var(--sfx-blue-accent); }
+    .sfx-card-dot.green { background: var(--sfx-green); }
+
+    .sfx-hint-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--sfx-muted);
+      background: var(--sfx-bg);
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--sfx-border);
+    }
+
+    /* ==================== JELLY JAR CONTAINER (LEFT COLUMN) ==================== */
+    .sfx-jar-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      background: var(--sfx-white);
+      gap: 14px;
+    }
+
+    .sfx-jar-frame {
+      position: relative;
+      width: 100%;
+      max-width: 296px;
+      aspect-ratio: 40 / 72;
+      background: #f8fafc;
+      border-radius: 8px 8px 18px 18px;
+      border: 3px solid #cbd5e1;
+      border-top: 2px dashed #cbd5e1;
+      box-shadow: inset 0 6px 16px rgba(15, 23, 42, 0.04), 0 8px 20px rgba(15, 23, 42, 0.04);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+    }
+
+    #jelai-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Floating Combo / Pop Toast inside Jar */
+    .sfx-jar-toast {
+      position: absolute;
+      top: 22%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: rgba(15, 23, 42, 0.88);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5;
+      white-space: nowrap;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    }
+
+    .sfx-jar-toast.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Pause / Start Overlay inside Jar */
+    .sfx-jar-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      z-index: 10;
+      gap: 12px;
+    }
+
+    .sfx-jar-overlay.active {
+      display: flex;
+    }
+
+    .sfx-overlay-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--sfx-charcoal);
+      letter-spacing: 0.03em;
+    }
+
+    .sfx-overlay-desc {
+      font-size: 0.82rem;
+      color: var(--sfx-muted);
+      line-height: 1.5;
+      max-width: 220px;
+    }
+
+    /* ==================== TOMBOL KONTROL PRESISI & SERAGAM ==================== */
+    .sfx-touch-controls {
+      display: none;
+      width: 100%;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .sfx-ctrl-btn {
+      height: 54px;
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--sfx-border);
+      background: var(--sfx-bg);
+      color: var(--sfx-charcoal);
+      font-family: var(--font-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.12s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      padding: 0;
+    }
+
+    .sfx-ctrl-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.4;
+      flex-shrink: 0;
+    }
+
+    .sfx-ctrl-btn span.lbl {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+
+    .sfx-ctrl-btn:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+
+    .sfx-ctrl-btn:active {
+      transform: scale(0.96);
+      background: #e2e8f0;
+    }
+
+    .sfx-ctrl-btn.rotate-btn {
+      background: var(--sfx-blue-light);
+      border-color: #bfdbfe;
+      color: var(--sfx-blue);
+    }
+    .sfx-ctrl-btn.rotate-btn span.lbl {
+      color: var(--sfx-blue);
+    }
+
+    .sfx-ctrl-btn.drop-btn {
+      background: var(--sfx-orange-soft);
+      border-color: #fed7aa;
+      color: #c2410c;
+    }
+    .sfx-ctrl-btn.drop-btn span.lbl {
+      color: #c2410c;
+    }
+
+    /* ==================== RIGHT PANEL (NEXT, STATS, CONTROL PAD) ==================== */
+    .sfx-side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sfx-next-and-stats {
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .sfx-next-box {
+      width: 112px;
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+    }
+
+    .sfx-next-caption {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    #next-canvas {
+      width: 68px;
+      height: 68px;
+      display: block;
+    }
+
+    .sfx-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .sfx-stat-card {
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border-subtle);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .sfx-stat-card .k {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--sfx-muted);
+    }
+
+    .sfx-stat-card .v {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-stat-card .v.orange { color: var(--sfx-orange); }
+    .sfx-stat-card .v.blue { color: var(--sfx-blue-accent); }
+    .sfx-stat-card .v.green { color: var(--sfx-green); }
+
+    /* Flavor Bar inside Stats Card */
+    .sfx-flavor-strip {
+      padding: 0 20px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .sfx-flavor-chip {
+      flex: 1;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-flavor-chip .blob-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* Kartu Kontrol & Pintasan (Seragam, Simetris, Rapi) */
+    .sfx-deck-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    /* Interactive Desktop Control Pad (5 uniform boxes) */
+    .sfx-desktop-pad {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    /* Grid Pintasan Keyboard yang Ukuran Kotaknya Seragam 100% */
+    .sfx-key-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .sfx-key-item {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-kbd-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sfx-kbd {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+      background: var(--sfx-white);
+      min-width: 28px;
+      height: 26px;
+      padding: 0 7px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 1px 0 #cbd5e1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .sfx-kbd svg {
+      width: 12px;
+      height: 12px;
+      stroke-width: 2.5;
+    }
+
+    .sfx-action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .sfx-btn-main {
+      width: 100%;
+      height: 46px;
+      background: var(--sfx-orange);
+      color: var(--sfx-white);
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.22);
+    }
+
+    .sfx-btn-main svg,
+    .sfx-btn-secondary svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .sfx-btn-main:hover {
+      background: var(--sfx-orange-hover);
+      transform: translateY(-1px);
+    }
+
+    .sfx-btn-secondary {
+      width: 100%;
+      height: 46px;
+      background: var(--sfx-bg);
+      color: var(--sfx-charcoal);
+      border: 1px solid var(--sfx-border);
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .sfx-btn-secondary:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    /* ==================== MODALS ==================== */
+    .sfx-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .sfx-modal-overlay.active {
+      display: flex;
+    }
+
+    .sfx-modal-card {
+      background: var(--sfx-white);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 450px;
+      padding: 24px;
+      box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.18);
+      text-align: center;
+      animation: sfxPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 92dvh;
+      overflow-y: auto;
+    }
+
+    @keyframes sfxPop {
+      from { transform: scale(0.95) translateY(8px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .sfx-modal-badge {
+      display: inline-block;
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--sfx-blue-light);
+      color: var(--sfx-blue);
+      margin-bottom: 8px;
+    }
+
+    .sfx-modal-title {
+      font-family: var(--font-main);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--sfx-charcoal);
+      margin-bottom: 6px;
+    }
+
+    .sfx-accuracy-big {
+      font-family: var(--font-display);
+      font-size: 3.4rem;
+      font-weight: 900;
+      color: var(--sfx-orange);
+      line-height: 1;
+      margin: 10px 0;
+      letter-spacing: 0.02em;
+    }
+
+    .sfx-modal-desc {
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--sfx-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    /* Guide Modal Steps */
+    .sfx-guide-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      margin: 14px 0 18px;
+    }
+
+    .sfx-guide-step-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      border-radius: 12px;
+    }
+
+    .sfx-step-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .sfx-step-icon.s1 { background: var(--sfx-orange-soft); color: var(--sfx-orange); }
+    .sfx-step-icon.s2 { background: var(--sfx-blue-light); color: var(--sfx-blue-accent); }
+    .sfx-step-icon.s3 { background: #ecfdf5; color: var(--sfx-green); }
+
+    .sfx-step-text h4 {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+      margin-bottom: 2px;
+    }
+
+    .sfx-step-text p {
+      font-size: 0.78rem;
+      color: var(--sfx-muted);
+      line-height: 1.45;
+    }
+
+    .sfx-modal-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .sfx-modal-stat-box {
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      border-radius: 12px;
+      padding: 10px 8px;
+    }
+
+    .sfx-modal-stat-box .lbl {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--sfx-muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .sfx-modal-stat-box .val {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-save-form {
+      background: var(--sfx-bg);
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .sfx-save-label {
+      display: block;
+      font-family: var(--font-main);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--sfx-charcoal);
+      margin-bottom: 8px;
+    }
+
+    .sfx-save-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .sfx-input {
+      flex: 1;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      color: var(--sfx-charcoal);
+      background: var(--sfx-white);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .sfx-input:focus {
+      border-color: var(--sfx-blue-accent);
+    }
+
+    .sfx-btn-save {
+      background: var(--sfx-blue);
+      color: var(--sfx-white);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0 16px;
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .sfx-btn-save:hover {
+      background: #1e40af;
+    }
+
+    .sfx-btn-save:disabled {
+      background: var(--sfx-green);
+      cursor: default;
+    }
+
+    .sfx-modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sfx-btn-cert {
+      width: 100%;
+      min-height: 46px;
+      background: var(--sfx-blue-light);
+      color: var(--sfx-blue);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .sfx-btn-cert:hover {
+      background: #dbeafe;
+    }
+
+    /* ==================== LEADERBOARD ==================== */
+    .sfx-lb-list {
+      text-align: left;
+      margin: 14px 0 18px;
+      border: 1px solid var(--sfx-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--sfx-white);
+    }
+
+    .sfx-lb-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--sfx-border-subtle);
+      font-size: 0.85rem;
+    }
+
+    .sfx-lb-item:last-child {
+      border-bottom: none;
+    }
+
+    .sfx-lb-item.top-1 { background: #fffbeb; }
+    .sfx-lb-item.top-2 { background: #f8fafc; }
+    .sfx-lb-item.top-3 { background: #fff7ed; }
+
+    .sfx-lb-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sfx-lb-rank {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-lb-item.top-1 .sfx-lb-rank { background: #facc15; color: #713f12; }
+    .sfx-lb-item.top-2 .sfx-lb-rank { background: #e2e8f0; color: #334155; }
+    .sfx-lb-item.top-3 .sfx-lb-rank { background: #fed7aa; color: #9a3412; }
+
+    .sfx-lb-name {
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+    }
+
+    .sfx-lb-meta {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--sfx-muted);
+      display: block;
+    }
+
+    .sfx-lb-score {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--sfx-orange);
+    }
+
+    .sfx-lb-empty {
+      padding: 24px 16px;
+      text-align: center;
+      color: var(--sfx-muted);
+      font-size: 0.85rem;
+    }
+
+    /* ==================== HIDDEN CERTIFICATE (FOR PNG EXPORT) ==================== */
+    #sfx-certificate-wrap {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      width: 600px;
+      background: #ffffff;
+      padding: 36px;
+      font-family: 'Inter', sans-serif;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+    }
+
+    .cert-inner {
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 32px;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-top-bar {
+      height: 8px;
+      background: linear-gradient(90deg, #ff6600 0%, #2563eb 33%, #10b981 66%, #f43f5e 100%);
+      margin: -32px -32px 24px -32px;
+    }
+
+    .cert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+    }
+
+    .cert-brand {
+      font-family: 'Londrina Solid', cursive, sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: #003380;
+      letter-spacing: 0.03em;
+      line-height: 1;
+    }
+
+    .cert-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #ff6600;
+      letter-spacing: 0.08em;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .cert-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748b;
+      text-align: right;
+      background: #f8fafc;
+      padding: 6px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+
+    .cert-body {
+      text-align: center;
+      padding: 8px 0 20px;
+    }
+
+    .cert-caption {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #64748b;
+      margin-bottom: 6px;
+    }
+
+    .cert-name {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 14px;
+    }
+
+    .cert-score-box {
+      display: inline-block;
+      background: #fff7ed;
+      border: 2px solid #fed7aa;
+      border-radius: 16px;
+      padding: 14px 32px;
+      margin-bottom: 14px;
+    }
+
+    .cert-score-val {
+      font-family: 'Londrina Solid', cursive, sans-serif;
+      font-size: 3.1rem;
+      font-weight: 900;
+      color: #ff6600;
+      line-height: 1;
+    }
+
+    .cert-score-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #9a3412;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    .cert-rank-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #003380;
+      margin-top: 6px;
+    }
+
+    .cert-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .cert-metric-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .cert-metric-card .m-lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cert-metric-card .m-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 2px;
+    }
+
+    .cert-palette-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 10px 0 20px;
+      padding: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+    }
+
+    .cert-Swatch {
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .cert-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    /* ==================== MOBILE RESPONSIVE (ANTI-SUMPEK) ==================== */
+    @media (max-width: 768px) {
+      .sfx-app-container {
+        padding: 10px;
+      }
+
+      .sfx-top-bar {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        gap: 8px;
+      }
+
+      .sfx-app-title {
+        font-size: 1.35rem;
+      }
+
+      .sfx-sub-pill {
+        display: none;
+      }
+
+      .sfx-top-actions {
+        margin-left: auto;
+        gap: 6px;
+      }
+
+      .sfx-btn-icon {
+        height: 34px;
+        padding: 0 9px;
+        font-size: 0.73rem;
+      }
+
+      .sfx-btn-icon.guide-btn {
+        width: 34px;
+        padding: 0;
+      }
+
+      .sfx-btn-icon .btn-text-hide-mobile {
+        display: none;
+      }
+
+      .sfx-stats-group {
+        width: 100%;
+        order: 3;
+        margin-left: 0;
+        padding-top: 8px;
+        border-top: 1px solid var(--sfx-border-subtle);
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 6px;
+      }
+
+      .sfx-stat-pill {
+        justify-content: space-between;
+        height: 34px;
+        padding: 0 10px;
+      }
+
+      .sfx-stat-pill.combo-pill {
+        display: none;
+      }
+
+      .sfx-mobile-next-pill {
+        display: inline-flex;
+        height: 34px;
+      }
+
+      .sfx-progress-wrap {
+        margin-bottom: 10px;
+        height: 5px;
+      }
+
+      .sfx-workspace {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .sfx-card-header.jar-header {
+        display: none;
+      }
+
+      .sfx-jar-body {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      .sfx-jar-frame {
+        max-width: 245px;
+      }
+
+      .sfx-touch-controls {
+        display: grid;
+      }
+
+      /* Sembunyikan panel samping di mobile agar fokus ke kanvas & tombol sentuh */
+      .sfx-side-panel {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sfx-app-container">
+    <!-- Top App Bar -->
+    <header class="sfx-top-bar">
+      <div class="sfx-brand-wrap">
+        <h1 class="sfx-app-title" aria-label="JELAI">
+          <span class="c-1">J</span><span class="c-2">E</span><span class="c-3">L</span><span class="c-4">A</span><span class="c-5">I</span>
+        </h1>
+        <span class="sfx-sub-pill">Alkimia Jeli Kenyal</span>
+      </div>
+
+      <div class="sfx-stats-group">
+        <div class="sfx-stat-pill level-pill">
+          <span class="sfx-stat-label">Level</span>
+          <span class="sfx-stat-value" id="top-level">1</span>
+        </div>
+        <div class="sfx-stat-pill score-pill">
+          <span class="sfx-stat-label">Skor</span>
+          <span class="sfx-stat-value" id="top-score">0</span>
+        </div>
+        <div class="sfx-stat-pill combo-pill">
+          <span class="sfx-stat-label">Combo</span>
+          <span class="sfx-stat-value" id="top-combo">1x</span>
+        </div>
+        <div class="sfx-mobile-next-pill" title="Jeli Berikutnya">
+          <span class="sfx-mobile-next-label">Next</span>
+          <canvas id="next-canvas-mobile" width="56" height="56"></canvas>
+        </div>
+      </div>
+
+      <div class="sfx-top-actions">
+        <!-- Tombol Logo Sederhana untuk Cara Kerja (?) -->
+        <button class="sfx-btn-icon guide-btn" id="btn-open-guide" type="button" title="Cara Kerja & Kontrol Permainan" aria-label="Cara Kerja Permainan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </button>
+        <button class="sfx-btn-icon rank-btn" id="btn-open-lb" type="button" title="Papan Peringkat">
+          🏆 <span class="btn-text-hide-mobile">Peringkat</span>
+        </button>
+        <button class="sfx-btn-icon" id="btn-pause" type="button" title="Jeda Permainan">
+          <span id="pause-btn-label">⏸ Jeda</span>
+        </button>
+        <button class="sfx-btn-icon" id="btn-reset" type="button" title="Mulai Ulang">
+          ↻ <span class="btn-text-hide-mobile">Reset</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Progress Bar menuju Level Berikutnya -->
+    <div class="sfx-progress-wrap" title="Progres menuju Level berikutnya">
+      <div class="sfx-progress-fill" id="level-progress-bar"></div>
+    </div>
+
+    <!-- Main Workspace -->
+    <main class="sfx-workspace">
+      <!-- Kolom Kiri: Wadah Jeli (Canvas) + Kontrol Sentuh Mobile -->
+      <section class="sfx-card">
+        <div class="sfx-card-header jar-header">
+          <span class="sfx-card-title">
+            <span class="sfx-card-dot orange"></span>
+            Wadah Jeli
+          </span>
+          <span class="sfx-hint-tag" id="jar-status-tag">Sambungkan Kiri ↔ Kanan</span>
+        </div>
+
+        <div class="sfx-jar-body">
+          <div class="sfx-jar-frame" id="jar-touch-zone">
+            <canvas id="jelai-canvas" width="320" height="576"></canvas>
+            <div class="sfx-jar-toast" id="jar-toast">PECAH! +250</div>
+
+            <!-- Overlay Jeda -->
+            <div class="sfx-jar-overlay" id="pause-overlay">
+              <div class="sfx-overlay-title">JEDA</div>
+              <p class="sfx-overlay-desc">Racikan agar-agar sedang diistirahatkan sejenak.</p>
+              <button class="sfx-btn-main" id="btn-resume" type="button" style="max-width: 180px;">▶ Lanjutkan</button>
+            </div>
+          </div>
+
+          <!-- Kontrol Sentuh Ergonomis & Seragam (Tampil di Handphone) -->
+          <div class="sfx-touch-controls">
+            <button class="sfx-ctrl-btn" id="ctrl-left" type="button" aria-label="Geser Kiri">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              <span class="lbl">Kiri</span>
+            </button>
+            <button class="sfx-ctrl-btn rotate-btn" id="ctrl-rotate" type="button" aria-label="Putar Jeli">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              <span class="lbl">Putar</span>
+            </button>
+            <button class="sfx-ctrl-btn" id="ctrl-down" type="button" aria-label="Turun Cepat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              <span class="lbl">Turun</span>
+            </button>
+            <button class="sfx-ctrl-btn drop-btn" id="ctrl-drop" type="button" aria-label="Jatuhkan Langsung">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12"/><path d="m8 12 4 4 4-4"/><line x1="6" y1="20" x2="18" y2="20"/></svg>
+              <span class="lbl">Jatuh</span>
+            </button>
+            <button class="sfx-ctrl-btn" id="ctrl-right" type="button" aria-label="Geser Kanan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              <span class="lbl">Kanan</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kolom Kanan: Preview Jeli Berikutnya, Statistik & Dek Kontrol Rapi -->
+      <div class="sfx-side-panel">
+        <!-- Kartu Next & Statistik -->
+        <section class="sfx-card">
+          <div class="sfx-card-header">
+            <span class="sfx-card-title">
+              <span class="sfx-card-dot blue"></span>
+              Jeli Berikutnya & Statistik
+            </span>
+            <span class="sfx-hint-tag" id="flavor-count-tag">4 Varian Aktif</span>
+          </div>
+          <div class="sfx-next-and-stats">
+            <div class="sfx-next-box">
+              <span class="sfx-next-caption">Berikutnya</span>
+              <canvas id="next-canvas" width="96" height="96"></canvas>
+            </div>
+            <div class="sfx-stats-grid">
+              <div class="sfx-stat-card">
+                <span class="k">Total Pecah</span>
+                <span class="v orange" id="stat-pops">0</span>
+              </div>
+              <div class="sfx-stat-card">
+                <span class="k">Combo Maks</span>
+                <span class="v blue" id="stat-max-combo">1x</span>
+              </div>
+              <div class="sfx-stat-card">
+                <span class="k">Rekor Terbaik</span>
+                <span class="v green" id="stat-high-score">0</span>
+              </div>
+              <div class="sfx-stat-card">
+                <span class="k">Kepadatan Wadah</span>
+                <span class="v" id="stat-density">0%</span>
+              </div>
+            </div>
+          </div>
+          <!-- Bar Spektrum Varian Jeli -->
+          <div class="sfx-flavor-strip">
+            <span class="sfx-flavor-chip"><span class="blob-dot" style="background:#ff6600;"></span>Jeruk</span>
+            <span class="sfx-flavor-chip"><span class="blob-dot" style="background:#2563eb;"></span>Beri</span>
+            <span class="sfx-flavor-chip"><span class="blob-dot" style="background:#f43f5e;"></span>Stroberi</span>
+            <span class="sfx-flavor-chip"><span class="blob-dot" style="background:#10b981;"></span>Melon</span>
+            <span class="sfx-flavor-chip" id="chip-yuzu" style="opacity:0.4;"><span class="blob-dot" style="background:#eab308;"></span>Yuzu</span>
+          </div>
+        </section>
+
+        <!-- Kartu Dek Kontrol & Pintasan (Kotak Seragam & Rapi) -->
+        <section class="sfx-card" style="flex: 1;">
+          <div class="sfx-card-header">
+            <span class="sfx-card-title">
+              <span class="sfx-card-dot green"></span>
+              Kendali Permainan
+            </span>
+            <button class="sfx-btn-icon" id="btn-open-guide-inline" type="button" style="height:28px; padding:0 10px; font-size:0.72rem;">
+              Cara Kerja ?
+            </button>
+          </div>
+          <div class="sfx-deck-body">
+            <!-- Tombol Interaktif Desktop (5 Kotak Sama Besar & Simetris) -->
+            <div class="sfx-desktop-pad">
+              <button class="sfx-ctrl-btn" id="desk-left" type="button" title="Geser Kiri (Panah Kiri / A)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                <span class="lbl">Kiri</span>
+              </button>
+              <button class="sfx-ctrl-btn rotate-btn" id="desk-rotate" type="button" title="Putar Bentuk (Panah Atas / W)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                <span class="lbl">Putar</span>
+              </button>
+              <button class="sfx-ctrl-btn" id="desk-down" type="button" title="Turun Cepat (Panah Bawah / S)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                <span class="lbl">Turun</span>
+              </button>
+              <button class="sfx-ctrl-btn drop-btn" id="desk-drop" type="button" title="Jatuhkan Langsung (Spasi)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12"/><path d="m8 12 4 4 4-4"/><line x1="6" y1="20" x2="18" y2="20"/></svg>
+                <span class="lbl">Jatuh</span>
+              </button>
+              <button class="sfx-ctrl-btn" id="desk-right" type="button" title="Geser Kanan (Panah Kanan / D)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                <span class="lbl">Kanan</span>
+              </button>
+            </div>
+
+            <!-- Kotak Indikator Pintasan Keyboard yang Rapi & Seragam -->
+            <div class="sfx-key-grid">
+              <div class="sfx-key-item">
+                <span>Geser Kiri / Kanan</span>
+                <span class="sfx-kbd-group">
+                  <kbd class="sfx-kbd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></kbd>
+                  <kbd class="sfx-kbd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></kbd>
+                </span>
+              </div>
+              <div class="sfx-key-item">
+                <span>Putar Jeli</span>
+                <span class="sfx-kbd-group">
+                  <kbd class="sfx-kbd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></kbd>
+                  <kbd class="sfx-kbd">R</kbd>
+                </span>
+              </div>
+              <div class="sfx-key-item">
+                <span>Turun Cepat</span>
+                <span class="sfx-kbd-group">
+                  <kbd class="sfx-kbd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></kbd>
+                  <kbd class="sfx-kbd">S</kbd>
+                </span>
+              </div>
+              <div class="sfx-key-item">
+                <span>Jatuh Langsung</span>
+                <span class="sfx-kbd-group">
+                  <kbd class="sfx-kbd" style="padding: 0 10px;">SPACE</kbd>
+                </span>
+              </div>
+            </div>
+
+            <div class="sfx-action-row">
+              <button class="sfx-btn-secondary" id="btn-finish-early" type="button">
+                📜 Klaim Sertifikat
+              </button>
+              <button class="sfx-btn-main" id="btn-drop-desktop" type="button">
+                Jatuhkan Jeli
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MODAL CARA KERJA (?) ==================== -->
+  <div class="sfx-modal-overlay" id="guide-modal">
+    <div class="sfx-modal-card">
+      <span class="sfx-modal-badge">Panduan Singkat</span>
+      <h2 class="sfx-modal-title">Cara Kerja Alkimia Jeli</h2>
+      <p class="sfx-modal-desc" style="margin-bottom: 12px;">
+        Susun kepingan jeli kenyal dan sambungkan warna yang sama dari tepi kiri hingga tepi kanan wadah.
+      </p>
+
+      <div class="sfx-guide-steps">
+        <div class="sfx-guide-step-card">
+          <div class="sfx-step-icon s1">01</div>
+          <div class="sfx-step-text">
+            <h4>Meleleh & Menyatu Seperti Selai</h4>
+            <p>Saat mendarat, jeli akan sedikit melorot kental mengisi celah di bawahnya. Jeli dengan warna yang sama akan menyatu menjadi satu gumpalan utuh.</p>
+          </div>
+        </div>
+        <div class="sfx-guide-step-card">
+          <div class="sfx-step-icon s2">02</div>
+          <div class="sfx-step-text">
+            <h4>Sambungkan Dinding Kiri ↔ Kanan</h4>
+            <p>Tidak perlu rata satu baris lurus! Begitu satu gumpalan warna yang sama menyentuh dinding kiri sekaligus dinding kanan, seluruh gumpalan tersebut akan pecah.</p>
+          </div>
+        </div>
+        <div class="sfx-guide-step-card">
+          <div class="sfx-step-icon s3">03</div>
+          <div class="sfx-step-text">
+            <h4>Reaksi Berantai (Chain Combo)</h4>
+            <p>Saat gumpalan bawah pecah, jeli di atasnya akan melorot turun. Jika lelehan itu ikut menyambungkan warna lain dari kiri ke kanan, poinmu berlipat ganda!</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="sfx-btn-main" id="btn-close-guide" type="button">
+        Mengerti, Lanjut Bermain
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL HASIL & SERTIFIKAT ==================== -->
+  <div class="sfx-modal-overlay" id="result-modal">
+    <div class="sfx-modal-card">
+      <span class="sfx-modal-badge" id="modal-badge">Eksperimen Selesai</span>
+      <h2 class="sfx-modal-title" id="modal-title">Wadah Jeli Penuh!</h2>
+      <div class="sfx-accuracy-big" id="modal-big-score">0 pts</div>
+      <p class="sfx-modal-desc" id="modal-desc">Gumpalan jeli berhasil diracik dengan baik.</p>
+
+      <div class="sfx-modal-stats-row">
+        <div class="sfx-modal-stat-box">
+          <span class="lbl">Total Pecah</span>
+          <span class="val" id="modal-stat-pops">0</span>
+        </div>
+        <div class="sfx-modal-stat-box">
+          <span class="lbl">Combo Maks</span>
+          <span class="val" id="modal-stat-combo">1x</span>
+        </div>
+        <div class="sfx-modal-stat-box">
+          <span class="lbl">Level Akhir</span>
+          <span class="val" id="modal-stat-level">1</span>
+        </div>
+      </div>
+
+      <!-- Form Simpan Papan Peringkat -->
+      <div class="sfx-save-form" id="save-score-section">
+        <label class="sfx-save-label" for="player-name-input">Catat Nama di Papan Peringkat & Sertifikat:</label>
+        <div class="sfx-save-row">
+          <input type="text" id="player-name-input" class="sfx-input" placeholder="Nama atau inisialmu..." maxlength="20">
+          <button class="sfx-btn-save" id="btn-save-score" type="button">Simpan</button>
+        </div>
+      </div>
+
+      <div class="sfx-modal-actions">
+        <button class="sfx-btn-cert" id="btn-download-cert" type="button">
+          📜 Unduh Sertifikat (.PNG)
+        </button>
+        <button class="sfx-btn-main" id="btn-play-again" type="button">
+          Mainkan Lagi ↻
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL LEADERBOARD ==================== -->
+  <div class="sfx-modal-overlay" id="leaderboard-modal">
+    <div class="sfx-modal-card">
+      <span class="sfx-modal-badge">Peringkat Lokal</span>
+      <h2 class="sfx-modal-title">Top 10 Alkemis Jelai</h2>
+      <div class="sfx-lb-list" id="leaderboard-list"></div>
+      <div style="display:flex; gap:10px;">
+        <button class="sfx-btn-main" id="btn-close-lb" type="button" style="flex:1;">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HIDDEN CERTIFICATE (FOR HTML2CANVAS) ==================== -->
+  <div id="sfx-certificate-wrap" aria-hidden="true">
+    <div class="cert-inner">
+      <div class="cert-top-bar"></div>
+      <div class="cert-header">
+        <div>
+          <div class="cert-brand">SUBFIKSI LAB! // JELAI</div>
+          <div class="cert-sub">Sertifikat Alkimia & Viskositas Jeli</div>
+        </div>
+        <div class="cert-id">
+          <div id="cert-date">16 OKT 2026</div>
+          <div id="cert-code">ID: SFX-JLI-8821</div>
+        </div>
+      </div>
+      <div class="cert-body">
+        <div class="cert-caption">Diberikan Kepada Peracik</div>
+        <div class="cert-name" id="cert-player-name">ALKEMIS SUBFIKSI</div>
+        <div class="cert-score-box">
+          <div class="cert-score-val" id="cert-score-val">1.250 PTS</div>
+          <div class="cert-score-label" id="cert-score-sub">Skor Alkimia Jelai</div>
+        </div>
+        <div class="cert-rank-title" id="cert-rank-title">PREDIKAT: MASTER ALKEMIS AGAR</div>
+      </div>
+      <div class="cert-metrics-grid">
+        <div class="cert-metric-card">
+          <div class="m-lbl">Gumpalan Pecah</div>
+          <div class="m-val" id="cert-pops-val">0</div>
+        </div>
+        <div class="cert-metric-card">
+          <div class="m-lbl">Combo Tertinggi</div>
+          <div class="m-val" id="cert-combo-val">1x</div>
+        </div>
+        <div class="cert-metric-card">
+          <div class="m-lbl">Level Tercapai</div>
+          <div class="m-val" id="cert-level-val">1</div>
+        </div>
+      </div>
+      <div class="cert-caption" style="text-align:center;">Spektrum Varian Jeli Laboratorium</div>
+      <div class="sfx-cert-palette cert-palette-row">
+        <div class="cert-Swatch" style="background:#ff6600;">JERUK</div>
+        <div class="cert-Swatch" style="background:#2563eb;">BERI BIRU</div>
+        <div class="cert-Swatch" style="background:#f43f5e;">STROBERI</div>
+        <div class="cert-Swatch" style="background:#10b981;">MELON</div>
+        <div class="cert-Swatch" style="background:#eab308;">YUZU</div>
+      </div>
+      <div class="cert-footer">
+        <span>SUBFIKSI.COM // LAB INTERAKTIF</span>
+        <span>TERVERIFIKASI DIGITAL</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================================
+    // KONFIGURASI JELAI — VISCOUS AGAR / JAM TETRIS ENGINE
+    // ============================================================================
+    const COLS = 40;              // 10 blok * 4 sub-sel
+    const ROWS = 72;              // 18 blok * 4 sub-sel
+    const CELL = 8;               // 8px per sub-sel (320 x 576 canvas)
+    const SUB = 4;                // 1 blok tetromino = 4x4 sub-sel jeli
+    const DANGER_ROW = 10;        // Batas atas wadah
+
+    const STORAGE_KEY_LB = 'SFX_JELAI_LEADERBOARD_V1';
+
+    // Palet Warna Jeli (Clean Flat Colorful)
+    const FLAVORS = [
+      null,
+      { id: 1, name: 'Jeruk Mandarin', main: '#ff6600', light: '#ff944d', shade: '#d95300' },
+      { id: 2, name: 'Beri Biru',      main: '#2563eb', light: '#60a5fa', shade: '#1d4ed8' },
+      { id: 3, name: 'Stroberi Rosé',  main: '#f43f5e', light: '#fb7185', shade: '#e11d48' },
+      { id: 4, name: 'Melon Mint',     main: '#10b981', light: '#34d399', shade: '#059669' },
+      { id: 5, name: 'Lemon Yuzu',     main: '#eab308', light: '#fde047', shade: '#ca8a04' }
+    ];
+
+    // Bentuk Tetromino (dalam koordinat blok, tiap blok diekspansi jadi 4x4 sub-sel)
+    const SHAPES = [
+      [[1, 1, 1, 1]],
+      [[1, 1], [1, 1]],
+      [[0, 1, 0], [1, 1, 1]],
+      [[1, 0, 0], [1, 1, 1]],
+      [[0, 0, 1], [1, 1, 1]],
+      [[0, 1, 1], [1, 1, 0]],
+      [[1, 1, 0], [0, 1, 1]]
+    ];
+
+    // State Permainan
+    let grid = [];
+    let freshness = [];
+    let popMask = [];
+    let particles = [];
+
+    let activePiece = null;
+    let nextPiece = null;
+
+    let score = 0;
+    let level = 1;
+    let totalPops = 0;
+    let currentCombo = 1;
+    let maxCombo = 1;
+    let scoreSavedThisGame = false;
+
+    let isPaused = false;
+    let isGameOver = false;
+    let popTimer = 0;
+    let popCellsList = [];
+    let dropAccumulator = 0;
+    let lastTime = 0;
+    let sweepDir = 1;
+
+    // Efek kenyal (spring wobble) pada kepingan aktif
+    let wobbleScaleX = 1;
+    let wobbleScaleY = 1;
+
+    // Elemen DOM
+    const canvas = document.getElementById('jelai-canvas');
+    const ctx = canvas.getContext('2d');
+    const nextCanvas = document.getElementById('next-canvas');
+    const nextCtx = nextCanvas.getContext('2d');
+    const nextCanvasMobile = document.getElementById('next-canvas-mobile');
+    const nextCtxMobile = nextCanvasMobile.getContext('2d');
+
+    const elTopLevel = document.getElementById('top-level');
+    const elTopScore = document.getElementById('top-score');
+    const elTopCombo = document.getElementById('top-combo');
+    const elProgressBar = document.getElementById('level-progress-bar');
+    const elFlavorTag = document.getElementById('flavor-count-tag');
+    const elChipYuzu = document.getElementById('chip-yuzu');
+
+    const elStatPops = document.getElementById('stat-pops');
+    const elStatMaxCombo = document.getElementById('stat-max-combo');
+    const elStatHighScore = document.getElementById('stat-high-score');
+    const elStatDensity = document.getElementById('stat-density');
+
+    const elJarToast = document.getElementById('jar-toast');
+    const elPauseOverlay = document.getElementById('pause-overlay');
+    const elGuideModal = document.getElementById('guide-modal');
+    const elResultModal = document.getElementById('result-modal');
+    const elLbModal = document.getElementById('leaderboard-modal');
+    const elPlayerName = document.getElementById('player-name-input');
+    const elBtnSaveScore = document.getElementById('btn-save-score');
+
+    // ============================================================================
+    // INISIALISASI GRID & KEPINGAN JELI
+    // ============================================================================
+    function createEmptyGrid() {
+      grid = Array.from({ length: ROWS }, () => new Uint8Array(COLS));
+      freshness = Array.from({ length: ROWS }, () => new Uint8Array(COLS));
+      popMask = Array.from({ length: ROWS }, () => new Uint8Array(COLS));
+    }
+
+    function getActiveFlavorCount() {
+      return level >= 4 ? 5 : 4;
+    }
+
+    function buildSubMatrix(blockMatrix) {
+      const bRows = blockMatrix.length;
+      const bCols = blockMatrix[0].length;
+      const sRows = bRows * SUB;
+      const sCols = bCols * SUB;
+      const sub = Array.from({ length: sRows }, () => new Uint8Array(sCols));
+
+      for (let br = 0; br < bRows; br++) {
+        for (let bc = 0; bc < bCols; bc++) {
+          if (blockMatrix[br][bc]) {
+            for (let sr = 0; sr < SUB; sr++) {
+              for (let sc = 0; sc < SUB; sc++) {
+                sub[br * SUB + sr][bc * SUB + sc] = 1;
+              }
+            }
+          }
+        }
+      }
+      return sub;
+    }
+
+    function generateRandomPiece() {
+      const shapeIdx = Math.floor(Math.random() * SHAPES.length);
+      const flavorCount = getActiveFlavorCount();
+      const colorId = Math.floor(Math.random() * flavorCount) + 1;
+      const blocks = SHAPES[shapeIdx].map(row => [...row]);
+      const subMatrix = buildSubMatrix(blocks);
+      return {
+        blocks,
+        subMatrix,
+        colorId,
+        x: Math.floor((COLS - subMatrix[0].length) / 2),
+        y: 2
+      };
+    }
+
+    function spawnNextPiece() {
+      if (!nextPiece) {
+        nextPiece = generateRandomPiece();
+      }
+      activePiece = nextPiece;
+      activePiece.x = Math.floor((COLS - activePiece.subMatrix[0].length) / 2);
+      activePiece.y = 2;
+      nextPiece = generateRandomPiece();
+      wobbleScaleX = 1.12;
+      wobbleScaleY = 0.88;
+      drawNextPreview();
+
+      if (checkCollision(activePiece.x, activePiece.y, activePiece.subMatrix)) {
+        triggerGameOver('Wadah Jeli Penuh!');
+      }
+    }
+
+    function checkCollision(px, py, subMatrix) {
+      const sRows = subMatrix.length;
+      const sCols = subMatrix[0].length;
+      for (let r = 0; r < sRows; r++) {
+        for (let c = 0; c < sCols; c++) {
+          if (!subMatrix[r][c]) continue;
+          const gx = px + c;
+          const gy = py + r;
+          if (gx < 0 || gx >= COLS || gy >= ROWS) return true;
+          if (gy >= 0 && grid[gy][gx] !== 0) return true;
+        }
+      }
+      return false;
+    }
+
+    function isAnyModalOpen() {
+      return (
+        elGuideModal.classList.contains('active') ||
+        elResultModal.classList.contains('active') ||
+        elLbModal.classList.contains('active')
+      );
+    }
+
+    function movePieceHorizontal(dirSubCells) {
+      if (!activePiece || isPaused || isGameOver || popTimer > 0 || isAnyModalOpen()) return;
+      const step = dirSubCells > 0 ? 1 : -1;
+      const totalSteps = Math.abs(dirSubCells);
+      let moved = false;
+
+      for (let i = 0; i < totalSteps; i++) {
+        if (!checkCollision(activePiece.x + step, activePiece.y, activePiece.subMatrix)) {
+          activePiece.x += step;
+          moved = true;
+        } else if (!checkCollision(activePiece.x + step, activePiece.y - 1, activePiece.subMatrix)) {
+          activePiece.x += step;
+          activePiece.y -= 1;
+          moved = true;
+        } else {
+          break;
+        }
+      }
+
+      if (moved) {
+        wobbleScaleX = 1.1;
+        wobbleScaleY = 0.91;
+      }
+    }
+
+    function rotatePiece() {
+      if (!activePiece || isPaused || isGameOver || popTimer > 0 || isAnyModalOpen()) return;
+      const oldBlocks = activePiece.blocks;
+      const bRows = oldBlocks.length;
+      const bCols = oldBlocks[0].length;
+      const rotatedBlocks = Array.from({ length: bCols }, (_, r) =>
+        Array.from({ length: bRows }, (_, c) => oldBlocks[bRows - 1 - c][r])
+      );
+      const newSub = buildSubMatrix(rotatedBlocks);
+
+      const kicks = [0, -2, 2, -4, 4, -6, 6];
+      for (const dx of kicks) {
+        if (!checkCollision(activePiece.x + dx, activePiece.y, newSub)) {
+          activePiece.blocks = rotatedBlocks;
+          activePiece.subMatrix = newSub;
+          activePiece.x += dx;
+          wobbleScaleX = 0.86;
+          wobbleScaleY = 1.14;
+          return;
+        }
+      }
+    }
+
+    function softDropStep() {
+      if (!activePiece || isPaused || isGameOver || popTimer > 0 || isAnyModalOpen()) return false;
+      if (!checkCollision(activePiece.x, activePiece.y + 1, activePiece.subMatrix)) {
+        activePiece.y += 1;
+        return true;
+      } else {
+        lockActivePiece();
+        return false;
+      }
+    }
+
+    function hardDropPiece() {
+      if (!activePiece || isPaused || isGameOver || popTimer > 0 || isAnyModalOpen()) return;
+      let droppedRows = 0;
+      while (!checkCollision(activePiece.x, activePiece.y + 1, activePiece.subMatrix)) {
+        activePiece.y += 1;
+        droppedRows++;
+      }
+      score += Math.floor(droppedRows / 2);
+      wobbleScaleX = 1.24;
+      wobbleScaleY = 0.78;
+      lockActivePiece();
+      updateStatsUI();
+    }
+
+    // ============================================================================
+    // PENDARATAN & FISIKA VISKOSITAS CAIRAN AGAR / SELAI (THICK JAM PHYSICS)
+    // ============================================================================
+    function lockActivePiece() {
+      if (!activePiece) return;
+      const { x, y, subMatrix, colorId } = activePiece;
+      const sRows = subMatrix.length;
+      const sCols = subMatrix[0].length;
+
+      for (let r = 0; r < sRows; r++) {
+        for (let c = 0; c < sCols; c++) {
+          if (!subMatrix[r][c]) continue;
+          const gx = x + c;
+          const gy = y + r;
+          if (gy >= 0 && gy < ROWS && gx >= 0 && gx < COLS) {
+            grid[gy][gx] = colorId;
+            freshness[gy][gx] = 22;
+          }
+        }
+      }
+
+      for (let r = Math.max(0, y - 2); r < Math.min(ROWS, y + sRows + 3); r++) {
+        for (let c = Math.max(0, x - 2); c < Math.min(COLS, x + sCols + 3); c++) {
+          if (grid[r][c] !== 0 && freshness[r][c] < 10) {
+            freshness[r][c] = 10;
+          }
+        }
+      }
+
+      activePiece = null;
+      currentCombo = 1;
+
+      for (let i = 0; i < 3; i++) {
+        stepAgarPhysics();
+      }
+
+      if (!checkAndTriggerPercolation()) {
+        if (isDangerLineReached()) {
+          triggerGameOver('Wadah Jeli Meluap!');
+          return;
+        }
+        spawnNextPiece();
+      }
+      updateStatsUI();
+    }
+
+    function isDangerLineReached() {
+      for (let c = 0; c < COLS; c++) {
+        if (grid[DANGER_ROW][c] !== 0) return true;
+      }
+      return false;
+    }
+
+    function stepAgarPhysics() {
+      let movedAny = false;
+      sweepDir = -sweepDir;
+
+      for (let r = ROWS - 2; r >= 0; r--) {
+        const startC = sweepDir > 0 ? 0 : COLS - 1;
+        const endC = sweepDir > 0 ? COLS : -1;
+
+        for (let c = startC; c !== endC; c += sweepDir) {
+          const color = grid[r][c];
+          if (color === 0) continue;
+
+          const f = freshness[r][c];
+          if (f > 0) freshness[r][c] = f - 1;
+
+          // 1. Jatuh lurus ke bawah jika kosong
+          if (grid[r + 1][c] === 0) {
+            grid[r + 1][c] = color;
+            freshness[r + 1][c] = Math.max(f, 8);
+            grid[r][c] = 0;
+            freshness[r][c] = 0;
+            movedAny = true;
+            continue;
+          }
+
+          // 2. Viskositas Selai / Agar Kental (Diagonal Slump Terbatas)
+          const tryFirst = ((r + c) & 1) ? -1 : 1;
+          const dirs = [tryFirst, -tryFirst];
+
+          for (const dc of dirs) {
+            const nc = c + dc;
+            if (nc < 0 || nc >= COLS) continue;
+
+            if (grid[r][nc] === 0 && grid[r + 1][nc] === 0) {
+              const steepCliff = (r + 2 < ROWS && grid[r + 2][nc] === 0);
+              const verySteepCliff = (r + 3 < ROWS && grid[r + 3][nc] === 0);
+
+              if ((f > 0 && steepCliff) || verySteepCliff) {
+                grid[r + 1][nc] = color;
+                freshness[r + 1][nc] = f > 0 ? f - 1 : 0;
+                grid[r][c] = 0;
+                freshness[r][c] = 0;
+                movedAny = true;
+                break;
+              }
+            }
+          }
+        }
+      }
+      return movedAny;
+    }
+
+    // ============================================================================
+    // DETEKSI PECAH UJUNG-KE-UJUNG (LEFT-TO-RIGHT PERCOLATION BFS)
+    // ============================================================================
+    function checkAndTriggerPercolation() {
+      const visited = Array.from({ length: ROWS }, () => new Uint8Array(COLS));
+      const cellsToPop = [];
+
+      for (let r = 0; r < ROWS; r++) {
+        const color = grid[r][0];
+        if (color === 0 || visited[r][0]) continue;
+
+        const queue = [[r, 0]];
+        visited[r][0] = 1;
+        const component = [];
+        let touchesRightWall = false;
+
+        let head = 0;
+        while (head < queue.length) {
+          const [cr, cc] = queue[head++];
+          component.push([cr, cc]);
+          if (cc === COLS - 1) touchesRightWall = true;
+
+          const neighbors = [
+            [cr - 1, cc], [cr + 1, cc], [cr, cc - 1], [cr, cc + 1],
+            [cr - 1, cc - 1], [cr - 1, cc + 1], [cr + 1, cc - 1], [cr + 1, cc + 1]
+          ];
+          for (const [nr, nc] of neighbors) {
+            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+              if (!visited[nr][nc] && grid[nr][nc] === color) {
+                visited[nr][nc] = 1;
+                queue.push([nr, nc]);
+              }
+            }
+          }
+        }
+
+        if (touchesRightWall) {
+          for (const cell of component) {
+            cellsToPop.push({ r: cell[0], c: cell[1], color });
+          }
+        }
+      }
+
+      if (cellsToPop.length > 0) {
+        popCellsList = cellsToPop;
+        popTimer = 22;
+        for (const item of cellsToPop) {
+          popMask[item.r][item.c] = 1;
+        }
+        return true;
+      }
+
+      return false;
+    }
+
+    function executePopExplosion() {
+      const count = popCellsList.length;
+      if (count === 0) return;
+
+      const gained = Math.round(count * 3 * level * currentCombo);
+      score += gained;
+      totalPops += 1;
+      if (currentCombo > maxCombo) maxCombo = currentCombo;
+
+      level = Math.min(12, Math.floor(score / 2500) + 1);
+
+      const comboText = currentCombo > 1 ? `COMBO ${currentCombo}x! ` : 'PECAH! ';
+      showJarToast(`${comboText}+${gained.toLocaleString('id-ID')}`);
+
+      for (let i = 0; i < popCellsList.length; i++) {
+        const { r, c, color } = popCellsList[i];
+        grid[r][c] = 0;
+        freshness[r][c] = 0;
+        popMask[r][c] = 0;
+
+        if (i % 3 === 0) {
+          const flv = FLAVORS[color] || FLAVORS[1];
+          particles.push({
+            x: (c + 0.5) * CELL,
+            y: (r + 0.5) * CELL,
+            vx: (Math.random() - 0.5) * 6.5,
+            vy: (Math.random() - 0.75) * 6.5,
+            radius: Math.random() * 4.5 + 3,
+            color: flv.main,
+            alpha: 1
+          });
+        }
+      }
+
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (grid[r][c] !== 0) {
+            freshness[r][c] = 32;
+          }
+        }
+      }
+
+      popCellsList = [];
+      currentCombo += 1;
+      updateStatsUI();
+    }
+
+    let toastTimeout = null;
+    function showJarToast(text) {
+      elJarToast.textContent = text;
+      elJarToast.classList.add('show');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        elJarToast.classList.remove('show');
+      }, 1150);
+    }
+
+    // ============================================================================
+    // RENDERING VISUAL JELI (SMOOTH ROUNDED BLOB + GLOSSY HIGHLIGHT)
+    // ============================================================================
+    function getGhostY() {
+      if (!activePiece) return 0;
+      let gy = activePiece.y;
+      while (!checkCollision(activePiece.x, gy + 1, activePiece.subMatrix)) {
+        gy++;
+      }
+      return gy;
+    }
+
+    function renderGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Background Grid Halus & Garis Batas Bahaya
+      ctx.strokeStyle = 'rgba(203, 213, 225, 0.25)';
+      ctx.lineWidth = 1;
+      for (let x = SUB * CELL; x < canvas.width; x += SUB * CELL) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+
+      const dangerY = DANGER_ROW * CELL;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(244, 63, 94, 0.38)';
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, dangerY);
+      ctx.lineTo(canvas.width, dangerY);
+      ctx.stroke();
+      ctx.restore();
+
+      // 2. Indikator Sensor Dinding Kiri & Kanan
+      for (let r = 0; r < ROWS; r++) {
+        const leftColor = grid[r][0];
+        if (leftColor !== 0) {
+          ctx.fillStyle = FLAVORS[leftColor].main;
+          ctx.fillRect(0, r * CELL, 3, CELL);
+        }
+        const rightColor = grid[r][COLS - 1];
+        if (rightColor !== 0) {
+          ctx.fillStyle = FLAVORS[rightColor].main;
+          ctx.fillRect(canvas.width - 3, r * CELL, 3, CELL);
+        }
+      }
+
+      // 3. Gambar Gumpalan Jeli yang Sudah Mendarat
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const colorId = grid[r][c];
+          if (colorId === 0) continue;
+
+          const flv = FLAVORS[colorId];
+          const px = c * CELL;
+          const py = r * CELL;
+
+          if (popMask[r][c]) {
+            const pulse = (popTimer % 4 < 2);
+            ctx.fillStyle = pulse ? '#ffffff' : flv.light;
+            ctx.beginPath();
+            ctx.arc(px + CELL / 2, py + CELL / 2, CELL * 0.72, 0, Math.PI * 2);
+            ctx.fill();
+            continue;
+          }
+
+          ctx.fillStyle = flv.main;
+          ctx.fillRect(px, py, CELL + 0.4, CELL + 0.4);
+          ctx.beginPath();
+          ctx.arc(px + CELL / 2, py + CELL / 2, CELL * 0.64, 0, Math.PI * 2);
+          ctx.fill();
+
+          const topEmpty = (r === 0 || grid[r - 1][c] !== colorId);
+          const bottomSame = (r + 1 < ROWS && grid[r + 1][c] === colorId);
+          if (topEmpty && bottomSame) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
+            ctx.fillRect(px + 1, py + 1.5, CELL - 2, 2.5);
+          }
+
+          const bottomDiff = (r === ROWS - 1 || grid[r + 1][c] !== colorId);
+          if (bottomDiff) {
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.1)';
+            ctx.fillRect(px, py + CELL - 2, CELL, 2);
+          }
+        }
+      }
+
+      // 4. Gambar Bayangan Target Jatuh (Ghost Piece) & Kepingan Jeli Aktif
+      if (activePiece && popTimer === 0) {
+        const { x, y, subMatrix, colorId } = activePiece;
+        const flv = FLAVORS[colorId];
+        const sRows = subMatrix.length;
+        const sCols = subMatrix[0].length;
+        const ghostY = getGhostY();
+
+        if (ghostY > y) {
+          ctx.save();
+          ctx.fillStyle = flv.main;
+          ctx.globalAlpha = 0.16;
+          for (let r = 0; r < sRows; r++) {
+            for (let c = 0; c < sCols; c++) {
+              if (subMatrix[r][c]) {
+                ctx.fillRect((x + c) * CELL, (ghostY + r) * CELL, CELL, CELL);
+              }
+            }
+          }
+          ctx.restore();
+        }
+
+        ctx.save();
+        const centerX = (x + sCols / 2) * CELL;
+        const centerY = (y + sRows / 2) * CELL;
+        ctx.translate(centerX, centerY);
+        ctx.scale(wobbleScaleX, wobbleScaleY);
+        ctx.translate(-centerX, -centerY);
+
+        for (let r = 0; r < sRows; r++) {
+          for (let c = 0; c < sCols; c++) {
+            if (!subMatrix[r][c]) continue;
+            const px = (x + c) * CELL;
+            const py = (y + r) * CELL;
+
+            ctx.fillStyle = flv.main;
+            ctx.fillRect(px, py, CELL + 0.5, CELL + 0.5);
+            ctx.beginPath();
+            ctx.arc(px + CELL / 2, py + CELL / 2, CELL * 0.62, 0, Math.PI * 2);
+            ctx.fill();
+
+            const topExposed = (r === 0 || !subMatrix[r - 1][c]);
+            if (topExposed) {
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+              ctx.fillRect(px + 1, py + 1.5, CELL - 2, 2.5);
+            }
+          }
+        }
+        ctx.restore();
+      }
+
+      // 5. Gambar Partikel Cipratan Jeli
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function drawNextPreviewOnCanvas(targetCanvas, targetCtx, cellPx) {
+      targetCtx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
+      if (!nextPiece) return;
+      const { blocks, colorId } = nextPiece;
+      const flv = FLAVORS[colorId];
+      const bRows = blocks.length;
+      const bCols = blocks[0].length;
+      const totalW = bCols * cellPx;
+      const totalH = bRows * cellPx;
+      const offsetX = (targetCanvas.width - totalW) / 2;
+      const offsetY = (targetCanvas.height - totalH) / 2;
+
+      for (let r = 0; r < bRows; r++) {
+        for (let c = 0; c < bCols; c++) {
+          if (!blocks[r][c]) continue;
+          const x = offsetX + c * cellPx;
+          const y = offsetY + r * cellPx;
+
+          targetCtx.fillStyle = flv.main;
+          targetCtx.beginPath();
+          targetCtx.roundRect(x - 1, y - 1, cellPx + 2, cellPx + 2, 5);
+          targetCtx.fill();
+
+          if (r === 0 || !blocks[r - 1][c]) {
+            targetCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+            targetCtx.fillRect(x + 3, y + 2, cellPx - 6, 3);
+          }
+        }
+      }
+    }
+
+    function drawNextPreview() {
+      drawNextPreviewOnCanvas(nextCanvas, nextCtx, 18);
+      drawNextPreviewOnCanvas(nextCanvasMobile, nextCtxMobile, 11);
+    }
+
+    // ============================================================================
+    // GAME LOOP UTAMA
+    // ============================================================================
+    function gameLoop(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const dt = Math.min(50, timestamp - lastTime);
+      lastTime = timestamp;
+
+      if (!isPaused && !isGameOver && !isAnyModalOpen()) {
+        wobbleScaleX += (1 - wobbleScaleX) * 0.25;
+        wobbleScaleY += (1 - wobbleScaleY) * 0.25;
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.28;
+          p.alpha -= 0.035;
+          if (p.alpha <= 0) particles.splice(i, 1);
+        }
+
+        if (popTimer > 0) {
+          popTimer--;
+          if (popTimer === 0) {
+            executePopExplosion();
+          }
+        } else {
+          const agarMoved = stepAgarPhysics();
+
+          if (!agarMoved && currentCombo > 1 && !activePiece) {
+            if (!checkAndTriggerPercolation()) {
+              currentCombo = 1;
+              updateStatsUI();
+              spawnNextPiece();
+            }
+          } else if (agarMoved && !activePiece) {
+            checkAndTriggerPercolation();
+          }
+
+          if (activePiece) {
+            const dropIntervalMs = Math.max(28, 105 - (level - 1) * 7);
+            dropAccumulator += dt;
+            while (dropAccumulator >= dropIntervalMs) {
+              dropAccumulator -= dropIntervalMs;
+              if (!softDropStep()) {
+                dropAccumulator = 0;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      renderGame();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // ============================================================================
+    // UPDATE STATISTIK & UI
+    // ============================================================================
+    function updateStatsUI() {
+      elTopLevel.textContent = level;
+      elTopScore.textContent = score.toLocaleString('id-ID');
+      elTopCombo.textContent = `${currentCombo}x`;
+
+      const levelFloor = (level - 1) * 2500;
+      const progressPct = Math.min(100, ((score - levelFloor) / 2500) * 100);
+      elProgressBar.style.width = `${progressPct}%`;
+
+      elStatPops.textContent = totalPops;
+      elStatMaxCombo.textContent = `${maxCombo}x`;
+
+      let filled = 0;
+      for (let r = DANGER_ROW; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (grid[r][c] !== 0) filled++;
+        }
+      }
+      const totalPlayable = (ROWS - DANGER_ROW) * COLS;
+      const densityPct = Math.min(100, Math.round((filled / totalPlayable) * 100));
+      elStatDensity.textContent = `${densityPct}%`;
+
+      if (level >= 4) {
+        elFlavorTag.textContent = '5 Varian Aktif';
+        elChipYuzu.style.opacity = '1';
+      } else {
+        elFlavorTag.textContent = '4 Varian Aktif';
+        elChipYuzu.style.opacity = '0.4';
+      }
+
+      const lb = getLeaderboard();
+      const topRecord = lb.length > 0 ? Math.max(score, lb[0].score) : score;
+      elStatHighScore.textContent = topRecord.toLocaleString('id-ID');
+    }
+
+    // ============================================================================
+    // GAME OVER, LEADERBOARD & SERTIFIKAT PNG
+    // ============================================================================
+    function getRankPredicate(finalScore) {
+      if (finalScore >= 8000) return { badge: 'MASTER ALKEMIS AGAR', desc: 'Luar biasa! Penguasaan viskositas dan reaksi berantai jelimu setingkat maestro laboratorium.' };
+      if (finalScore >= 4000) return { badge: 'ARSITEK SELAI KENYAL', desc: 'Sangat presisi! Kamu piawai mengatur lelehan jeli hingga menyambung dari ujung ke ujung.' };
+      if (finalScore >= 1500) return { badge: 'PERACIK JELI MUDA', desc: 'Racikan yang solid! Terus manfaatkan celah lereng untuk memicu Combo beruntun.' };
+      return { badge: 'PEMULA GUMPALAN', desc: 'Eksperimen awal yang seru! Susun warna searah dari dinding kiri ke kanan agar cepat pecah.' };
+    }
+
+    function triggerGameOver(reasonTitle) {
+      isGameOver = true;
+      scoreSavedThisGame = false;
+      const rankInfo = getRankPredicate(score);
+
+      document.getElementById('modal-badge').textContent = rankInfo.badge;
+      document.getElementById('modal-title').textContent = reasonTitle || 'Eksperimen Selesai!';
+      document.getElementById('modal-big-score').textContent = `${score.toLocaleString('id-ID')} pts`;
+      document.getElementById('modal-desc').textContent = rankInfo.desc;
+
+      document.getElementById('modal-stat-pops').textContent = totalPops;
+      document.getElementById('modal-stat-combo').textContent = `${maxCombo}x`;
+      document.getElementById('modal-stat-level').textContent = level;
+
+      elBtnSaveScore.disabled = false;
+      elBtnSaveScore.textContent = 'Simpan';
+
+      elResultModal.classList.add('active');
+      sfxReportHeight();
+    }
+
+    function resetGame() {
+      createEmptyGrid();
+      particles = [];
+      popCellsList = [];
+      popTimer = 0;
+      score = 0;
+      level = 1;
+      totalPops = 0;
+      currentCombo = 1;
+      maxCombo = 1;
+      isPaused = false;
+      isGameOver = false;
+      elPauseOverlay.classList.remove('active');
+      elResultModal.classList.remove('active');
+      elGuideModal.classList.remove('active');
+      document.getElementById('pause-btn-label').textContent = '⏸ Jeda';
+      nextPiece = generateRandomPiece();
+      spawnNextPiece();
+      updateStatsUI();
+      sfxReportHeight();
+    }
+
+    function togglePause() {
+      if (isGameOver) return;
+      isPaused = !isPaused;
+      elPauseOverlay.classList.toggle('active', isPaused);
+      document.getElementById('pause-btn-label').textContent = isPaused ? '▶ Lanjut' : '⏸ Jeda';
+    }
+
+    function getLeaderboard() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_LB);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveScoreToLeaderboard() {
+      if (scoreSavedThisGame) return;
+      const name = (elPlayerName.value || '').trim() || 'Alkemis Anonim';
+      const list = getLeaderboard();
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+      list.push({
+        name,
+        score,
+        pops: totalPops,
+        combo: maxCombo,
+        level,
+        date: dateStr
+      });
+
+      list.sort((a, b) => b.score - a.score);
+      const top10 = list.slice(0, 10);
+      try {
+        localStorage.setItem(STORAGE_KEY_LB, JSON.stringify(top10));
+      } catch (e) {}
+
+      scoreSavedThisGame = true;
+      elBtnSaveScore.disabled = true;
+      elBtnSaveScore.textContent = '✓ Tersimpan';
+      updateStatsUI();
+    }
+
+    function renderLeaderboardModal() {
+      const list = getLeaderboard();
+      const container = document.getElementById('leaderboard-list');
+      if (list.length === 0) {
+        container.innerHTML = `<div class="sfx-lb-empty">Belum ada rekor tercatat. Jadilah Alkemis Jelai pertama!</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map((item, idx) => {
+        const topClass = idx === 0 ? 'top-1' : idx === 1 ? 'top-2' : idx === 2 ? 'top-3' : '';
+        return `
+          <div class="sfx-lb-item ${topClass}">
+            <div class="sfx-lb-left">
+              <span class="sfx-lb-rank">${idx + 1}</span>
+              <div>
+                <div class="sfx-lb-name">${escapeHtml(item.name)}</div>
+                <span class="sfx-lb-meta">Lv.${item.level} · ${item.pops} Pecah · Combo ${item.combo}x · ${item.date}</span>
+              </div>
+            </div>
+            <div class="sfx-lb-score">${Number(item.score).toLocaleString('id-ID')} pts</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[s]));
+    }
+
+    async function downloadCertificate() {
+      const btn = document.getElementById('btn-download-cert');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '⏳ Meracik Sertifikat...';
+      btn.disabled = true;
+
+      const playerName = (elPlayerName.value || '').trim().toUpperCase() || 'ALKEMIS SUBFIKSI';
+      const rankInfo = getRankPredicate(score);
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+      const certId = 'SFX-JLI-' + Math.floor(1000 + Math.random() * 9000);
+
+      document.getElementById('cert-date').textContent = dateStr;
+      document.getElementById('cert-code').textContent = `ID: ${certId}`;
+      document.getElementById('cert-player-name').textContent = playerName;
+      document.getElementById('cert-score-val').textContent = `${score.toLocaleString('id-ID')} PTS`;
+      document.getElementById('cert-rank-title').textContent = `PREDIKAT: ${rankInfo.badge}`;
+      document.getElementById('cert-pops-val').textContent = totalPops;
+      document.getElementById('cert-combo-val').textContent = `${maxCombo}x`;
+      document.getElementById('cert-level-val').textContent = level;
+
+      try {
+        const certEl = document.getElementById('sfx-certificate-wrap');
+        const canvasOut = await html2canvas(certEl, {
+          scale: 2.5,
+          backgroundColor: '#ffffff',
+          useCORS: true
+        });
+        const link = document.createElement('a');
+        link.download = `Sertifikat-Jelai-${playerName.replace(/\s+/g, '-')}.png`;
+        link.href = canvasOut.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        alert('Gagal mengunduh sertifikat. Silakan coba lagi.');
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    // ============================================================================
+    // KONTROL KEYBOARD, TOMBOL SENTUH & DEK DESKTOP
+    // ============================================================================
+    window.addEventListener('keydown', (e) => {
+      if (isAnyModalOpen()) return;
+      if (e.key === 'p' || e.key === 'P') {
+        togglePause();
+        return;
+      }
+      if (isPaused || isGameOver) return;
+
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+          e.preventDefault();
+          movePieceHorizontal(-2);
+          break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+          e.preventDefault();
+          movePieceHorizontal(2);
+          break;
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+        case 'r':
+        case 'R':
+          e.preventDefault();
+          rotatePiece();
+          break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+          e.preventDefault();
+          softDropStep();
+          softDropStep();
+          break;
+        case ' ':
+          e.preventDefault();
+          hardDropPiece();
+          break;
+      }
+    });
+
+    function bindHoldButton(btnId, actionFn, repeatMs = 85) {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      let timer = null;
+
+      const start = (e) => {
+        e.preventDefault();
+        actionFn();
+        if (repeatMs > 0) {
+          timer = setInterval(actionFn, repeatMs);
+        }
+      };
+      const stop = () => {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      };
+
+      btn.addEventListener('pointerdown', start);
+      btn.addEventListener('pointerup', stop);
+      btn.addEventListener('pointerleave', stop);
+      btn.addEventListener('pointercancel', stop);
+    }
+
+    // Mobile Touch Controls
+    bindHoldButton('ctrl-left', () => movePieceHorizontal(-2), 80);
+    bindHoldButton('ctrl-right', () => movePieceHorizontal(2), 80);
+    bindHoldButton('ctrl-down', () => { softDropStep(); softDropStep(); }, 65);
+    bindHoldButton('ctrl-rotate', () => rotatePiece(), 0);
+    bindHoldButton('ctrl-drop', () => hardDropPiece(), 0);
+
+    // Desktop Interactive Pad Controls
+    bindHoldButton('desk-left', () => movePieceHorizontal(-2), 80);
+    bindHoldButton('desk-right', () => movePieceHorizontal(2), 80);
+    bindHoldButton('desk-down', () => { softDropStep(); softDropStep(); }, 65);
+    bindHoldButton('desk-rotate', () => rotatePiece(), 0);
+    bindHoldButton('desk-drop', () => hardDropPiece(), 0);
+
+    // Gesture langsung di atas wadah jeli
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchMoved = false;
+    const jarZone = document.getElementById('jar-touch-zone');
+
+    jarZone.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('button')) return;
+      touchStartX = e.clientX;
+      touchStartY = e.clientY;
+      touchMoved = false;
+    });
+
+    jarZone.addEventListener('pointermove', (e) => {
+      if (!touchStartX || isPaused || isGameOver || isAnyModalOpen()) return;
+      const dx = e.clientX - touchStartX;
+      const dy = e.clientY - touchStartY;
+      if (Math.abs(dx) >= 18) {
+        const steps = Math.trunc(dx / 18) * 2;
+        movePieceHorizontal(steps);
+        touchStartX = e.clientX;
+        touchMoved = true;
+      } else if (dy >= 28) {
+        softDropStep();
+        softDropStep();
+        touchStartY = e.clientY;
+        touchMoved = true;
+      }
+    });
+
+    jarZone.addEventListener('pointerup', (e) => {
+      if (e.target.closest('button')) return;
+      if (!touchMoved && touchStartX !== 0 && !isPaused && !isGameOver && !isAnyModalOpen()) {
+        rotatePiece();
+      }
+      touchStartX = 0;
+      touchStartY = 0;
+    });
+
+    // Event Tombol UI & Modal Cara Kerja (?)
+    function openGuideModal() {
+      elGuideModal.classList.add('active');
+    }
+    function closeGuideModal() {
+      elGuideModal.classList.remove('active');
+    }
+
+    document.getElementById('btn-open-guide').addEventListener('click', openGuideModal);
+    document.getElementById('btn-open-guide-inline').addEventListener('click', openGuideModal);
+    document.getElementById('btn-close-guide').addEventListener('click', closeGuideModal);
+
+    document.getElementById('btn-pause').addEventListener('click', togglePause);
+    document.getElementById('btn-resume').addEventListener('click', togglePause);
+    document.getElementById('btn-reset').addEventListener('click', resetGame);
+    document.getElementById('btn-drop-desktop').addEventListener('click', hardDropPiece);
+    document.getElementById('btn-finish-early').addEventListener('click', () => {
+      triggerGameOver('Sesi Alkimia Diselesaikan');
+    });
+
+    document.getElementById('btn-play-again').addEventListener('click', resetGame);
+    document.getElementById('btn-save-score').addEventListener('click', saveScoreToLeaderboard);
+    document.getElementById('btn-download-cert').addEventListener('click', downloadCertificate);
+
+    document.getElementById('btn-open-lb').addEventListener('click', () => {
+      renderLeaderboardModal();
+      elLbModal.classList.add('active');
+    });
+    document.getElementById('btn-close-lb').addEventListener('click', () => {
+      elLbModal.classList.remove('active');
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      resetGame();
+      requestAnimationFrame(gameLoop);
+    });
+
+    // Protokol Komunikasi Subfiksi Host-Child (Zero-Scrollbar Contract)
+    function sfxReportHeight() {
+      if (window.parent && window.parent !== window) {
+        const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        window.parent.postMessage({ type: 'SFX_LAB_RESIZE', height: h }, '*');
+      }
+    }
+    window.addEventListener('load', sfxReportHeight);
+    window.addEventListener('resize', sfxReportHeight);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(sfxReportHeight).observe(document.body);
+    }
+  </script>
+</body>
+</html>
