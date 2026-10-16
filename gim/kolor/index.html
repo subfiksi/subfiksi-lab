@@ -5,28 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>KOLOR MATCHER | Subfiksi LAB!</title>
   
-  <!-- Font Tipografi Subfiksi & Arkade (Londrina Solid + Plus Jakarta Sans + JetBrains Mono) -->
+  <!-- Font Tipografi Subfiksi: Inter (UI Bersih) + JetBrains Mono (Angka Presisi) + Londrina Solid (Logo Multicolor) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@400;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&family=Londrina+Solid:wght@900&display=swap" rel="stylesheet">
   
   <!-- html2canvas untuk Ekspor Sertifikat PNG -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
     /* ==========================================================================
-       SUBFIKSI DESIGN SYSTEM (SDS) — COLORFUL FLAT DESIGN TOKENS
+       SUBFIKSI DESIGN SYSTEM (SDS) — CLEAN & COLORFUL FLAT DESIGN
        ========================================================================== */
     :root {
       --sfx-white: #ffffff;
       --sfx-bg: #f8fafc;
       --sfx-card-bg: #ffffff;
       --sfx-border: #e2e8f0;
+      --sfx-border-subtle: #f1f5f9;
       --sfx-border-dark: #cbd5e1;
       --sfx-charcoal: #0f172a;
+      --sfx-slate: #334155;
       --sfx-muted: #64748b;
 
-      /* Palet Identitas Multicolor Kolor Matcher (Playful & Flat) */
+      /* Palet Identitas Multicolor Kolor Matcher (Ceria & Nyaman di Mata) */
       --c-red: #ef4444;
       --c-red-hover: #dc2626;
       --c-orange: #ff6600;
@@ -49,22 +51,21 @@
       --sfx-orange-hover: var(--c-orange-hover);
       --sfx-green: var(--c-green);
 
-      /* Border & Shadow Colorful Flat Design (Bebas Garis Hitam Kaku) */
+      /* Elevasi & Border Halus */
       --flat-border: 1px solid var(--sfx-border);
-      --flat-border-subtle: 1px solid #f1f5f9;
-      --flat-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
-      --flat-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
-      --flat-shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.12);
+      --flat-shadow: 0 4px 24px -4px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      --flat-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --flat-shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.14);
 
-      /* Tipografi */
-      --font-display: 'Londrina Solid', cursive, sans-serif;
-      --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      /* Hierarki Tipografi: Inter untuk UI, Mono untuk Angka, Londrina khusus Logo & Skor Hero */
+      --font-main: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', Consolas, monospace;
+      --font-display: 'Londrina Solid', cursive, sans-serif;
 
-      /* Radius Membulat Empuk */
+      /* Radius Sudut Modern */
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 16px;
+      --radius-lg: 18px;
       --radius-pill: 999px;
 
       --sat-bg: linear-gradient(to right, hsl(180, 0%, 50%), hsl(180, 100%, 50%));
@@ -88,11 +89,12 @@
       background-color: var(--sfx-bg);
       color: var(--sfx-charcoal);
       margin: 0;
-      padding: 16px 16px 50px 16px;
+      padding: 20px 16px 48px 16px;
       min-height: 100%;
       height: auto;
       overflow-y: visible;
-      -webkit-overflow-scrolling: touch;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -113,30 +115,29 @@
     /* Container Aplikasi Utama */
     .sfx-app-wrapper {
       width: 100%;
-      max-width: 920px;
+      max-width: 900px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
     }
 
     /* ==========================================================================
-       HEADER & TOP APP BAR (COLORFUL FLAT DESIGN)
+       HEADER & TOP APP BAR (BERSIH, RINGKAS & PROPORSIONAL)
        ========================================================================== */
     .sfx-top-bar {
-      background: #ffffff;
+      background: var(--sfx-white);
       border: var(--flat-border);
       border-radius: var(--radius-lg);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       box-shadow: var(--flat-shadow);
-      padding: 12px 20px;
+      padding: 12px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      position: relative;
+      gap: 14px;
     }
 
-    /* Kolom 1: Brand / Judul */
+    /* Kolom 1: Brand & Logo Multicolor */
     .sfx-brand-col {
       display: flex;
       align-items: center;
@@ -148,15 +149,16 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      letter-spacing: 0.05em;
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
       line-height: 1;
-      padding: 4px 9px;
-      border-radius: var(--radius-sm);
+      padding: 5px 8px;
+      border-radius: 6px;
       background: #fff7ed;
       color: var(--c-orange);
-      border: 1px solid #fed7aa;
+      border: 1px solid #ffedd5;
       white-space: nowrap;
     }
 
@@ -164,15 +166,16 @@
       flex-shrink: 0;
     }
 
+    /* Satu-satunya penggunaan Londrina Solid di Header: Logo Ikonik */
     .sfx-app-title {
       font-family: var(--font-display);
-      font-size: 1.85rem;
+      font-size: 1.75rem;
       font-weight: 900;
       letter-spacing: 0.03em;
       line-height: 1;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       white-space: nowrap;
       user-select: none;
     }
@@ -184,15 +187,14 @@
 
     .sfx-title-word span {
       display: inline-block;
-      text-shadow: none;
       transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .sfx-title-word span:hover {
-      transform: translateY(-2px) scale(1.08);
+      transform: translateY(-2px) scale(1.06);
     }
 
-    /* Palet Huruf Multicolor Solid & Bersih */
+    /* Palet Huruf Multicolor Solid */
     .sfx-letter-k  { color: var(--c-red); }
     .sfx-letter-o1 { color: var(--c-red); }
     .sfx-letter-l  { color: var(--c-orange); }
@@ -207,47 +209,42 @@
     .sfx-letter-e  { color: var(--c-green); }
     .sfx-letter-r2 { color: var(--c-lime); }
 
-    /* Kolom 2: Status Ronde & Skor (Tengah di Desktop) */
+    /* Kolom 2: Status Ronde & Skor (Pill Horizontal Ringkas dengan Font Inter & Mono) */
     .sfx-stats-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .sfx-stat-box {
       background: #f8fafc;
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-md);
-      box-shadow: none;
-      padding: 6px 14px;
-      display: flex;
-      flex-direction: column;
+      border-radius: 10px;
+      padding: 6px 12px;
+      display: inline-flex;
       align-items: center;
-      min-width: 84px;
-      transition: all 0.2s ease;
+      gap: 8px;
     }
 
     .sfx-stat-box-score {
-      min-width: 108px;
       background: #fff7ed;
       border-color: #ffedd5;
     }
 
     .sfx-stat-label {
       font-family: var(--font-main);
-      font-size: 0.62rem;
-      font-weight: 800;
+      font-size: 0.68rem;
+      font-weight: 700;
       color: var(--sfx-muted);
-      letter-spacing: 0.08em;
-      line-height: 1;
-      margin-bottom: 3px;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .sfx-stat-val {
-      font-family: var(--font-display);
-      font-size: 1.45rem;
-      font-weight: 900;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 800;
       color: var(--sfx-charcoal);
       line-height: 1;
       white-space: nowrap;
@@ -255,18 +252,17 @@
 
     .sfx-stat-box-score .sfx-stat-val {
       color: var(--c-orange);
-      text-shadow: none;
     }
 
     .sfx-stat-sep,
     .sfx-stat-val span {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 900;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
       color: var(--sfx-muted);
     }
 
-    /* Kolom 3: Tombol Aksi (Kanan di Desktop) */
+    /* Kolom 3: Tombol Navigasi (Inter SemiBold Bersih) */
     .sfx-top-actions {
       display: flex;
       align-items: center;
@@ -276,14 +272,14 @@
 
     .sfx-btn-icon-nav {
       background: #ffffff;
-      color: #334155;
+      color: var(--sfx-slate);
       border: 1px solid var(--sfx-border);
-      padding: 7px 14px;
-      border-radius: var(--radius-md);
+      padding: 7px 12px;
+      border-radius: 10px;
       box-shadow: var(--flat-shadow-sm);
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      letter-spacing: 0.03em;
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -298,119 +294,30 @@
       border-color: #cbd5e1;
       color: var(--c-orange);
       transform: translateY(-1px);
-      box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
     }
 
     .sfx-btn-icon-nav:active {
-      transform: translateY(1px);
-      box-shadow: none;
+      transform: translateY(0);
     }
 
     .sfx-nav-svg {
       flex-shrink: 0;
+      color: var(--sfx-muted);
+      transition: color 0.15s ease;
     }
 
-    /* ==========================================================================
-       RESPONSIVITAS KHUSUS HP (< 680px): DUA BARIS LEGA ANTI-OVERFLOW
-       ========================================================================== */
-    @media (max-width: 680px) {
-      .sfx-top-bar {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-          "brand actions"
-          "stats stats";
-        gap: 10px;
-        padding: 10px 14px;
-        border-radius: var(--radius-md);
-      }
-
-      .sfx-brand-col {
-        grid-area: brand;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        min-width: 0;
-      }
-
-      .sfx-brand-tag {
-        font-size: 0.8rem;
-        padding: 3px 7px;
-        border-width: 1px;
-      }
-
-      .sfx-app-title {
-        font-size: clamp(1.2rem, 5vw, 1.55rem);
-        gap: 4px;
-      }
-
-      .sfx-title-word span {
-        text-shadow: none;
-      }
-
-      .sfx-top-actions {
-        grid-area: actions;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-shrink: 0;
-      }
-
-      .sfx-btn-icon-nav {
-        padding: 6px 10px;
-        font-size: 0.95rem;
-        gap: 4px;
-        border-radius: var(--radius-sm);
-      }
-
-      .sfx-nav-svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      .sfx-stats-group {
-        grid-area: stats;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        width: 100%;
-      }
-
-      .sfx-stat-box {
-        padding: 6px 10px;
-        min-width: 0;
-        border-radius: var(--radius-sm);
-      }
-
-      .sfx-stat-box-score {
-        min-width: 0;
-      }
-
-      .sfx-stat-label {
-        font-size: 0.6rem;
-      }
-
-      .sfx-stat-val {
-        font-size: 1.3rem;
-      }
-
-      .sfx-timeline-track {
-        height: 8px;
-        margin-bottom: 12px;
-      }
+    .sfx-btn-icon-nav:hover .sfx-nav-svg {
+      color: var(--c-orange);
     }
 
-    /* Progress Timeline Bar */
+    /* Progress Timeline Bar (Sleek Rainbow Bar) */
     .sfx-timeline-track {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background-color: #e2e8f0;
-      border: none;
       border-radius: 999px;
-      box-shadow: none;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       overflow: hidden;
-      padding: 0;
     }
 
     .sfx-timeline-fill {
@@ -422,190 +329,141 @@
     }
 
     /* ==========================================================================
-       GRID KOMPARASI WARNA (PANEL KIRI & KANAN COLORFUL FLAT)
+       GRID KOMPARASI WARNA (KARTU LEGA, BERSIH & NYAMAN DI MATA)
        ========================================================================== */
     .sfx-game-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
+      grid-template-columns: 1fr 1.08fr;
+      gap: 18px;
+      align-items: stretch;
     }
 
     .sfx-panel {
       background: var(--sfx-white);
       border: var(--flat-border);
       border-radius: var(--radius-lg);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
       box-shadow: var(--flat-shadow);
       position: relative;
+      gap: 14px;
     }
 
     .sfx-panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 18px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--sfx-border);
+      gap: 8px;
     }
 
     .sfx-panel-title {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      letter-spacing: 0.04em;
-      line-height: 1;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
     }
 
+    /* Indikator Titik Warna (Menggantikan banyak badge teks yang bertumpuk) */
+    .sfx-color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sfx-dot-target {
+      background-color: var(--c-red);
+      box-shadow: 0 0 0 3px #fee2e2;
+    }
+
+    .sfx-dot-mix {
+      background-color: var(--c-sky);
+      box-shadow: 0 0 0 3px #e0f2fe;
+    }
+
+    .sfx-panel-sub {
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--sfx-charcoal);
+      letter-spacing: -0.01em;
+    }
+
     .sfx-title-pill {
-      font-family: var(--font-display);
-      font-size: 0.88rem;
-      letter-spacing: 0.05em;
-      line-height: 1;
-      padding: 3px 9px;
-      border-radius: var(--radius-sm);
-      border: none;
-      box-shadow: none;
-      color: #ffffff;
+      font-family: var(--font-main);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
     }
 
     .sfx-pill-target {
-      background: #fee2e2;
+      background: #fef2f2;
       color: var(--c-red);
       border: 1px solid #fecaca;
     }
 
-    .sfx-pill-mix {
-      background: #e0f2fe;
-      color: var(--c-sky);
-      border: 1px solid #bae6fd;
-    }
-
-    .sfx-panel-sub {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      color: var(--sfx-charcoal);
-    }
-
+    /* Badge duplikat 1/10 disembunyikan agar tidak redundan dengan Top Bar */
     .sfx-panel-badge {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 900;
-      background: #f1f5f9;
-      color: #475569;
-      border: 1px solid #e2e8f0;
-      padding: 2px 10px;
-      border-radius: var(--radius-sm);
-      letter-spacing: 0.05em;
-    }
-
-    /* Panel Kiri: Kanvas Target Warna (Pure Flat Color Canvas) */
-    .sfx-target-canvas-box {
-      flex: 1;
-      min-height: 220px;
-      position: relative;
-      background-color: #e2e8f0;
-      transition: background-color 0.25s ease;
-      overflow: hidden;
-    }
-
-    /* Menghapus refleksi palsu agar mata dapat menilai warna secara murni */
-    .sfx-target-canvas-box::before,
-    .sfx-mix-canvas-box::before {
       display: none;
     }
 
-    .sfx-canvas-overlay-tag {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      background: rgba(15, 23, 42, 0.72);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: #ffffff;
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      letter-spacing: 0.06em;
-      padding: 3px 10px;
-      border-radius: var(--radius-pill);
-      border: none;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-      z-index: 3;
+    /* Kode Formula HSL Langsung di Kanan Header Racikan */
+    .sfx-mix-values-code {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #f0f9ff;
+      color: var(--c-sky);
+      border: 1px solid #bae6fd;
+      border-radius: 6px;
+      padding: 4px 8px;
+      white-space: nowrap;
     }
 
-    .sfx-canvas-overlay-tag.sfx-tag-target {
-      background: rgba(220, 38, 38, 0.85);
+    /* Kanvas Warna Murni (Rounded Swatch Tanpa Teks/Stiker Mengganggu) */
+    .sfx-target-canvas-box {
+      flex: 1;
+      min-height: 250px;
+      border-radius: 14px;
+      background-color: #e2e8f0;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06);
+      transition: background-color 0.25s ease;
     }
 
-    .sfx-canvas-overlay-tag.sfx-tag-mix {
-      background: rgba(2, 132, 199, 0.85);
+    .sfx-mix-canvas-box {
+      width: 100%;
+      height: 136px;
+      border-radius: 14px;
+      background-color: #94a3b8;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06);
+      transition: background-color 0.08s ease;
     }
 
     .sfx-panel-note {
-      padding: 12px 18px;
+      padding: 12px 14px;
       background: #f8fafc;
-      border-top: 1px solid var(--sfx-border);
-      font-size: 0.82rem;
+      border: 1px solid var(--sfx-border-subtle);
+      border-radius: 10px;
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--sfx-muted);
       line-height: 1.5;
     }
 
-    /* Panel Kanan: Kanvas Racikan Pemain */
-    .sfx-mix-canvas-box {
-      width: 100%;
-      height: 140px;
-      position: relative;
-      background-color: #94a3b8;
-      border-bottom: 1px solid var(--sfx-border);
-      transition: background-color 0.1s ease;
-      overflow: hidden;
-    }
-
-    .sfx-mix-values-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding: 9px 18px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--sfx-border);
-      font-family: var(--font-main);
-      font-size: 0.76rem;
-      color: #475569;
-    }
-
-    .sfx-mix-values-label {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      letter-spacing: 0.04em;
-      color: var(--sfx-charcoal);
-    }
-
-    .sfx-mix-values-code {
-      font-family: var(--font-mono);
-      font-size: 0.76rem;
+    .sfx-panel-note strong {
+      color: var(--sfx-slate);
       font-weight: 700;
-      background: #ffffff;
-      color: var(--c-blue);
-      border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-sm);
-      padding: 3px 9px;
-      box-shadow: none;
     }
 
-    /* Slider Controls (Sleek Flat & Tactile) */
+    /* Slider Controls (Rapi, Lega & Mudah Digeser) */
     .sfx-controls-card {
-      padding: 18px 20px;
-      background: #ffffff;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
+      padding: 4px 0;
     }
 
     .sfx-slider-row {
@@ -621,26 +479,23 @@
     }
 
     .sfx-slider-name {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      color: var(--sfx-charcoal);
-      line-height: 1;
+      font-family: var(--font-main);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--sfx-slate);
+      letter-spacing: 0.01em;
     }
 
     .sfx-slider-val-tag {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 900;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
       color: var(--sfx-charcoal);
       background: #f8fafc;
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-sm);
-      padding: 2px 9px;
-      box-shadow: none;
-      line-height: 1;
-      min-width: 44px;
+      border-radius: 6px;
+      padding: 2px 8px;
+      min-width: 46px;
       text-align: center;
     }
 
@@ -649,7 +504,7 @@
       -webkit-appearance: none;
       appearance: none;
       width: 100%;
-      height: 32px;
+      height: 28px;
       background: transparent;
       cursor: pointer;
       touch-action: pan-y;
@@ -659,21 +514,21 @@
       outline: none;
     }
 
-    /* Trek Slider: Kapsul Halus Flat Murni */
+    /* Trek Slider: Kapsul Halus */
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%;
-      height: 12px;
+      height: 10px;
       border-radius: 999px;
       border: none;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.12);
     }
 
     input[type=range]::-moz-range-track {
       width: 100%;
-      height: 12px;
+      height: 10px;
       border-radius: 999px;
       border: none;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.12);
     }
 
     #hue-slider::-webkit-slider-runnable-track {
@@ -697,98 +552,282 @@
       background: var(--light-bg);
     }
 
-    /* Kenop Slider (Thumb): Kancing Bulat Flat Minimalis Modern */
+    /* Kenop Slider (Thumb): Kancing Putih Bersih */
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      height: 26px;
-      width: 26px;
+      height: 22px;
+      width: 22px;
       border-radius: 50%;
       background: #ffffff;
       border: 2px solid #cbd5e1;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
-      margin-top: -7px;
+      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.16);
+      margin-top: -6px;
       cursor: grab;
       transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.12s ease, box-shadow 0.12s ease;
     }
 
     input[type=range]::-webkit-slider-thumb:hover {
-      transform: scale(1.15);
+      transform: scale(1.14);
       border-color: var(--c-orange);
-      box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2);
+      box-shadow: 0 3px 8px rgba(255, 102, 0, 0.25);
     }
 
     input[type=range]::-webkit-slider-thumb:active {
-      transform: scale(1.22);
+      transform: scale(1.2);
       border-color: var(--c-orange);
-      box-shadow: 0 2px 6px rgba(255, 102, 0, 0.3);
+      box-shadow: 0 2px 6px rgba(255, 102, 0, 0.35);
       cursor: grabbing;
     }
 
     input[type=range]::-moz-range-thumb {
-      height: 24px;
-      width: 24px;
+      height: 22px;
+      width: 22px;
       border-radius: 50%;
       background: #ffffff;
       border: 2px solid #cbd5e1;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.16);
       cursor: grab;
       transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.12s ease, box-shadow 0.12s ease;
     }
 
     input[type=range]::-moz-range-thumb:hover {
-      transform: scale(1.15);
+      transform: scale(1.14);
       border-color: var(--c-orange);
-      box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2);
+      box-shadow: 0 3px 8px rgba(255, 102, 0, 0.25);
     }
 
     input[type=range]::-moz-range-thumb:active {
-      transform: scale(1.22);
+      transform: scale(1.2);
       border-color: var(--c-orange);
-      box-shadow: 0 2px 6px rgba(255, 102, 0, 0.3);
+      box-shadow: 0 2px 6px rgba(255, 102, 0, 0.35);
       cursor: grabbing;
     }
 
-    /* Tombol Submit Utama Flat Pop */
+    /* Tombol Submit Utama: Rounded Button di Dalam Kartu (Tidak Menempel Siku Tabel) */
     .sfx-submit-btn {
       width: 100%;
-      height: 56px;
+      height: 48px;
       background-color: var(--c-orange);
       color: #ffffff;
       border: none;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      font-family: var(--font-display);
-      font-size: 1.45rem;
-      font-weight: 900;
-      letter-spacing: 0.05em;
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
-      text-shadow: none;
-      box-shadow: none;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.22);
       transition: all 0.15s ease;
       user-select: none;
+      margin-top: auto;
     }
 
     .sfx-submit-btn:hover {
       background-color: var(--c-orange-hover);
-      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(255, 102, 0, 0.3);
     }
 
     .sfx-submit-btn:active {
-      transform: scale(0.99);
-      background-color: #c2410c;
+      transform: translateY(0) scale(0.99);
     }
 
     .sfx-btn-svg {
       flex-shrink: 0;
-      filter: none;
     }
 
     /* ==========================================================================
-       MODAL UNIVERSAL & OVERLAY COLORFUL FLAT
+       RESPONSIVITAS HANDPHONE & TABLET (ANTI-SUMPEK, LEGA & NYAMAN DI MATA)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      body {
+        padding: 12px 12px 40px 12px;
+      }
+
+      /* Top Bar Handphone: 2 Baris Ringkas & Bersih */
+      .sfx-top-bar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "brand actions"
+          "stats stats";
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        margin-bottom: 10px;
+      }
+
+      .sfx-brand-col {
+        grid-area: brand;
+        gap: 7px;
+        min-width: 0;
+      }
+
+      .sfx-brand-tag {
+        font-size: 0.68rem;
+        padding: 4px 6px;
+      }
+
+      .sfx-app-title {
+        font-size: 1.45rem;
+        gap: 5px;
+      }
+
+      .sfx-top-actions {
+        grid-area: actions;
+        gap: 6px;
+      }
+
+      .sfx-btn-icon-nav {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+        border-radius: 8px;
+        gap: 4px;
+      }
+
+      .sfx-nav-svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .sfx-stats-group {
+        grid-area: stats;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .sfx-stat-box {
+        justify-content: space-between;
+        padding: 7px 12px;
+        border-radius: 8px;
+      }
+
+      .sfx-timeline-track {
+        height: 5px;
+        margin-bottom: 12px;
+      }
+
+      /* Kartu Utama di HP: Satu Kartu Putih Lega dengan 2 Swatch Berdampingan (Gap 12px) */
+      .sfx-panel {
+        display: contents !important;
+      }
+
+      .sfx-game-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-areas:
+          "head-target head-mix"
+          "box-target  box-mix"
+          "hsl-pill    hsl-pill"
+          "controls    controls"
+          "submit      submit" !important;
+        column-gap: 12px !important;
+        row-gap: 0 !important;
+        background: var(--sfx-white);
+        border: var(--flat-border) !important;
+        border-radius: 16px !important;
+        padding: 16px !important;
+        box-shadow: var(--flat-shadow) !important;
+      }
+
+      .sfx-panel-header.sfx-target-header {
+        grid-area: head-target;
+        margin-bottom: 8px;
+      }
+
+      .sfx-panel-header.sfx-mix-header {
+        grid-area: head-mix;
+        margin-bottom: 8px;
+      }
+
+      /* Sembunyikan pill sekunder di header HP agar judul pendek & tidak pernah terpotong */
+      .sfx-title-pill {
+        display: none !important;
+      }
+
+      .sfx-panel-sub {
+        font-size: 0.84rem;
+      }
+
+      /* Pindahkan pill kode HSL ke bawah kedua kotak warna agar lega di HP */
+      .sfx-mix-values-code {
+        grid-area: hsl-pill;
+        display: block;
+        text-align: center;
+        margin-top: 12px;
+        padding: 6px 10px;
+        font-size: 0.74rem;
+        background: #f8fafc;
+        color: var(--sfx-slate);
+        border-color: var(--sfx-border);
+        border-radius: 8px;
+      }
+
+      /* Dua Kotak Warna Berdampingan dengan Sudut Membulat & Jarak 12px (Tidak Sumpek) */
+      .sfx-target-canvas-box {
+        grid-area: box-target;
+        min-height: 124px !important;
+        height: 124px !important;
+        border-radius: 12px !important;
+      }
+
+      .sfx-mix-canvas-box {
+        grid-area: box-mix;
+        min-height: 124px !important;
+        height: 124px !important;
+        border-radius: 12px !important;
+      }
+
+      .sfx-panel-note {
+        display: none !important;
+      }
+
+      .sfx-controls-card {
+        grid-area: controls;
+        padding: 16px 0 18px 0;
+        gap: 14px;
+      }
+
+      .sfx-slider-row {
+        gap: 5px;
+      }
+
+      .sfx-slider-name {
+        font-size: 0.8rem;
+      }
+
+      .sfx-slider-val-tag {
+        font-size: 0.75rem;
+        padding: 2px 7px;
+      }
+
+      input[type=range] {
+        height: 30px;
+      }
+
+      input[type=range]::-webkit-slider-thumb {
+        height: 24px;
+        width: 24px;
+        margin-top: -7px;
+      }
+
+      .sfx-submit-btn {
+        grid-area: submit;
+        height: 48px;
+        font-size: 0.92rem;
+        border-radius: 12px;
+      }
+    }
+
+    /* ==========================================================================
+       MODAL UNIVERSAL & OVERLAY (BERSIH & MODERN)
        ========================================================================== */
     .sfx-modal-backdrop {
       position: fixed;
@@ -796,14 +835,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(15, 23, 42, 0.5);
+      background: rgba(15, 23, 42, 0.45);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       z-index: 1000;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 14px;
+      padding: 16px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
@@ -817,19 +856,19 @@
     .sfx-modal-card {
       background: var(--sfx-white);
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-lg);
+      border-radius: 20px;
       width: 100%;
-      max-width: 480px;
+      max-width: 460px;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
       box-shadow: var(--flat-shadow-lg);
       overflow: hidden;
-      animation: sfxPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation: sfxPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     @keyframes sfxPop {
-      from { transform: scale(0.94) translateY(10px); opacity: 0; }
+      from { transform: scale(0.95) translateY(8px); opacity: 0; }
       to { transform: scale(1) translateY(0); opacity: 1; }
     }
 
@@ -844,11 +883,10 @@
     }
 
     .sfx-modal-title {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: 900;
+      font-family: var(--font-main);
+      font-size: 1.05rem;
+      font-weight: 700;
       color: var(--sfx-charcoal);
-      letter-spacing: 0.03em;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -863,29 +901,28 @@
       background: #ffffff;
       border: 1px solid var(--sfx-border);
       color: var(--sfx-muted);
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 900;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-weight: 700;
       cursor: pointer;
       line-height: 1;
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      box-shadow: none;
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
       transition: all 0.12s ease;
     }
 
     .sfx-modal-close-btn:hover {
-      background: #fee2e2;
-      border-color: #fca5a5;
+      background: #fef2f2;
+      border-color: #fecaca;
       color: var(--c-red);
     }
 
-    .sfx-modal-close-btn:active {
-      transform: scale(0.95);
-    }
-
     .sfx-modal-body {
-      padding: 20px 20px;
+      padding: 22px 20px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       text-align: center;
@@ -897,25 +934,23 @@
       border-top: 1px solid var(--sfx-border);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       flex-shrink: 0;
     }
 
     .sfx-btn-action {
       width: 100%;
-      padding: 12px 18px;
-      border-radius: var(--radius-md);
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 0.92rem;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       border: none;
-      box-shadow: none;
       transition: all 0.15s ease;
       user-select: none;
     }
@@ -925,26 +960,23 @@
     }
 
     .sfx-btn-action:active {
-      transform: scale(0.98);
+      transform: scale(0.99);
     }
 
     .sfx-btn-primary {
       background: var(--c-orange);
       color: #ffffff;
-      text-shadow: none;
-      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.25);
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.22);
     }
 
     .sfx-btn-primary:hover {
       background: var(--c-orange-hover);
-      box-shadow: 0 6px 16px rgba(255, 102, 0, 0.35);
     }
 
     .sfx-btn-secondary {
       background: #ffffff;
-      color: #334155;
+      color: var(--sfx-slate);
       border: 1px solid var(--sfx-border);
-      box-shadow: var(--flat-shadow-sm);
     }
 
     .sfx-btn-secondary:hover {
@@ -953,24 +985,22 @@
       color: var(--c-blue);
     }
 
-    /* Modal Hasil Ronde */
+    /* Modal Hasil Ronde: Skor Besar Tetap Pakai Londrina Solid Sebagai Aksen Selebrasi */
     .sfx-score-big {
       font-family: var(--font-display);
-      font-size: 4.5rem;
+      font-size: 4.2rem;
       font-weight: 900;
       color: var(--c-orange);
-      text-shadow: none;
       line-height: 1;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       letter-spacing: 0.02em;
     }
 
     .sfx-score-subtitle {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      font-weight: 900;
+      font-family: var(--font-main);
+      font-size: 0.92rem;
+      font-weight: 700;
       color: var(--sfx-muted);
-      letter-spacing: 0.05em;
       margin-bottom: 18px;
     }
 
@@ -984,52 +1014,51 @@
     .sfx-color-compare-card {
       background: #f8fafc;
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-md);
-      box-shadow: none;
+      border-radius: 12px;
       padding: 12px;
       text-align: left;
     }
 
     .sfx-compare-label {
       display: block;
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 900;
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 700;
       letter-spacing: 0.04em;
-      color: #475569;
-      margin-bottom: 6px;
+      text-transform: uppercase;
+      color: var(--sfx-muted);
+      margin-bottom: 8px;
     }
 
     .sfx-compare-swatch {
       width: 100%;
-      height: 48px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--sfx-border);
-      box-shadow: none;
-      margin-bottom: 6px;
+      height: 52px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+      margin-bottom: 8px;
     }
 
     .sfx-compare-hsl {
       font-family: var(--font-mono);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      color: var(--sfx-charcoal);
+      color: var(--sfx-slate);
       background: #ffffff;
       border: 1px solid var(--sfx-border);
-      border-radius: 4px;
-      padding: 3px 6px;
+      border-radius: 6px;
+      padding: 4px 6px;
       text-align: center;
     }
 
     /* ==========================================================================
-       SERTIFIKAT HASIL UJI KEPEKAAN WARNA (PIAGAM FLAT RESMI)
+       SERTIFIKAT HASIL UJI KEPEKAAN WARNA (PIAGAM RESMI BERSIH)
        ========================================================================== */
     #sfx-certificate-wrap {
       display: none;
       background: #ffffff;
       border: 1.5px solid var(--sfx-border-dark);
-      border-radius: var(--radius-lg);
-      padding: 20px 18px;
+      border-radius: 16px;
+      padding: 18px 16px;
       margin-bottom: 16px;
       text-align: left;
       box-shadow: var(--flat-shadow);
@@ -1047,34 +1076,33 @@
     }
 
     .sfx-cert-title-col h3 {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: 900;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 800;
       color: var(--c-blue);
-      letter-spacing: 0.03em;
-      line-height: 1.1;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
     }
 
     .sfx-cert-title-col p {
       font-family: var(--font-main);
-      font-size: 0.68rem;
-      font-weight: 700;
+      font-size: 0.65rem;
+      font-weight: 600;
       color: var(--sfx-muted);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       margin-top: 2px;
     }
 
     .sfx-cert-badge {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      font-weight: 900;
-      padding: 3px 9px;
+      font-family: var(--font-main);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 8px;
       background: #fef9c3;
       color: var(--c-yellow-dark);
       border: 1px solid #fde047;
-      border-radius: var(--radius-sm);
-      box-shadow: none;
+      border-radius: 6px;
     }
 
     .sfx-cert-player-row {
@@ -1084,21 +1112,21 @@
       padding: 10px 14px;
       background: #f8fafc;
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-md);
+      border-radius: 10px;
       margin-bottom: 12px;
     }
 
     .sfx-cert-player-name {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 900;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 800;
       color: var(--sfx-charcoal);
     }
 
     .sfx-cert-player-date {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.7rem;
+      font-weight: 600;
       color: var(--sfx-muted);
     }
 
@@ -1108,18 +1136,16 @@
       align-items: center;
       background: #eff6ff;
       border: 1px solid #bfdbfe;
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
+      border-radius: 10px;
+      padding: 12px 14px;
       margin-bottom: 12px;
-      box-shadow: none;
     }
 
     .sfx-cert-total-val {
       font-family: var(--font-display);
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 900;
       color: var(--c-orange);
-      text-shadow: none;
       line-height: 1;
     }
 
@@ -1128,17 +1154,16 @@
     }
 
     .sfx-cert-grade-title {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 900;
+      font-family: var(--font-main);
+      font-size: 0.92rem;
+      font-weight: 800;
       color: var(--c-blue);
-      letter-spacing: 0.03em;
     }
 
     .sfx-cert-grade-acc {
       font-family: var(--font-main);
-      font-size: 0.74rem;
-      font-weight: 700;
+      font-size: 0.72rem;
+      font-weight: 600;
       color: var(--sfx-muted);
     }
 
@@ -1153,7 +1178,7 @@
     .sfx-cert-item {
       background: #ffffff;
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
       padding: 6px 10px;
       display: flex;
       align-items: center;
@@ -1161,10 +1186,10 @@
     }
 
     .sfx-cert-round-tag {
-      font-family: var(--font-display);
-      font-size: 0.92rem;
-      font-weight: 900;
-      color: #64748b;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--sfx-muted);
       width: 26px;
     }
 
@@ -1174,16 +1199,16 @@
     }
 
     .sfx-cert-color-chip {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       border-radius: 4px;
-      border: 1px solid var(--sfx-border);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.1);
     }
 
     .sfx-cert-item-acc {
       font-family: var(--font-mono);
       font-size: 0.74rem;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--sfx-charcoal);
       width: 36px;
       text-align: right;
@@ -1196,8 +1221,8 @@
       justify-content: space-between;
       align-items: center;
       font-family: var(--font-main);
-      font-size: 0.65rem;
-      font-weight: 700;
+      font-size: 0.64rem;
+      font-weight: 600;
       color: var(--sfx-muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -1214,32 +1239,29 @@
       flex: 1;
       padding: 10px 14px;
       font-family: var(--font-main);
-      font-size: 0.9rem;
-      font-weight: 700;
+      font-size: 0.88rem;
+      font-weight: 600;
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-md);
+      border-radius: 10px;
       outline: none;
-      box-shadow: none;
       background: #ffffff;
       color: var(--sfx-charcoal);
     }
 
     .sfx-name-input:focus {
       border-color: var(--c-orange);
-      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.15);
+      box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.12);
     }
 
     .sfx-btn-save-score {
-      padding: 10px 18px;
+      padding: 10px 16px;
       background: var(--c-green);
       color: #ffffff;
       border: none;
-      border-radius: var(--radius-md);
-      box-shadow: none;
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: 0.03em;
+      border-radius: 10px;
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.15s ease;
@@ -1249,12 +1271,8 @@
       background: var(--c-darkgreen);
     }
 
-    .sfx-btn-save-score:active {
-      transform: scale(0.98);
-    }
-
     /* ==========================================================================
-       TABEL PAPAN SKOR (LEADERBOARD FLAT)
+       TABEL PAPAN SKOR (LEADERBOARD BERSIH)
        ========================================================================== */
     .sfx-leaderboard-list {
       display: flex;
@@ -1267,11 +1285,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 16px;
+      padding: 10px 14px;
       background: #ffffff;
       border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-md);
-      box-shadow: none;
+      border-radius: 12px;
       transition: all 0.12s ease;
     }
 
@@ -1287,23 +1304,21 @@
     }
 
     .sfx-lb-badge-rank {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 900;
-      width: 32px;
-      height: 32px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      width: 30px;
+      height: 30px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: none;
       border-radius: 50%;
-      box-shadow: none;
       flex-shrink: 0;
     }
 
     .sfx-rank-1 {
       background: var(--c-yellow);
-      color: #78350f;
+      color: #ffffff;
     }
 
     .sfx-rank-2 {
@@ -1313,7 +1328,7 @@
 
     .sfx-rank-3 {
       background: #fed7aa;
-      color: #7c2d12;
+      color: #9a3412;
     }
 
     .sfx-rank-other {
@@ -1323,25 +1338,24 @@
 
     .sfx-lb-name {
       font-family: var(--font-main);
-      font-size: 0.92rem;
-      font-weight: 800;
+      font-size: 0.88rem;
+      font-weight: 700;
       color: var(--sfx-charcoal);
     }
 
     .sfx-lb-meta {
       font-family: var(--font-main);
       font-size: 0.68rem;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--sfx-muted);
     }
 
     .sfx-lb-score {
-      font-family: var(--font-display);
-      font-size: 1.45rem;
-      font-weight: 900;
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 800;
       color: var(--c-orange);
       text-align: right;
-      line-height: 1;
     }
 
     .sfx-lb-empty {
@@ -1349,157 +1363,8 @@
       text-align: center;
       color: var(--sfx-muted);
       font-size: 0.82rem;
+      line-height: 1.5;
     }
-
-    /* ==========================================================================
-       RESPONSIVITAS MOBILE (PANEL-PANEL PERMAINAN BERDAMPINGAN / DUEL FLAT)
-       ========================================================================== */
-    @media (max-width: 768px) {
-      body {
-        padding: 10px 10px 50px 10px;
-      }
-
-      /* Tampilan Berdampingan (Side-by-Side) di Ponsel agar Target & Racikan Terlihat Bersamaan */
-      .sfx-panel {
-        display: contents !important;
-      }
-
-      .sfx-game-grid {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        grid-template-areas:
-          "head-target head-mix"
-          "box-target  box-mix"
-          "values      values"
-          "controls    controls"
-          "submit      submit" !important;
-        gap: 0 !important;
-        background: var(--sfx-white);
-        border: 1px solid var(--sfx-border) !important;
-        border-radius: var(--radius-lg) !important;
-        overflow: hidden;
-        box-shadow: var(--flat-shadow) !important;
-      }
-
-      .sfx-panel-header.sfx-target-header {
-        grid-area: head-target;
-        border-right: 1px solid var(--sfx-border);
-        border-bottom: 1px solid var(--sfx-border);
-        padding: 10px 12px;
-      }
-
-      .sfx-panel-header.sfx-mix-header {
-        grid-area: head-mix;
-        border-bottom: 1px solid var(--sfx-border);
-        padding: 10px 12px;
-      }
-
-      .sfx-panel-title {
-        font-size: 0.95rem;
-        gap: 6px;
-      }
-
-      .sfx-title-pill {
-        font-size: 0.78rem;
-        padding: 2px 7px;
-      }
-
-      .sfx-panel-sub {
-        font-size: 0.95rem;
-      }
-
-      .sfx-panel-badge {
-        font-size: 0.95rem;
-        padding: 1px 7px;
-      }
-
-      .sfx-target-canvas-box {
-        grid-area: box-target;
-        min-height: 110px !important;
-        height: 110px !important;
-        border-right: 1px solid var(--sfx-border);
-        border-bottom: 1px solid var(--sfx-border);
-      }
-
-      .sfx-mix-canvas-box {
-        grid-area: box-mix;
-        min-height: 110px !important;
-        height: 110px !important;
-        border-bottom: 1px solid var(--sfx-border);
-      }
-
-      .sfx-canvas-overlay-tag {
-        font-size: 0.75rem;
-        padding: 2px 7px;
-        bottom: 8px;
-        left: 8px;
-      }
-
-      .sfx-panel-note {
-        display: none !important;
-      }
-
-      .sfx-mix-values-bar {
-        grid-area: values;
-        padding: 8px 14px;
-        border-bottom: 1px solid var(--sfx-border);
-      }
-
-      .sfx-mix-values-label {
-        font-size: 0.88rem;
-      }
-
-      .sfx-mix-values-code {
-        font-size: 0.7rem;
-        padding: 2px 7px;
-      }
-
-      .sfx-controls-card {
-        grid-area: controls;
-        padding: 14px 16px;
-        gap: 12px;
-        border-bottom: 1px solid var(--sfx-border);
-      }
-
-      .sfx-slider-row {
-        gap: 4px;
-      }
-
-      .sfx-slider-name {
-        font-size: 1.05rem;
-      }
-
-      .sfx-slider-val-tag {
-        font-size: 0.95rem;
-        padding: 1px 7px;
-        min-width: 40px;
-      }
-
-      input[type=range] {
-        height: 30px;
-      }
-
-      input[type=range]::-webkit-slider-thumb {
-        height: 24px;
-        width: 24px;
-        margin-top: -6px;
-      }
-
-      .sfx-submit-btn {
-        grid-area: submit;
-        height: 52px;
-        font-size: 1.3rem;
-      }
-
-      .sfx-cert-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .sfx-score-big {
-        font-size: 3rem;
-      }
-    }
-
   </style>
 </head>
 <body>
@@ -1519,12 +1384,12 @@
         <!-- Detail Perbandingan Ronde Berjalan -->
         <div class="sfx-round-details-grid" id="modal-details-container">
           <div class="sfx-color-compare-card">
-            <span class="sfx-compare-label">SASARAN TARGET</span>
+            <span class="sfx-compare-label">Sasaran Target</span>
             <div id="modal-target-color" class="sfx-compare-swatch"></div>
             <div id="modal-target-text" class="sfx-compare-hsl">H:180° S:50% L:50%</div>
           </div>
           <div class="sfx-color-compare-card">
-            <span class="sfx-compare-label">RACIKAN KAMU</span>
+            <span class="sfx-compare-label">Racikan Kamu</span>
             <div id="modal-player-color" class="sfx-compare-swatch"></div>
             <div id="modal-player-text" class="sfx-compare-hsl">H:180° S:50% L:50%</div>
           </div>
@@ -1532,7 +1397,7 @@
 
         <!-- Form Simpan Skor ke Leaderboard (Hanya muncul di Game Over) -->
         <div id="save-score-section" style="display: none;">
-          <p style="font-size: 0.82rem; font-weight: 700; color: var(--sfx-charcoal); margin-bottom: 8px; text-align: left;">
+          <p style="font-size: 0.8rem; font-weight: 600; color: var(--sfx-slate); margin-bottom: 8px; text-align: left;">
             Catatkan rekor kamu ke <strong>Papan Skor</strong>:
           </p>
           <div class="sfx-save-score-form">
@@ -1553,15 +1418,15 @@
 
           <div class="sfx-cert-player-row">
             <div>
-              <div style="font-size: 0.62rem; color: var(--sfx-muted); font-family: var(--font-mono); text-transform: uppercase;">PENGUJI</div>
+              <div style="font-size: 0.6rem; color: var(--sfx-muted); font-family: var(--font-mono); text-transform: uppercase;">PENGUJI</div>
               <div class="sfx-cert-player-name" id="cert-player-name">Anonim</div>
             </div>
-            <div class="sfx-cert-player-date" id="cert-date">13 OKT 2026</div>
+            <div class="sfx-cert-player-date" id="cert-date">16 OKT 2026</div>
           </div>
 
           <div class="sfx-cert-summary-hero">
             <div>
-              <div style="font-size: 0.65rem; color: var(--c-blue); font-family: var(--font-main); font-weight: 800; text-transform: uppercase;">TOTAL SKOR</div>
+              <div style="font-size: 0.64rem; color: var(--c-blue); font-family: var(--font-main); font-weight: 700; text-transform: uppercase;">TOTAL SKOR</div>
               <div class="sfx-cert-total-val" id="cert-final-score">950 pts</div>
             </div>
             <div class="sfx-cert-grade">
@@ -1581,7 +1446,7 @@
 
       <div class="sfx-modal-footer">
         <button type="button" class="sfx-btn-action sfx-btn-secondary" id="download-btn" style="display: none;" onclick="downloadCertificatePNG()">
-          <svg class="sfx-btn-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="sfx-btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
             <circle cx="12" cy="13" r="4"></circle>
           </svg>
@@ -1594,31 +1459,31 @@
     </div>
   </div>
 
-  <!-- MODAL: PAPAN SKOR TERTINGGI (LEADERBOARD ARKADE) -->
+  <!-- MODAL: PAPAN SKOR TERTINGGI (LEADERBOARD) -->
   <div class="sfx-modal-backdrop" id="leaderboard-modal">
     <div class="sfx-modal-card">
       <div class="sfx-modal-head">
         <span class="sfx-modal-title">
-          <svg class="sfx-modal-icon-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="sfx-modal-icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
             <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
             <path d="M4 22h16"></path>
             <path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1 .45-1 1v1h12v-1c0-.55-.45-1-1-1h-2c-.55 0-1-.45-1-1v-2.34"></path>
             <path d="M6 4h12v6a6 6 0 0 1-12 0V4z"></path>
           </svg>
-          Papan Skor KOLOR MATCHER
+          Papan Skor Kolor Matcher
         </span>
         <button type="button" class="sfx-modal-close-btn" onclick="closeLeaderboardModal()">✕</button>
       </div>
       <div class="sfx-modal-body">
-        <p style="font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 14px; text-align: left;">
-          Daftar rekor kepekaan warna tertinggi yang pernah tercatat di perangkat ini:
+        <p style="font-size: 0.8rem; font-weight: 500; color: var(--sfx-muted); margin-bottom: 14px; text-align: left;">
+          Daftar rekor kepekaan warna tertinggi yang tercatat di perangkat ini:
         </p>
         <div class="sfx-leaderboard-list" id="leaderboard-list"></div>
       </div>
       <div class="sfx-modal-footer">
         <button type="button" class="sfx-btn-action sfx-btn-secondary" onclick="clearLeaderboard()">
-          <svg class="sfx-btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="sfx-btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3 6 5 6 21 6"></polyline>
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
           </svg>
@@ -1633,12 +1498,12 @@
 
   <!-- CONTAINER UTAMA APLIKASI -->
   <div class="sfx-app-wrapper">
-    <!-- Top Bar Arkade: 1 Baris Seimbang di Desktop (Kiri - Tengah - Kanan), 2 Baris Lega di HP -->
+    <!-- Top Bar: Seimbang, Ringkas & Lega -->
     <header class="sfx-top-bar">
-      <!-- Sisi Kiri: Brand & Judul Multicolor (Londrina Solid) -->
+      <!-- Sisi Kiri: Brand & Judul Multicolor (Londrina Solid Khusus Logo) -->
       <div class="sfx-brand-col">
         <span class="sfx-brand-tag">
-          <svg class="sfx-icon-bolt" viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+          <svg class="sfx-icon-bolt" viewBox="0 0 24 24" width="11" height="11" fill="currentColor">
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
           </svg>
           LAB!
@@ -1653,22 +1518,22 @@
         </h1>
       </div>
 
-      <!-- Sisi Tengah: Status Ronde & Skor (Arkade HUD) -->
+      <!-- Sisi Tengah: Status Ronde & Skor (Pill Inline Bersih) -->
       <div class="sfx-stats-group">
         <div class="sfx-stat-box">
-          <span class="sfx-stat-label">RONDE</span>
+          <span class="sfx-stat-label">Ronde</span>
           <span class="sfx-stat-val"><span id="current-round">1</span><span class="sfx-stat-sep">/10</span></span>
         </div>
         <div class="sfx-stat-box sfx-stat-box-score">
-          <span class="sfx-stat-label">TOTAL SKOR</span>
+          <span class="sfx-stat-label">Skor</span>
           <span class="sfx-stat-val" id="total-score">0 <span>pts</span></span>
         </div>
       </div>
 
-      <!-- Sisi Kanan: Tombol Aksi Arkade (Clean Vector SVG, Bebas Emoji) -->
+      <!-- Sisi Kanan: Tombol Navigasi -->
       <div class="sfx-top-actions">
         <button type="button" class="sfx-btn-icon-nav" onclick="openLeaderboardModal()" title="Lihat Papan Skor">
-          <svg class="sfx-nav-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="sfx-nav-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
             <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
             <path d="M4 22h16"></path>
@@ -1678,7 +1543,7 @@
           <span>Skor</span>
         </button>
         <button type="button" class="sfx-btn-icon-nav" onclick="resetGame()" title="Mulai Permainan Baru">
-          <svg class="sfx-nav-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="sfx-nav-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 2v6h-6"></path>
             <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
             <path d="M3 22v-6h6"></path>
@@ -1700,18 +1565,17 @@
       <section class="sfx-panel">
         <div class="sfx-panel-header sfx-target-header">
           <div class="sfx-panel-title">
-            <span class="sfx-title-pill sfx-pill-target">SASARAN</span>
-            <span class="sfx-panel-sub">WARNA TARGET</span>
+            <span class="sfx-color-dot sfx-dot-target"></span>
+            <span class="sfx-panel-sub">Warna Target</span>
           </div>
+          <span class="sfx-title-pill sfx-pill-target">Sasaran</span>
           <div class="sfx-panel-badge" id="badge-left">1/10</div>
         </div>
 
-        <div class="sfx-target-canvas-box" id="target-color-display">
-          <span class="sfx-canvas-overlay-tag sfx-tag-target">TARGET</span>
-        </div>
+        <div class="sfx-target-canvas-box" id="target-color-display"></div>
 
         <div class="sfx-panel-note">
-          Cocokkan warna sasaran di atas menggunakan tuas racikan warna di sebelah kanan. Tekan tombol <strong>COCOKKAN RACIKAN</strong> jika menurutmu warnanya sudah pas!
+          Geser ketiga tuas warna di kanan untuk meracik warna yang paling mendekati sasaran di atas, lalu tekan <strong>Cocokkan Racikan</strong>.
         </div>
       </section>
 
@@ -1719,26 +1583,20 @@
       <section class="sfx-panel">
         <div class="sfx-panel-header sfx-mix-header">
           <div class="sfx-panel-title">
-            <span class="sfx-title-pill sfx-pill-mix">RACIKAN</span>
-            <span class="sfx-panel-sub">RACIKAN KAMU</span>
+            <span class="sfx-color-dot sfx-dot-mix"></span>
+            <span class="sfx-panel-sub">Racikan Kamu</span>
           </div>
+          <span class="sfx-mix-values-code" id="live-hsl-text">H: 180° · S: 50% · L: 50%</span>
           <div class="sfx-panel-badge" id="badge-right">1/10</div>
         </div>
 
-        <div class="sfx-mix-canvas-box" id="current-selection-box">
-          <span class="sfx-canvas-overlay-tag sfx-tag-mix">RACIKANMU</span>
-        </div>
+        <div class="sfx-mix-canvas-box" id="current-selection-box"></div>
 
-        <div class="sfx-mix-values-bar">
-          <span class="sfx-mix-values-label">FORMULA RESEP:</span>
-          <span class="sfx-mix-values-code" id="live-hsl-text">H: 180° | S: 50% | L: 50%</span>
-        </div>
-
-        <!-- Slider Kontrol Arkade (Juicy & Tactile) -->
+        <!-- Slider Kontrol (Rapi, Taktil & Lega) -->
         <div class="sfx-controls-card">
           <div class="sfx-slider-row">
             <div class="sfx-slider-label-row">
-              <span class="sfx-slider-name">CORAK WARNA</span>
+              <span class="sfx-slider-name">Corak Warna (Hue)</span>
               <span class="sfx-slider-val-tag" id="hue-val-tag">180°</span>
             </div>
             <input type="range" id="hue-slider" min="0" max="360" value="180" aria-label="Corak Warna (Hue)">
@@ -1746,7 +1604,7 @@
 
           <div class="sfx-slider-row">
             <div class="sfx-slider-label-row">
-              <span class="sfx-slider-name">KEPEKATAN</span>
+              <span class="sfx-slider-name">Kepekatan (Saturation)</span>
               <span class="sfx-slider-val-tag" id="sat-val-tag">50%</span>
             </div>
             <input type="range" id="sat-slider" min="0" max="100" value="50" aria-label="Kepekatan Warna (Saturation)">
@@ -1754,7 +1612,7 @@
 
           <div class="sfx-slider-row">
             <div class="sfx-slider-label-row">
-              <span class="sfx-slider-name">KECERAHAN</span>
+              <span class="sfx-slider-name">Kecerahan (Lightness)</span>
               <span class="sfx-slider-val-tag" id="light-val-tag">50%</span>
             </div>
             <input type="range" id="light-slider" min="0" max="100" value="50" aria-label="Kecerahan Warna (Lightness)">
@@ -1762,10 +1620,10 @@
         </div>
 
         <button type="button" class="sfx-submit-btn" id="btn-submit" onclick="submitSelection()">
-          <svg class="sfx-btn-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="sfx-btn-svg" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-          <span>COCOKKAN RACIKAN!</span>
+          <span>Cocokkan Racikan</span>
         </button>
       </section>
     </main>
@@ -1835,8 +1693,8 @@
       if (round > 10) return;
 
       currentRoundText.innerText = round;
-      badgeLeft.innerText = `${round}/10`;
-      badgeRight.innerText = `${round}/10`;
+      if (badgeLeft) badgeLeft.innerText = `${round}/10`;
+      if (badgeRight) badgeRight.innerText = `${round}/10`;
       progressBar.style.width = `${round * 10}%`;
 
       // HSL Target Acak dengan saturasi & lightness yang nyaman
@@ -1863,7 +1721,7 @@
       hueValTag.textContent = `${h}°`;
       satValTag.textContent = `${s}%`;
       lightValTag.textContent = `${l}%`;
-      liveHslText.textContent = `H: ${h}° | S: ${s}% | L: ${l}%`;
+      liveHslText.textContent = `H: ${h}° · S: ${s}% · L: ${l}%`;
 
       currentSelectionBox.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
 
@@ -1908,10 +1766,10 @@
         modalAccuracy.innerText = `${roundScore}%`;
 
         let cheerText = "Akurasi Spektrum";
-        if (roundScore >= 95) cheerText = "PERFEK! WARNA MIRIP BANGET!";
-        else if (roundScore >= 85) cheerText = "KEREN! TINGGAL DIKIT LAGI!";
-        else if (roundScore >= 70) cheerText = "LUMAYAN KECE!";
-        else cheerText = "YUK COBA LAGI!";
+        if (roundScore >= 95) cheerText = "Sempurna! Warna Sangat Akurat!";
+        else if (roundScore >= 85) cheerText = "Keren! Tinggal Sedikit Lagi!";
+        else if (roundScore >= 70) cheerText = "Cukup Dekat! Terus Asah Kepekaanmu";
+        else cheerText = "Yuk Coba Lebih Teliti di Ronde Berikutnya!";
         modalSubtitleText.innerText = cheerText;
 
         modalDetailsContainer.style.display = "grid";
@@ -1934,11 +1792,11 @@
 
     // Render Layar Game Over & Sertifikat
     function renderGameOverScreen() {
-      modalTitle.innerText = "MISI SPEKTRUM SELESAI!";
+      modalTitle.innerText = "Misi Spektrum Selesai!";
       modalAccuracy.innerText = `${score}`;
       modalSubtitleText.innerText = "Total Poin Akurasi (Maks 1000)";
       modalDetailsContainer.style.display = "none";
-      modalNextBtn.innerText = "MAIN LAGI DARI AWAL";
+      modalNextBtn.innerText = "Main Lagi dari Awal";
 
       // Hitung Predikat Akurasi
       const avgAcc = (score / 10).toFixed(1);
@@ -2040,7 +1898,7 @@
     function downloadCertificatePNG() {
       const btn = downloadBtn;
       const originalText = btn.innerHTML;
-      btn.innerHTML = "<svg class='sfx-btn-svg' viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'><path d='M21 12a9 9 0 1 1-6.219-8.56'></path></svg> <span>Memproses Sertifikat...</span>";
+      btn.innerHTML = "<svg class='sfx-btn-svg' viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 12a9 9 0 1 1-6.219-8.56'></path></svg> <span>Memproses Sertifikat...</span>";
       btn.disabled = true;
 
       const certEl = document.getElementById('sfx-certificate-wrap');
@@ -2110,7 +1968,7 @@
               </div>
             </div>
             <div>
-              <div class="sfx-lb-score">${item.score} <span style="font-size: 0.85rem; color: var(--sfx-muted);">pts</span></div>
+              <div class="sfx-lb-score">${item.score} <span style="font-size: 0.78rem; font-weight: 600; color: var(--sfx-muted);">pts</span></div>
             </div>
           </div>
         `;
