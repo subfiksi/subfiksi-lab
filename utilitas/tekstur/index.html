@@ -5,1030 +5,2827 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>TEKSTUR — Generator Seni Tipografis | Subfiksi LAB!</title>
 
-  <!-- Tipografi Resmi Subfiksi Design System (SDS) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <!-- Tipografi Subtils UI (Plus Jakarta Sans & Inter) + Grid Monospace Khusus Kanvas ASCII -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
 
   <style>
+/* ==========================================================================
+   SUBTILS UI KIT — DESIGN TOKENS (`@subfiksi/subtils-ui` v0.1.0)
+   Archetype : Borderless Soft-3D Light Ceramic & Volumetric 3D Buttons
+   Mode      : Light Ceramic Locked (Strict Zero-Stroke Hierarchy)
+   Buttons   : Obsidian 3D (+White/Suboren Glow) & Fiksiblu 3D (+White Glow)
+   ========================================================================== */
+
+:root {
+  /* 1. Three-Layer Light Ceramic Surfaces */
+  --sbt-bg-base: #ECEFF3;          /* Matte ceramic grey workspace canvas */
+  --sbt-bg-elevated: #FFFFFF;      /* Pure white sheets, trays, active tiles */
+  --sbt-bg-recessed: #E3E7EE;      /* Concave wells, inputs, slider tracks */
+  --sbt-bg-slot: #F1F3F7;          /* Unselected soft ceramic pad inside white trays */
+  --sbt-bg-strip: #F8F9FB;         /* Tonal editor/panel header strip */
+  --sbt-bg-quote: #F4F6FA;         /* Prose blockquote tint */
+  --sbt-bg-hover-tile: rgba(255, 255, 255, 0.58);
+
+  /* 2. Volumetric 3D Obsidian Controls */
+  --sbt-obsidian-top: #272A32;
+  --sbt-obsidian-mid: #16171A;
+  --sbt-obsidian-bottom: #0D0E11;
+  --sbt-obsidian-grad: linear-gradient(180deg, #272A32 0%, #16171A 54%, #0D0E11 100%);
+  --sbt-obsidian-soft-grad: linear-gradient(180deg, #2B2E37 0%, #17181C 100%);
+
+  /* 3. Volumetric 3D Fiksiblu Controls (+ White Glow) */
+  --sbt-fiksiblu: #003380;
+  --sbt-fiksiblu-top: #0C49A6;
+  --sbt-fiksiblu-mid: #003380;
+  --sbt-fiksiblu-bottom: #00235E;
+  --sbt-fiksiblu-grad: linear-gradient(180deg, #0C49A6 0%, #003380 54%, #00235E 100%);
+  --sbt-fiksiblu-soft: rgba(0, 51, 128, 0.08);
+
+  /* 4. Signature Subfiksi Signals & Optical Glows */
+  --sbt-suboren: #FF6600;          /* Active LEDs, Draft status, Accent bars, Obsidian glow */
+  --sbt-suboren-soft: rgba(255, 102, 0, 0.12);
+  --sbt-suboren-glow: 0 0 8px rgba(255, 102, 0, 0.65);
+  --sbt-suboren-svg-glow: drop-shadow(0 0 6px rgba(255, 102, 0, 0.62));
+  --sbt-white-svg-glow: drop-shadow(0 0 5px rgba(255, 255, 255, 0.45));
+
+  --sbt-pip-muted: #A2ACBE;
+
+  /* 5. Ink & Typographic Hierarchy */
+  --sbt-ink-primary: #14171F;
+  --sbt-ink-prose: #1E222B;
+  --sbt-ink-secondary: #4D5566;
+  --sbt-ink-muted: #7C8599;
+  --sbt-ink-placeholder: #9AA4B6;
+  --sbt-ink-on-dark: #FFFFFF;
+
+  /* 6. Typography Roles (Zero Monospace UI Chrome) */
+  --sbt-font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sbt-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* 7. Concentric Sharp Soft-Rect Border-Radius Scale */
+  --sbt-radius-outer: 18px;
+  --sbt-radius-inner: 12px;
+  --sbt-radius-tray: 12px;
+  --sbt-radius-control: 8px;
+  --sbt-radius-check: 6px;
+  --sbt-radius-switch-track: 6px;
+  --sbt-radius-switch-thumb: 4px;
+  --sbt-radius-pip: 2.5px;
+  --sbt-radius-pill: 9999px;
+
+  /* 8. Borderless Soft-3D Shadows & Elevation Physics */
+  --sbt-shadow-sheet:
+    0 18px 40px -10px rgba(16, 24, 40, 0.06),
+    0 4px 12px -2px rgba(16, 24, 40, 0.03);
+  --sbt-shadow-tray:
+    0 10px 24px -6px rgba(16, 24, 40, 0.065),
+    0 2px 6px rgba(16, 24, 40, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --sbt-shadow-tile:
+    0 12px 26px -6px rgba(16, 24, 40, 0.08),
+    0 2px 6px rgba(16, 24, 40, 0.03);
+  --sbt-shadow-ceramic:
+    0 5px 14px rgba(16, 24, 40, 0.055),
+    0 1px 3px rgba(16, 24, 40, 0.03);
+  --sbt-shadow-ceramic-hover:
+    0 8px 20px rgba(16, 24, 40, 0.085),
+    0 2px 5px rgba(16, 24, 40, 0.04);
+  --sbt-shadow-well:
+    inset 0 2px 5px rgba(16, 24, 40, 0.07),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.75);
+  --sbt-shadow-obsidian:
+    0 7px 16px rgba(22, 23, 26, 0.24),
+    0 2px 4px rgba(22, 23, 26, 0.14),
+    inset 0 1px 1px rgba(255, 255, 255, 0.24);
+  --sbt-shadow-obsidian-hover:
+    0 9px 20px rgba(22, 23, 26, 0.28),
+    0 3px 6px rgba(22, 23, 26, 0.16),
+    inset 0 1px 1px rgba(255, 255, 255, 0.28);
+  --sbt-shadow-obsidian-active:
+    0 2px 6px rgba(22, 23, 26, 0.2),
+    inset 0 2px 4px rgba(0, 0, 0, 0.65);
+  --sbt-shadow-fiksiblu:
+    0 7px 16px rgba(0, 51, 128, 0.24),
+    0 2px 4px rgba(0, 35, 94, 0.16),
+    inset 0 1px 1px rgba(255, 255, 255, 0.26);
+  --sbt-shadow-fiksiblu-hover:
+    0 9px 20px rgba(0, 51, 128, 0.30),
+    0 3px 6px rgba(0, 35, 94, 0.20),
+    inset 0 1px 1px rgba(255, 255, 255, 0.32);
+  --sbt-shadow-fiksiblu-active:
+    0 2px 6px rgba(0, 35, 94, 0.22),
+    inset 0 2px 4px rgba(0, 14, 42, 0.65);
+  --sbt-shadow-modal:
+    0 30px 70px -12px rgba(16, 24, 40, 0.18),
+    0 10px 24px -6px rgba(16, 24, 40, 0.08);
+  --sbt-backdrop-ceramic: rgba(236, 239, 243, 0.72);
+  --sbt-backdrop-obsidian: #1B1E26;
+  --sbt-ink-on-obsidian-muted: rgba(255, 255, 255, 0.68);
+  --sbt-obsidian-groove-bg: linear-gradient(180deg, #2C313D 0%, #3B4252 100%);
+  --sbt-obsidian-groove-active-bg: linear-gradient(180deg, #3D2719 0%, #59331B 100%);
+  --sbt-obsidian-groove-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.46),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.16),
+    0 1px 0 rgba(255, 255, 255, 0.10);
+  --sbt-obsidian-groove-active-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.42),
+    inset 0 0 8px rgba(255, 102, 0, 0.34),
+    inset 0 -1px 0 rgba(255, 164, 97, 0.28),
+    0 1px 0 rgba(255, 164, 97, 0.16);
+  --sbt-obsidian-thumb-off: linear-gradient(180deg, #747E94 0%, #4C5363 100%);
+  --sbt-obsidian-thumb-off-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 0.32);
+  --sbt-suboren-dome: linear-gradient(180deg, #FFA461 0%, #FF6600 56%, #CE4400 100%);
+  --sbt-suboren-dome-shadow:
+    0 0 12px rgba(255, 102, 0, 0.54),
+    0 2px 5px rgba(0, 0, 0, 0.48),
+    inset 0 1px 1px rgba(255, 255, 255, 0.48);
+
+  /* 9. Accessible Borderless Focus Halos */
+  --sbt-focus-ring: 0 0 0 3px rgba(0, 51, 128, 0.18);
+  --sbt-focus-ring-obsidian: 0 0 0 3px rgba(255, 102, 0, 0.30);
+
+  /* 10. Scrollbar & Stack Depth */
+  --sbt-scroll-thumb: #CFD6E2;
+  --sbt-scroll-thumb-hover: #B4BECE;
+  --sbt-stack-layer-1: rgba(255, 255, 255, 0.62);
+  --sbt-stack-layer-2: rgba(255, 255, 255, 0.30);
+}
+
+/* ==========================================================================
+   SUBTILS UI KIT — SURFACES, TYPOGRAPHY & LAYER HIERARCHY
+   ========================================================================== */
+
+.sbt-root {
+  background-color: var(--sbt-bg-base);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.sbt-root [hidden] {
+  display: none;
+}
+
+.sbt-root *,
+.sbt-root *::before,
+.sbt-root *::after {
+  box-sizing: border-box;
+}
+
+.sbt-root h1,
+.sbt-root h2,
+.sbt-root h3,
+.sbt-root h4,
+.sbt-root .sbt-heading {
+  font-family: var(--sbt-font-display);
+  letter-spacing: -0.028em;
+  color: var(--sbt-ink-primary);
+  margin: 0;
+}
+
+.sbt-root p {
+  margin: 0;
+}
+
+.sbt-root a:not([class*="sbt-btn"]) {
+  color: var(--sbt-fiksiblu);
+  text-decoration: none;
+}
+
+.sbt-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Concentric Radius Helpers */
+.sbt-radius-outer { border-radius: var(--sbt-radius-outer); }
+.sbt-radius-inner { border-radius: var(--sbt-radius-inner); }
+.sbt-radius-control { border-radius: var(--sbt-radius-control); }
+.sbt-radius-pill { border-radius: var(--sbt-radius-pill); }
+
+/* Layer 1: Matte Ceramic Floor (Flush items) */
+.sbt-surface-base {
+  background-color: var(--sbt-bg-base);
+}
+
+/* Layer 2: Elevated Pure White Sheets (Main Canvas, Modals, Stat Cards) */
+.sbt-sheet {
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-outer);
+  box-shadow: var(--sbt-shadow-sheet);
+  border: none;
+}
+
+.sbt-sheet--compact {
+  border-radius: var(--sbt-radius-inner);
+  padding: 20px;
+}
+
+.sbt-sheet-strip {
+  background-color: var(--sbt-bg-strip);
+  border: none;
+}
+
+/* Floating White Control Tray (Reference #2 & #3 Pattern: Pagination, Tabs, Toggles) */
+.sbt-tray {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-tray);
+  box-shadow: var(--sbt-shadow-tray);
+  border: none;
+}
+
+.sbt-tray--inner {
+  border-radius: var(--sbt-radius-inner);
+  padding: 7px;
+}
+
+/* Layer 3: Concave Recessed Wells & Tracks */
+.sbt-well {
+  background-color: var(--sbt-bg-recessed);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-well);
+  border: none;
+}
+
+.sbt-well--pill {
+  border-radius: var(--sbt-radius-pill);
+}
+
+/* Selectable List Tile (Flush on Ceramic -> Rises White on Selection) */
+.sbt-tile {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-inner);
+  background-color: transparent;
+  color: var(--sbt-ink-primary);
+  cursor: pointer;
+  transition: background-color 0.16s ease, box-shadow 0.18s ease, transform 0.14s ease;
+}
+
+.sbt-tile:hover {
+  background-color: var(--sbt-bg-hover-tile);
+}
+
+.sbt-tile:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-tile.is-active {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile);
+}
+
+/* Unboxed Subfiksi Brand Status & Metadata Typography */
+.sbt-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.sbt-status--terbit {
+  color: var(--sbt-fiksiblu);
+}
+
+.sbt-status--draf {
+  color: var(--sbt-suboren);
+}
+
+.sbt-status--muted {
+  color: var(--sbt-ink-muted);
+}
+
+.sbt-tags-inline {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sbt-ink-secondary);
+}
+
+.sbt-accent-bar {
+  width: 40px;
+  height: 3px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-suboren);
+}
+
+/* Geometric LED Signal Pips */
+.sbt-led {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-pip-muted);
+  flex-shrink: 0;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.sbt-led.is-suboren {
+  background-color: var(--sbt-suboren);
+  box-shadow: var(--sbt-suboren-glow);
+}
+
+.sbt-led.is-fiksiblu {
+  background-color: var(--sbt-fiksiblu);
+}
+
+/* Stacked Depth Card Container & Physical Card-Deck Swap */
+.sbt-stack-stage {
+  background-color: var(--sbt-backdrop-obsidian);
+  border-radius: var(--sbt-radius-outer);
+  padding: 24px 24px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sbt-stack-deck {
+  position: relative;
+  width: 100%;
+  min-height: 74px;
+}
+
+.sbt-stack-card {
+  position: relative;
+  z-index: 2;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  padding: 14px 16px;
+  box-shadow: var(--sbt-shadow-tile);
+}
+
+.sbt-stack-card:not(.sbt-stack-deck .sbt-stack-card)::before,
+.sbt-stack-card:not(.sbt-stack-deck .sbt-stack-card)::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -8px;
+  height: 18px;
+  border-radius: 0 0 var(--sbt-radius-inner) var(--sbt-radius-inner);
+  background-color: var(--sbt-stack-layer-1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sbt-stack-card:not(.sbt-stack-deck .sbt-stack-card)::after {
+  left: 26px;
+  right: 26px;
+  bottom: -15px;
+  background-color: var(--sbt-stack-layer-2);
+  z-index: -2;
+}
+
+.sbt-stack-deck .sbt-stack-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transform-origin: center top;
+  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, box-shadow 0.28s ease;
+  will-change: transform, opacity;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="0"] {
+  z-index: 4;
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="1"] {
+  z-index: 3;
+  transform: translateY(11px) scale(0.94);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="2"] {
+  z-index: 2;
+  transform: translateY(21px) scale(0.88);
+  opacity: 0.36;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="hidden"] {
+  z-index: 1;
+  transform: translateY(24px) scale(0.84);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card.is-exiting-up {
+  z-index: 5;
+  transform: translateY(-22px) scale(0.95) rotate(-0.8deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card.is-entering-top {
+  z-index: 5;
+  transform: translateY(-20px) scale(0.95) rotate(0.8deg);
+  opacity: 0;
+  transition: none !important;
+  pointer-events: none;
+}
+
+/* Editorial Preview Prose */
+.sbt-prose {
+  font-size: 16px;
+  line-height: 1.82;
+  color: var(--sbt-ink-prose);
+}
+
+.sbt-prose h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.sbt-prose p {
+  margin-bottom: 1.15rem;
+}
+
+.sbt-prose blockquote {
+  background-color: var(--sbt-bg-quote);
+  padding: 16px 20px;
+  border-radius: var(--sbt-radius-inner);
+  margin: 1.35rem 0;
+  color: var(--sbt-ink-secondary);
+  font-style: italic;
+  border: none;
+}
+
+/* Clean Custom Scrollbars */
+.sbt-root ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.sbt-root ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sbt-root ::-webkit-scrollbar-thumb {
+  background: var(--sbt-scroll-thumb);
+  border-radius: var(--sbt-radius-pill);
+}
+
+.sbt-root ::-webkit-scrollbar-thumb:hover {
+  background: var(--sbt-scroll-thumb-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sbt-root *,
+  .sbt-root *::before,
+  .sbt-root *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   SUBTILS UI KIT — VOLUMETRIC 3D BUTTONS & CERAMIC CONTROLS
+   Three 3D Action Families:
+     1. Obsidian 3D + White Glow (.sbt-btn-obsidian + .sbt-icon-glow-white)
+     2. Obsidian 3D + Suboren Glow (.sbt-btn-obsidian + .sbt-icon-glow-suboren)
+     3. Fiksiblu 3D + White Glow (.sbt-btn-fiksiblu)
+   ========================================================================== */
+
+/* Vector Icon Primitives (Phosphor Fill Solid SVG) */
+.sbt-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.sbt-icon > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: currentColor;
+}
+
+.sbt-icon--sm { width: 13px; height: 13px; }
+.sbt-icon--lg { width: 18px; height: 18px; }
+.sbt-icon--xl { width: 22px; height: 22px; }
+
+/* Luminous Glow Modifiers on Dark 3D Surfaces */
+.sbt-icon-glow-white {
+  color: var(--sbt-ink-on-dark);
+}
+
+.sbt-icon-glow-white > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-icon-glow-suboren {
+  color: var(--sbt-suboren);
+}
+
+.sbt-icon-glow-suboren > svg {
+  filter: var(--sbt-suboren-svg-glow);
+}
+
+/* 1 & 2. Volumetric 3D Obsidian Controls */
+.sbt-root a.sbt-btn-obsidian,
+.sbt-ctrl-obsidian,
+.sbt-btn-obsidian {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--sbt-radius-control);
+  box-shadow: var(--sbt-shadow-obsidian);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.sbt-btn-obsidian .sbt-icon:not(.sbt-icon-glow-suboren) > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-ctrl-obsidian:hover,
+.sbt-btn-obsidian:hover {
+  filter: brightness(1.08);
+  box-shadow: var(--sbt-shadow-obsidian-hover);
+}
+
+.sbt-ctrl-obsidian:active,
+.sbt-btn-obsidian:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: var(--sbt-shadow-obsidian-active);
+}
+
+.sbt-ctrl-obsidian:focus-visible,
+.sbt-btn-obsidian:focus-visible {
+  box-shadow: var(--sbt-shadow-obsidian), var(--sbt-focus-ring-obsidian);
+}
+
+.sbt-btn-obsidian:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 3. Volumetric 3D Fiksiblu Controls (+ White Glow) */
+.sbt-root a.sbt-btn-fiksiblu,
+.sbt-btn-fiksiblu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+  background: var(--sbt-fiksiblu-grad);
+  color: var(--sbt-ink-on-dark);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--sbt-radius-control);
+  box-shadow: var(--sbt-shadow-fiksiblu);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.sbt-btn-fiksiblu .sbt-icon > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-btn-fiksiblu:hover {
+  filter: brightness(1.09);
+  box-shadow: var(--sbt-shadow-fiksiblu-hover);
+}
+
+.sbt-btn-fiksiblu:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: var(--sbt-shadow-fiksiblu-active);
+}
+
+.sbt-btn-fiksiblu:focus-visible {
+  box-shadow: var(--sbt-shadow-fiksiblu), var(--sbt-focus-ring);
+}
+
+/* Neutral Ceramic Secondary Action (Clean Minimalist Typography Only — Zero Colored Icons/Pills) */
+.sbt-btn-ceramic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-elevated);
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--sbt-radius-control);
+  box-shadow: var(--sbt-shadow-ceramic);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s ease, box-shadow 0.14s ease, background-color 0.14s ease, color 0.14s ease;
+}
+
+.sbt-btn-ceramic:hover {
+  color: var(--sbt-ink-primary);
+  box-shadow: var(--sbt-shadow-ceramic-hover);
+}
+
+.sbt-btn-ceramic:active {
+  transform: translateY(1px);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-btn-ceramic:focus-visible {
+  box-shadow: var(--sbt-shadow-ceramic), var(--sbt-focus-ring);
+}
+
+/* Quiet Textual Dismiss / Secondary Destructive Action */
+.sbt-btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sbt-ink-muted);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--sbt-radius-control);
+  cursor: pointer;
+  transition: color 0.14s ease, background-color 0.14s ease;
+}
+
+.sbt-btn-quiet:hover {
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-btn-quiet:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-btn--block {
+  width: 100%;
+}
+
+.sbt-root a.sbt-btn--sm,
+.sbt-btn--sm {
+  padding: 6px 13px;
+  min-height: 30px;
+  font-size: 11px;
+}
+
+/* Square / Squircle Icon Keys */
+.sbt-icon-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease, transform 0.1s ease;
+}
+
+.sbt-icon-key:hover {
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-icon-key:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-icon-key.is-obsidian,
+.sbt-icon-key.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-icon-key.is-obsidian .sbt-icon:not(.sbt-icon-glow-suboren) > svg,
+.sbt-icon-key.is-active .sbt-icon:not(.sbt-icon-glow-suboren) > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-icon-key.is-fiksiblu {
+  background: var(--sbt-fiksiblu-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-fiksiblu);
+}
+
+.sbt-icon-key.is-fiksiblu .sbt-icon > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-icon-key--well {
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+/* Segmented Switcher (Floating White Tray + Active Obsidian Soft-Rect) */
+.sbt-segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-tray);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-segmented--recessed {
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-seg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  outline: none;
+  padding: 7px 16px;
+  border-radius: var(--sbt-radius-control);
+  background-color: transparent;
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.14s ease, background-color 0.14s ease;
+}
+
+.sbt-seg-btn:hover {
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-seg-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-seg-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-weight: 600;
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-seg-count {
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.72;
+  font-variant-numeric: tabular-nums;
+}
+
+.sbt-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Native Radio Pill Wrapper inside .sbt-segmented */
+.sbt-seg-radio {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.sbt-seg-radio > input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.sbt-seg-radio > input[type="radio"]:checked + .sbt-seg-btn {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-weight: 600;
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-seg-radio > input[type="radio"]:focus-visible + .sbt-seg-btn {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+/* View Toggle Tray (List / Grid Switcher) */
+.sbt-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background-color: transparent;
+  color: var(--sbt-ink-primary);
+  cursor: pointer;
+  transition: background-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-view-btn:hover {
+  background-color: var(--sbt-bg-slot);
+}
+
+.sbt-view-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-view-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+/* Pagination Tray (< 1 2 3 4 >) */
+.sbt-pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-page-btn:hover:not(:disabled) {
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-page-btn.is-nav {
+  background-color: transparent;
+}
+
+.sbt-page-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-page-btn:disabled {
+  color: var(--sbt-ink-placeholder);
+  background-color: transparent;
+  cursor: not-allowed;
+}
+
+.sbt-page-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+/* Carousel Dot Stepper */
+.sbt-dot-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-pill);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-dot-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sbt-ink-secondary);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sbt-dot-nav:hover { color: var(--sbt-ink-primary); }
+
+.sbt-dot-pip {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.sbt-dot-pip.is-active {
+  width: 10px;
+  height: 10px;
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+/* Squircle Checkbox */
+.sbt-check-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 14px 8px 8px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 4px;
+  border-radius: var(--sbt-radius-control);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sbt-check:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-check-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--sbt-radius-check);
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-muted);
+  flex-shrink: 0;
+  transition: background-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease, transform 0.12s ease;
+}
+
+.sbt-check-box--compact {
+  width: 22px;
+  height: 22px;
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-check > input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.sbt-check.is-active .sbt-check-box,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-check.is-active .sbt-check-box > svg,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-check.is-active .sbt-check-box.has-suboren,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box.has-suboren {
+  color: var(--sbt-suboren);
+}
+
+.sbt-check.is-active .sbt-check-box.has-suboren svg,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box.has-suboren svg {
+  filter: var(--sbt-suboren-svg-glow);
+}
+
+.sbt-check > input[type="checkbox"]:not(:checked) + .sbt-check-box svg {
+  opacity: 0.18;
+}
+
+/* Tactile Obsidian Switch (Soft-Rect Shell, Lit Groove Slot, Square Thumb Pin) */
+.sbt-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 13px 5px 5px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+  color: var(--sbt-ink-on-obsidian-muted);
+  font-family: var(--sbt-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.18s ease, box-shadow 0.18s ease, filter 0.16s ease;
+}
+
+.sbt-switch:hover {
+  filter: brightness(1.07);
+  box-shadow: var(--sbt-shadow-obsidian-hover);
+}
+
+.sbt-switch:focus-visible {
+  box-shadow: var(--sbt-shadow-obsidian), var(--sbt-focus-ring-obsidian);
+}
+
+.sbt-switch-track {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: var(--sbt-radius-switch-track);
+  background: var(--sbt-obsidian-groove-bg);
+  box-shadow: var(--sbt-obsidian-groove-shadow);
+  padding: 3px;
+  flex-shrink: 0;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sbt-switch-thumb {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--sbt-radius-switch-thumb);
+  background: var(--sbt-obsidian-thumb-off);
+  box-shadow: var(--sbt-obsidian-thumb-off-shadow);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sbt-switch .sbt-switch-icon {
+  color: var(--sbt-ink-on-obsidian-muted);
+  transition: color 0.18s ease, filter 0.18s ease;
+}
+
+.sbt-switch.is-active {
+  color: var(--sbt-ink-on-dark);
+}
+
+.sbt-switch.is-active .sbt-switch-track {
+  background: var(--sbt-obsidian-groove-active-bg);
+  box-shadow: var(--sbt-obsidian-groove-active-shadow);
+}
+
+.sbt-switch.is-active .sbt-switch-thumb {
+  transform: translateX(16px);
+  background: var(--sbt-suboren-dome);
+  box-shadow: var(--sbt-suboren-dome-shadow);
+}
+
+.sbt-switch.is-active .sbt-switch-icon {
+  color: var(--sbt-suboren);
+}
+
+.sbt-switch.is-active .sbt-switch-icon > svg {
+  filter: var(--sbt-suboren-svg-glow);
+}
+
+/* Concave Recessed Form Inputs & Textareas */
+.sbt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sbt-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sbt-ink-secondary);
+}
+
+.sbt-hint {
+  font-size: 11px;
+  color: var(--sbt-ink-muted);
+  line-height: 1.45;
+}
+
+.sbt-input,
+.sbt-textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--sbt-radius-inner);
+  padding: 10px 14px;
+  box-shadow: var(--sbt-shadow-well);
+  transition: background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.sbt-input::placeholder,
+.sbt-textarea::placeholder {
+  color: var(--sbt-ink-placeholder);
+}
+
+.sbt-input:focus,
+.sbt-textarea:focus {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile), var(--sbt-focus-ring);
+}
+
+.sbt-textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.65;
+}
+
+.sbt-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sbt-input-wrap .sbt-input {
+  padding-left: 38px;
+}
+
+.sbt-input-wrap--trailing .sbt-input {
+  padding-left: 14px;
+  padding-right: 40px;
+}
+
+.sbt-input-icon {
+  position: absolute;
+  left: 13px;
+  color: var(--sbt-ink-muted);
+  pointer-events: none;
+}
+
+.sbt-input-action {
+  position: absolute;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background: transparent;
+  color: var(--sbt-ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sbt-input-action:hover {
+  background-color: var(--sbt-bg-elevated);
+  color: var(--sbt-ink-primary);
+}
+
+/* Custom Borderless Select Dropdown */
+.sbt-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.sbt-select--compact {
+  width: auto;
+}
+
+.sbt-select-trigger {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-well);
+  cursor: pointer;
+  transition: background-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-select--pill .sbt-select-trigger {
+  background-color: var(--sbt-bg-slot);
+  box-shadow: none;
+  padding: 6px 12px;
+  border-radius: var(--sbt-radius-control);
+  font-size: 11px;
+}
+
+.sbt-select-trigger:focus-visible,
+.sbt-select.is-open .sbt-select-trigger {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile), var(--sbt-focus-ring);
+}
+
+.sbt-select-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  min-width: 160px;
+  padding: 6px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-modal);
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sbt-select.is-open .sbt-select-menu {
+  display: flex;
+}
+
+.sbt-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--sbt-radius-control);
+  cursor: pointer;
+  text-align: left;
+}
+
+.sbt-select-option:hover {
+  background-color: var(--sbt-bg-slot);
+}
+
+.sbt-select-option.is-selected {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-weight: 600;
+}
+
+/* Native <select> Borderless Wrapper */
+.sbt-native-select-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sbt-native-select-wrap--auto {
+  width: auto;
+}
+
+.sbt-native-select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 34px 10px 14px;
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-well);
+  cursor: pointer;
+  transition: background-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-native-select--compact {
+  padding: 7px 30px 7px 12px;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-ceramic);
+}
+
+.sbt-native-select:focus-visible {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile), var(--sbt-focus-ring);
+}
+
+.sbt-native-select-caret {
+  position: absolute;
+  right: 11px;
+  color: var(--sbt-ink-secondary);
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+input[type="date"].sbt-input {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Inline Typographic Tag Chips */
+.sbt-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sbt-ink-secondary);
+}
+
+.sbt-tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sbt-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-pill);
+  background: transparent;
+  color: var(--sbt-ink-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.sbt-tag-remove:hover {
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-suboren);
+}
+
+/* ==========================================================================
+   SLIDER & PRECISION RANGE FAMILY
+   ========================================================================== */
+.sbt-slider-shell {
+  position: relative;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.sbt-slider-groove {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+  overflow: hidden;
+}
+
+.sbt-slider-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--sbt-radius-pill);
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-slider-ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  pointer-events: none;
+}
+
+.sbt-slider-tick {
+  width: 2px;
+  height: 5px;
+  border-radius: 1px;
+  background-color: var(--sbt-ink-placeholder);
+  opacity: 0.55;
+}
+
+.sbt-slider-knob {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--sbt-radius-pill);
+  transform: translate(-50%, -50%);
+  background: var(--sbt-obsidian-soft-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 0.1s ease;
+}
+
+.sbt-slider-knob::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-ink-on-dark);
+}
+
+.sbt-slider-knob--suboren::after {
+  background-color: var(--sbt-suboren);
+  box-shadow: var(--sbt-suboren-glow);
+}
+
+.sbt-range-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.sbt-range-input:active + .sbt-slider-groove + .sbt-slider-knob {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.sbt-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--sbt-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.sbt-dual-wrap {
+  position: relative;
+  padding-top: 28px;
+}
+
+.sbt-dual-bubble {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 7px;
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sbt-shadow-obsidian);
+  pointer-events: none;
+}
+
+.sbt-dual-input {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28px;
+  height: 28px;
+  width: 100%;
+  margin: 0;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 5;
+}
+
+.sbt-dual-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.sbt-meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 4px;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-meter-fill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: var(--sbt-radius-switch-track);
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-meter-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sbt-meter-bar {
+  width: 2px;
+  height: 9px;
+  border-radius: 2px;
+  background-color: var(--sbt-ink-on-dark);
+  opacity: 0.72;
+}
+
+.sbt-meter-bar--ghost {
+  background-color: var(--sbt-ink-placeholder);
+  opacity: 0.45;
+}
+
+/* In-Place Banner Status */
+.sbt-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-strip);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-banner[hidden] {
+  display: none;
+}
+
+/* Tactile Choice Grid Matrix (Uniform Keypad, Flush Unselected Slots) */
+.sbt-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-choice-grid--5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.sbt-choice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  outline: none;
+  min-height: 32px;
+  padding: 6px 8px;
+  border-radius: var(--sbt-radius-control);
+  background-color: transparent;
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-choice-btn:hover {
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-choice-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-choice-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-choice-btn--span2 {
+  grid-column: span 2;
+}
+
+.sbt-banner--editing {
+  background-color: var(--sbt-suboren-soft);
+}
+
+.sbt-banner--info {
+  background-color: var(--sbt-fiksiblu-soft);
+  color: var(--sbt-fiksiblu);
+}
+
+.sbt-banner--success {
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-primary);
+}
+
+/* Narrow Media Card Icon-Only Action Row (Zero Text Truncation) */
+.sbt-card-icon-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sbt-card-icon-actions .sbt-icon-key {
+  flex: 1;
+  width: auto;
+  height: 30px;
+  border-radius: var(--sbt-radius-check);
+}
+
+/* Official Subtils Rich WYSIWYG Editor Primitives */
+.sbt-editor-shell {
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sbt-editor-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background-color: var(--sbt-bg-strip);
+}
+
+.sbt-editor-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sbt-editor-tools-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.sbt-editor-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-check);
+  background-color: var(--sbt-bg-elevated);
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sbt-shadow-ceramic);
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-editor-btn:hover {
+  color: var(--sbt-ink-primary);
+  box-shadow: var(--sbt-shadow-ceramic-hover);
+}
+
+.sbt-editor-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-editor-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-editor-surface {
+  min-height: 280px;
+  max-height: 540px;
+  overflow-y: auto;
+  padding: 18px 20px;
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+  color: var(--sbt-ink-prose);
+  font-family: var(--sbt-font-body);
+  font-size: 14px;
+  line-height: 1.75;
+  outline: none;
+}
+
+.sbt-editor-surface:focus {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-editor-surface blockquote {
+  margin: 14px 0;
+  padding: 12px 16px;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-quote);
+  color: var(--sbt-ink-secondary);
+  font-style: italic;
+}
+
+.sbt-editor-surface table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  margin: 14px 0;
+}
+
+.sbt-editor-surface th,
+.sbt-editor-surface td {
+  padding: 8px 12px;
+  background-color: var(--sbt-bg-slot);
+  text-align: left;
+  font-size: 12.5px;
+}
+
+.sbt-editor-surface th {
+  background-color: var(--sbt-bg-recessed);
+  font-weight: 700;
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-editor-code {
+  width: 100%;
+  min-height: 280px;
+  border: none;
+  outline: none;
+  padding: 16px 20px;
+  background-color: var(--sbt-backdrop-obsidian);
+  color: var(--sbt-ink-on-dark);
+  font-size: 12.5px;
+  line-height: 1.65;
+  resize: vertical;
+}
+
+.sbt-editor-popover {
+  position: relative;
+  display: inline-flex;
+}
+
+.sbt-editor-pop-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 40;
+  min-width: 160px;
+  padding: 8px;
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-modal);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   SUBTILS UI KIT — WORKSPACE & STUDIO LAYOUTS
+   Supports:
+     1. 3-Column Full-Height App Workspace (.sbt-workspace-3col)
+     2. 2-Column Scrollable Studio Dashboard (.sbt-studio-2col)
+     3. Light Ceramic Split Browser (.sbt-media-split)
+   ========================================================================== */
+
+.sbt-app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 22px;
+}
+
+.sbt-app-shell--locked {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Global Top Header Bar */
+.sbt-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 0 2px;
+}
+
+.sbt-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sbt-brand-name {
+  font-family: var(--sbt-font-display);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-brand-anchor {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background-color: var(--sbt-fiksiblu);
+}
+
+.sbt-header-actions {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sbt-header-actions .sbt-icon-key {
+  width: 34px;
+  height: 34px;
+}
+
+.sbt-header-actions .sbt-segmented {
+  height: 34px;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.sbt-header-actions .sbt-seg-btn {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.sbt-header-actions .sbt-switch {
+  height: 34px;
+  padding: 4px 13px 4px 5px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.sbt-root .sbt-header-actions a.sbt-btn-fiksiblu,
+.sbt-root .sbt-header-actions .sbt-btn-fiksiblu,
+.sbt-root .sbt-header-actions .sbt-btn-obsidian,
+.sbt-root .sbt-header-actions .sbt-btn-ceramic {
+  height: 34px;
+  padding: 0 14px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+/* Mode 1: Asymmetric 3-Column CMS Workspace (310px | flex-1 | 270px) */
+.sbt-workspace-3col {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.sbt-col-archive {
+  width: 310px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 0;
+}
+
+.sbt-col-canvas {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sbt-col-inspector {
+  width: 270px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.sbt-workspace-3col.is-focus .sbt-col-archive,
+.sbt-workspace-3col.is-focus .sbt-col-inspector {
+  display: none;
+}
+
+.sbt-archive-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+}
+
+.sbt-canvas-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 28px;
+  background-color: var(--sbt-bg-strip);
+  flex-shrink: 0;
+}
+
+.sbt-canvas-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 36px 52px;
+}
+
+.sbt-canvas-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.sbt-editor-title {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--sbt-font-display);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.028em;
+  color: var(--sbt-ink-primary);
+  resize: none;
+  overflow: hidden;
+}
+
+.sbt-editor-title::placeholder,
+.sbt-editor-body::placeholder {
+  color: var(--sbt-ink-placeholder);
+}
+
+.sbt-editor-body {
+  width: 100%;
+  min-height: 360px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--sbt-font-body);
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--sbt-ink-prose);
+  resize: none;
+}
+
+/* Mode 2: 2-Column Scrollable Studio Dashboard (Apps Script Preset Layout) */
+.sbt-studio-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sbt-studio-2col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 22px;
+  align-items: start;
+}
+
+.sbt-studio-aside {
+  position: sticky;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sbt-form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Mode 3: Light Ceramic Split Browser (MORG Media Replacement) */
+.sbt-media-split {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.sbt-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.sbt-media-card {
+  background-color: var(--sbt-bg-slot);
+  border-radius: var(--sbt-radius-inner);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sbt-media-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-recessed);
+}
+
+/* Mobile Zone Toggle (Hidden on Desktop) */
+.sbt-mobile-zones {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .sbt-header-actions {
+    flex-wrap: wrap;
+  }
+
+  .sbt-app-shell--locked {
+    height: auto;
+    overflow: visible;
+  }
+
+  .sbt-workspace-3col,
+  .sbt-studio-2col,
+  .sbt-media-split {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .sbt-col-archive,
+  .sbt-col-inspector,
+  .sbt-studio-aside {
+    width: 100%;
+    position: static;
+  }
+
+  .sbt-workspace-3col .sbt-col-archive.is-hidden-mobile,
+  .sbt-workspace-3col .sbt-col-canvas.is-hidden-mobile,
+  .sbt-workspace-3col .sbt-col-inspector.is-hidden-mobile {
+    display: none;
+  }
+
+  .sbt-mobile-zones {
+    display: inline-flex;
+  }
+
+  .sbt-canvas-scroll {
+    padding: 24px 20px;
+  }
+
+  .sbt-form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
     /* ==========================================================================
-       SUBFIKSI DESIGN SYSTEM (SDS V1.1b) — TOKEN & VARIABEL
+       TEKSTUR STUDIO — SUBTILS UTILITY WORKSTATION + MOBILE-FIRST LAYOUT
        ========================================================================== */
-    :root {
-      --sfx-orange: #ff6600;
-      --sfx-orange-hover: #e65c00;
-      --sfx-blue: #003380;
-      --sfx-blue-dark: #0a1f44;
-      --sfx-blue-light: #eff6ff;
-      --sfx-blue-border: #bfdbfe;
-      --sfx-charcoal: #0f172a;
-      --sfx-muted: #64748b;
-      --sfx-bg: #f8fafc;
-      --sfx-card-bg: #ffffff;
-      --sfx-border: #e2e8f0;
-      --sfx-border-dark: #cbd5e1;
-
-      /* Palet Terminal Gelap */
-      --term-bg: #0b1120;
-      --term-text: #f1f5f9;
-      --term-border: #1e293b;
-
-      --font-main: 'Inter', system-ui, -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', Consolas, monospace;
-
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
-      --radius-full: 9999px;
-
-      --shadow-subtle: 0 4px 16px rgba(0, 51, 128, 0.05);
-      --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
-      --shadow-toast: 0 12px 32px rgba(15, 23, 42, 0.18);
-      --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      height: auto;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    body {
-      background-color: var(--sfx-bg);
-      color: var(--sfx-charcoal);
-      font-family: var(--font-main);
-      font-size: 14px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100%;
-      height: auto;
-      margin: 0;
-      padding: 16px 16px 50px 16px;
-      overflow-y: visible;
-      -webkit-overflow-scrolling: touch;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* Penyesuaian khusus saat berjalan dalam iframe runner Blogger */
-    html.sfx-in-iframe,
-    html.sfx-in-iframe body {
-      min-height: 0 !important;
-      height: auto !important;
-      background-color: #ffffff !important;
-      padding: 12px 14px 20px 14px !important;
-    }
-
-    html.sfx-in-iframe .sfx-app-wrapper {
-      min-height: 0 !important;
-      flex: none !important;
-    }
-
-    .sfx-app-wrapper {
-      max-width: 1320px;
-      width: 100%;
+    .tx-shell {
+      min-height: 100vh;
+      max-width: 1360px;
       margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ==========================================================================
-       HEADER & TOP APP BAR
-       ========================================================================== */
-    .sfx-top-bar {
-      background: var(--sfx-card-bg);
-      border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-md);
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-subtle);
-      padding: 12px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .sfx-brand-col {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    .sfx-brand-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      background: var(--sfx-blue-light);
-      color: var(--sfx-blue);
-      border: 1px solid var(--sfx-blue-border);
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-    }
-
-    .sfx-app-title {
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: var(--sfx-blue);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      white-space: nowrap;
-    }
-
-    .sfx-top-status-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .sfx-pill-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-      transition: all var(--transition-fast);
-    }
-
-    .sfx-pill-orange { background-color: var(--sfx-orange); color: #ffffff; }
-    .sfx-pill-blue { background-color: var(--sfx-blue); color: #ffffff; }
-    .sfx-pill-charcoal { background-color: var(--sfx-charcoal); color: #ffffff; }
-    .sfx-pill-muted { background-color: #f1f5f9; color: var(--sfx-muted); border: 1px solid var(--sfx-border); }
-
-    .sfx-top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .sfx-btn-nav {
-      background: #ffffff;
-      color: var(--sfx-charcoal);
-      border: 1px solid var(--sfx-border);
-      padding: 7px 12px;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-main);
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      white-space: nowrap;
-      transition: all 0.15s ease;
-      user-select: none;
-    }
-
-    .sfx-btn-nav:hover {
-      background: #f1f5f9;
-      border-color: var(--sfx-border-dark);
-      color: var(--sfx-blue);
-    }
-
-    /* ==========================================================================
-       TATA LETAK WORKSTATION 2-KOLOM (DESKTOP)
-       ========================================================================== */
-    .sfx-workspace {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 16px;
-      align-items: start;
-    }
-
-    /* ==========================================================================
-       PANEL KONTROL (KOLOM KIRI)
-       ========================================================================== */
-    .sfx-sidebar {
-      background-color: var(--sfx-card-bg);
-      border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-subtle);
-      padding: 14px 16px;
+      padding: 16px 20px 36px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
-    .sidebar-section {
+    html.sfx-in-iframe,
+    html.sfx-in-iframe body {
+      min-height: 0 !important;
+      height: auto !important;
+      overflow-y: visible !important;
+    }
+
+    html.sfx-in-iframe .tx-shell {
+      min-height: 0 !important;
+      padding: 10px 12px 18px;
+    }
+
+    /* Top App Bar (34px Datum) */
+    .tx-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: nowrap;
+      padding: 0 2px;
+    }
+
+    .tx-brand-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .tx-header-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 10px;
+      height: 34px;
+      border-radius: var(--sbt-radius-control);
+      background-color: var(--sbt-bg-slot);
+    }
+
+    .tx-dot-sep {
+      width: 3px;
+      height: 3px;
+      border-radius: var(--sbt-radius-pill);
+      background-color: var(--sbt-pip-muted);
+    }
+
+    /* Main 2-Column Studio */
+    .tx-workspace {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .tx-sidebar {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .tx-section {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--sfx-border);
     }
 
-    .sidebar-section:last-of-type {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .section-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      font-weight: 800;
-      color: var(--sfx-muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+    .tx-section-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    /* Aksi Berkas Utama */
-    .primary-actions {
+    .tx-eyebrow {
+      font-family: var(--sbt-font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--sbt-ink-muted);
+    }
+
+    .tx-primary-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
 
-    .btn-sfx {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 9px 12px;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-main);
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all var(--transition-fast);
-      user-select: none;
-    }
-
-    .btn-sfx-orange { background-color: var(--sfx-orange); color: #ffffff; }
-    .btn-sfx-orange:hover { background-color: var(--sfx-orange-hover); }
-
-    .btn-sfx-outline {
-      background-color: #ffffff;
-      border-color: var(--sfx-border);
-      color: var(--sfx-charcoal);
-    }
-    .btn-sfx-outline:hover {
-      background-color: #f1f5f9;
-      border-color: var(--sfx-border-dark);
-      color: var(--sfx-blue);
-    }
-
-    .file-input-wrapper {
+    .tx-file-wrap {
       position: relative;
-      overflow: hidden;
       display: block;
       width: 100%;
     }
-    .file-input-wrapper input[type="file"] {
+
+    .tx-file-wrap input[type="file"] {
       position: absolute;
-      left: 0;
-      top: 0;
+      inset: 0;
       opacity: 0;
       cursor: pointer;
       width: 100%;
       height: 100%;
     }
 
-    /* Keycaps Preset Resolusi & Gaya */
-    .keycaps-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .sfx-keycap {
-      background-color: #f8fafc;
-      border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-sm);
-      padding: 6px 9px;
-      font-family: var(--font-main);
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: var(--sfx-muted);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    .sfx-keycap:hover {
-      border-color: var(--sfx-border-dark);
-      color: var(--sfx-charcoal);
-      background-color: #ffffff;
-    }
-
-    .sfx-keycap.is-active {
-      background-color: var(--sfx-blue);
-      color: #ffffff;
-      border-color: var(--sfx-blue);
-      box-shadow: 0 2px 6px rgba(0, 51, 128, 0.2);
-      font-weight: 700;
-    }
-
-    /* Opsi Kontras / Invert */
-    .sfx-toggle-row {
+    /* Invert Row inside Sidebar */
+    .tx-switch-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 7px 10px;
-      background: #f8fafc;
-      border: 1px solid var(--sfx-border);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      user-select: none;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--sbt-radius-inner);
+      background-color: var(--sbt-bg-slot);
     }
 
-    .sfx-toggle-row:hover {
-      background: #f1f5f9;
-    }
-
-    .sfx-toggle-label {
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: var(--sfx-charcoal);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Custom Toggle Switch */
-    .sfx-switch {
-      position: relative;
-      display: inline-block;
-      width: 36px;
-      height: 20px;
-    }
-
-    .sfx-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .sfx-switch-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #cbd5e1;
-      border-radius: 20px;
-      transition: 0.2s ease;
-    }
-
-    .sfx-switch-slider:before {
-      position: absolute;
-      content: "";
-      height: 14px;
-      width: 14px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      border-radius: 50%;
-      transition: 0.2s ease;
-    }
-
-    .sfx-switch input:checked + .sfx-switch-slider {
-      background-color: var(--sfx-orange);
-    }
-
-    .sfx-switch input:checked + .sfx-switch-slider:before {
-      transform: translateX(16px);
-    }
-
-    /* INSPECTOR DOSSIER */
-    .sfx-inspector-dossier {
-      background-color: #fafbfc;
-      border: 1px solid var(--sfx-border);
-      border-left: 3px solid var(--sfx-blue);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
+    /* Inspector Dossier (Concave Well) */
+    .tx-dossier {
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .dossier-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .dossier-title {
-      font-family: var(--font-main);
-      font-size: 1rem;
-      font-weight: 900;
-      color: var(--sfx-blue);
+    .tx-dossier-title {
+      font-family: var(--sbt-font-display);
+      font-size: 15px;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.2;
-      text-transform: uppercase;
+      color: var(--sbt-ink-primary);
     }
 
-    .dossier-desc {
-      font-size: 0.74rem;
-      color: var(--sfx-charcoal);
-      line-height: 1.45;
+    .tx-dossier-desc {
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--sbt-ink-secondary);
     }
 
-    .dossier-ramp-block {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding-top: 6px;
-      border-top: 1px dashed var(--sfx-border);
-    }
-
-    .dossier-ramp-label {
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      font-weight: 700;
-      color: var(--sfx-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .dossier-ramp-container {
-      background-color: var(--sfx-blue-light);
-      border: 1px solid var(--sfx-blue-border);
-      border-radius: var(--radius-sm);
-      padding: 5px 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .tx-ramp-box {
+      padding: 8px 12px;
+      border-radius: var(--sbt-radius-control);
+      background-color: var(--sbt-bg-elevated);
+      box-shadow: var(--sbt-shadow-ceramic);
       overflow-x: auto;
     }
 
+    /* Exception: monospace specifically for ASCII glyph ramp preview & output grid */
     #dos-ramp {
-      font-family: var(--font-mono);
-      font-size: 0.88rem;
-      font-weight: 800;
-      color: var(--sfx-blue);
-      letter-spacing: 0.22em;
-      line-height: 1;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--sbt-fiksiblu);
       white-space: nowrap;
     }
 
-    .dossier-spec-row {
+    /* Right Canvas Sheet */
+    .tx-canvas-sheet {
       display: flex;
       flex-direction: column;
-      gap: 2px;
-      font-size: 0.72rem;
-    }
-
-    .dossier-spec-row strong {
-      color: var(--sfx-muted);
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    /* ==========================================================================
-       KANVAS UTAMA (KOLOM KANAN: ASCII VIEWPORT CARD)
-       ========================================================================== */
-    .sfx-main-canvas-card {
-      background-color: var(--sfx-card-bg);
-      border: 1px solid var(--sfx-border);
-      border-top: 3px solid var(--sfx-orange);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-card);
-      display: flex;
-      flex-direction: column;
-      min-height: 580px;
       overflow: hidden;
+      min-height: 580px;
     }
 
-    /* Toolbar Kepala Kanvas */
-    .canvas-header {
+    .tx-canvas-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--sfx-border);
-      background: #fafbfc;
+      justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
+      padding: 12px 18px;
+      background-color: var(--sbt-bg-strip);
     }
 
-    .canvas-title-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .canvas-title {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--sfx-charcoal);
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-    }
-
-    .canvas-density-tag {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--sfx-blue);
-      background: var(--sfx-blue-light);
-      border: 1px solid var(--sfx-blue-border);
-      padding: 2px 6px;
-      border-radius: var(--radius-sm);
-    }
-
-    /* Tombol Operasi Kanvas (Zoom, Tema, Unduh) */
-    .canvas-toolbar-actions {
+    .tx-canvas-tools {
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
     }
 
-    .btn-tool-sm {
-      background: #ffffff;
-      border: 1px solid var(--sfx-border);
-      color: var(--sfx-charcoal);
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      transition: all var(--transition-fast);
-      user-select: none;
+    .tx-canvas-btn {
+      height: 30px;
+      padding: 0 10px;
     }
 
-    .btn-tool-sm:hover {
-      background: #f1f5f9;
-      border-color: var(--sfx-border-dark);
-      color: var(--sfx-blue);
-    }
-
-    .btn-tool-accent {
-      background: var(--sfx-orange);
-      color: #ffffff;
-      border-color: var(--sfx-orange);
-    }
-    .btn-tool-accent:hover {
-      background: var(--sfx-orange-hover);
-      color: #ffffff;
-    }
-
-    /* Wadah Viewport Teks */
-    .ascii-viewport {
+    .tx-viewport {
+      position: relative;
       flex: 1;
-      width: 100%;
-      min-height: 480px;
-      background-color: #ffffff;
-      padding: 18px;
+      min-height: 500px;
+      padding: 20px;
+      background-color: var(--sbt-bg-elevated);
       overflow: auto;
       display: flex;
-      justify-content: center;
       align-items: center;
-      position: relative;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      justify-content: center;
       touch-action: pan-x pan-y;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
-    /* Mode Terminal Gelap */
-    .ascii-viewport.is-dark-terminal {
-      background-color: var(--term-bg) !important;
+    .tx-viewport.is-dark-terminal {
+      background-color: var(--sbt-backdrop-obsidian);
     }
 
-    .ascii-viewport.is-dark-terminal #ascii-result {
-      color: var(--term-text) !important;
+    .tx-viewport.is-dark-terminal #ascii-result {
+      color: var(--sbt-ink-on-dark);
     }
 
     #ascii-result {
-      font-family: var(--font-mono);
+      font-family: 'JetBrains Mono', monospace;
       letter-spacing: 0;
-      color: var(--sfx-charcoal);
+      color: var(--sbt-ink-primary);
       white-space: pre;
       user-select: all;
       margin: auto;
-      line-height: 7px;
       font-size: 7px;
+      line-height: 7px;
       transition: font-size 0.1s ease, line-height 0.1s ease;
     }
 
-    /* Tampilan Kosong (Empty State & Dropzone) */
-    .empty-state-box {
-      border: 2px dashed var(--sfx-border-dark);
-      border-radius: var(--radius-md);
-      padding: 36px 24px;
-      text-align: center;
-      max-width: 440px;
+    /* Borderless Recessed Dropzone */
+    .tx-empty-well {
+      max-width: 420px;
       width: 100%;
-      background: #fafbfc;
+      padding: 36px 26px;
+      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.16s ease, box-shadow 0.16s ease, transform 0.12s ease;
     }
 
-    .empty-state-box:hover,
-    .empty-state-box.drag-over {
-      border-color: var(--sfx-orange);
-      background: #fff7ed;
+    .tx-empty-well:hover,
+    .tx-empty-well.drag-over {
+      background-color: var(--sbt-bg-elevated);
+      box-shadow: var(--sbt-shadow-tile), var(--sbt-focus-ring);
     }
 
-    .empty-icon {
-      font-size: 2.2rem;
-      line-height: 1;
+    .tx-empty-icon {
+      color: var(--sbt-ink-muted);
+      opacity: 0.72;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .empty-title {
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: var(--sfx-blue);
-    }
-
-    .empty-desc {
-      font-size: 0.76rem;
-      color: var(--sfx-muted);
-      line-height: 1.45;
-    }
-
-    /* Drop Overlay Visual */
-    .drop-overlay {
+    .tx-drop-overlay {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 51, 128, 0.85);
-      backdrop-filter: blur(4px);
+      inset: 0;
+      background-color: var(--sbt-backdrop-obsidian);
+      opacity: 0.92;
+      color: var(--sbt-ink-on-dark);
       display: none;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      align-items: center;
-      color: #ffffff;
-      z-index: 50;
+      gap: 8px;
+      z-index: 40;
       pointer-events: none;
     }
 
-    .drop-overlay.active {
+    .tx-drop-overlay.active {
       display: flex;
     }
 
-    /* TOAST NOTIFIKASI */
-    .sfx-toast-container {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-      pointer-events: none;
-      width: 90%;
-      max-width: 360px;
+    /* Mobile First Quick Dock (Hidden Desktop, Ergonomic Above-Canvas on HP) */
+    .tx-mobile-dock {
+      display: none;
     }
 
-    .sfx-toast {
-      pointer-events: auto;
-      background-color: var(--sfx-charcoal);
-      color: #ffffff;
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: var(--shadow-toast);
-      border-left: 4px solid var(--sfx-orange);
-      animation: sfxToastSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .tx-mobile-status {
+      display: none;
     }
 
-    @keyframes sfxToastSlide {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ==========================================================================
-       RESPONSIVITAS MOBILE (< 900px): ALIRAN ERGONOMIS MOBILE-FIRST
-       ========================================================================== */
-    @media (max-width: 900px) {
-      body {
-        padding: 10px 10px 50px 10px;
+    @media (max-width: 960px) {
+      .tx-shell {
+        padding: 12px 12px 28px;
+        gap: 10px;
       }
 
-      .sfx-top-bar {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-          "brand actions"
-          "status status";
+      .tx-header {
+        flex-wrap: wrap;
         gap: 8px;
-        padding: 10px 12px;
       }
 
-      .sfx-brand-col {
-        grid-area: brand;
-        gap: 6px;
-        min-width: 0;
+      .tx-header-meta {
+        display: none;
       }
 
-      .sfx-brand-tag {
-        font-size: 0.65rem;
-        padding: 2px 5px;
-      }
-
-      .sfx-app-title {
-        font-size: clamp(0.95rem, 4vw, 1.15rem);
-      }
-
-      .sfx-top-actions {
-        grid-area: actions;
-        gap: 4px;
-        flex-shrink: 0;
-      }
-
-      .sfx-btn-nav {
-        padding: 5px 7px;
-        font-size: 0.7rem;
-        gap: 3px;
-      }
-
-      @media (max-width: 420px) {
-        .sfx-btn-nav {
-          padding: 4px 6px;
-          font-size: 0.68rem;
-        }
-      }
-
-      .sfx-top-status-group {
-        grid-area: status;
+      .tx-mobile-status {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        width: 100%;
-        background: #f8fafc;
-        border: 1px solid var(--sfx-border);
-        border-radius: var(--radius-sm);
-        padding: 5px 10px;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: var(--sbt-radius-inner);
+        background-color: var(--sbt-bg-elevated);
+        box-shadow: var(--sbt-shadow-tray);
       }
 
-      /* Ubah Urutan Tampilan di HP: Kontrol Ringkas di Atas, Viewport Langsung Terlihat! */
-      .sfx-workspace {
+      .tx-mobile-dock {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+        border-radius: var(--sbt-radius-outer);
+        background-color: var(--sbt-bg-elevated);
+        box-shadow: var(--sbt-shadow-sheet);
+      }
+
+      .tx-mobile-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .tx-mobile-scroll {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        overflow-x: auto;
+        padding: 4px;
+        border-radius: var(--sbt-radius-inner);
+        background-color: var(--sbt-bg-recessed);
+        box-shadow: var(--sbt-shadow-well);
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .tx-mobile-scroll::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tx-workspace {
         grid-template-columns: 1fr;
         gap: 12px;
       }
 
-      .sfx-sidebar {
-        order: 2; /* Dossier dan rincian diletakkan di bawah agar kanvas tampil segera */
+      .tx-canvas-sheet {
+        order: 1;
+        min-height: 390px;
       }
 
-      .sfx-main-canvas-card {
-        order: 1; /* Viewport hasil render diprioritaskan di atas */
-        min-height: 420px;
+      .tx-sidebar {
+        order: 2;
       }
 
-      .ascii-viewport {
-        min-height: 380px;
-        padding: 10px;
-      }
-
-      /* Kontrol Cepat Mobile yang Menempel di Atas Kanvas */
-      .mobile-quick-controls {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding: 10px 12px;
-        background: #ffffff;
-        border: 1px solid var(--sfx-border);
-        border-radius: var(--radius-md);
-        margin-bottom: 12px;
+      .tx-viewport {
+        min-height: 320px;
+        padding: 12px;
       }
     }
 
-    @media (min-width: 901px) {
-      .mobile-quick-controls {
-        display: none; /* Hanya aktif di layar ponsel */
+    @media (max-width: 480px) {
+      .tx-root .sbt-header-actions a.sbt-btn-fiksiblu,
+      .tx-root .sbt-header-actions .sbt-btn-fiksiblu,
+      .tx-root .sbt-header-actions .sbt-btn-obsidian,
+      .tx-root .sbt-header-actions .sbt-btn-ceramic {
+        padding: 0 10px;
+        font-size: 11px;
+        gap: 5px;
+      }
+
+      .tx-brand-name-mobile {
+        font-size: 16px;
+      }
+
+      .tx-mobile-top {
+        flex-wrap: wrap;
+      }
+
+      .tx-mobile-top .tx-file-wrap {
+        flex: 1 1 180px;
       }
     }
   </style>
 </head>
-<body>
+<body class="sbt-root tx-root">
 
-  <div class="sfx-app-wrapper">
+  <div class="tx-shell sfx-app-wrapper">
 
-    <!-- HEADER TOP APP BAR -->
-    <header class="sfx-top-bar">
-      <!-- Kiri: Brand & Judul -->
-      <div class="sfx-brand-col">
-        <span class="sfx-brand-tag">⚡ LAB!</span>
-        <h1 class="sfx-app-title">TEKSTUR</h1>
+    <!-- GLOBAL TOP BAR (SUBTILS 34px DATUM) -->
+    <header class="sbt-header tx-header">
+      <div class="tx-brand-wrap">
+        <div class="sbt-brand">
+          <span class="sbt-led is-suboren" aria-hidden="true"></span>
+          <span class="sbt-brand-name tx-brand-name-mobile">TEKSTUR</span>
+        </div>
+        <div class="tx-header-meta">
+          <span class="sbt-status sbt-status--muted" id="status-badge">Menunggu Berkas</span>
+          <span class="tx-dot-sep" aria-hidden="true"></span>
+          <span class="sbt-status sbt-status--terbit" id="active-style-pill">Klasik · 100 CHR</span>
+        </div>
       </div>
 
-      <!-- Kanan: Aksi Cepat Ekspor -->
-      <div class="sfx-top-actions">
-        <button type="button" class="sfx-btn-nav" onclick="copyAscii()" title="Salin Seni ASCII">
-          <span>📋</span> <span>Salin</span>
+      <div class="sbt-header-actions">
+        <button type="button" class="sbt-btn-obsidian" id="btnHeaderCopy" onclick="copyAscii(this)" title="Salin Seni ASCII ke Clipboard">
+          <i data-sbt-icon="copy" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
+          <span data-sbt-btn-text>Salin</span>
         </button>
-        <button type="button" class="sfx-btn-nav" onclick="downloadTxtFile()" title="Unduh File .TXT">
-          <span>📄</span> <span>.TXT</span>
+        <button type="button" class="sbt-btn-ceramic" id="btnHeaderTxt" onclick="downloadTxtFile(this)" title="Unduh Berkas Teks .TXT">
+          <i data-sbt-icon="article" class="sbt-icon sbt-icon--sm"></i>
+          <span data-sbt-btn-text>.TXT</span>
         </button>
-        <button type="button" class="sfx-btn-nav" onclick="exportAsciiPNG()" title="Ekspor Citra Teks PNG">
-          <span>🖼️</span> <span>PNG</span>
+        <button type="button" class="sbt-btn-fiksiblu" id="btnHeaderPng" onclick="exportAsciiPNG(this)" title="Ekspor Citra PNG Resolusi Tinggi">
+          <i data-sbt-icon="image" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
+          <span data-sbt-btn-text>PNG</span>
         </button>
-      </div>
-
-      <!-- Baris Status -->
-      <div class="sfx-top-status-group">
-        <span class="sfx-pill-badge sfx-pill-muted" id="status-badge">MENUNGGU BERKAS</span>
-        <span class="sfx-pill-badge sfx-pill-blue" id="active-style-pill">KLASIK • 100 CHR</span>
       </div>
     </header>
 
-    <!-- MOBILE QUICK CONTROLS (Hanya Tampil di Layar HP agar Ergonomis) -->
-    <div class="mobile-quick-controls">
-      <div style="display: flex; gap: 8px; align-items: center;">
-        <div class="file-input-wrapper" style="flex: 1;">
-          <button type="button" class="btn-sfx btn-sfx-orange" style="width: 100%; font-size: 0.78rem; padding: 7px 10px;">
-            <span>📷</span> <span>Pilih / Foto Citra</span>
-          </button>
-          <input type="file" class="mobile-image-input" accept="image/*" />
-        </div>
-        <label class="sfx-toggle-row" style="padding: 5px 8px; flex-shrink: 0;" title="Balik Nilai Gelap & Terang">
-          <span class="sfx-toggle-label" style="font-size: 0.68rem;">Negatif</span>
-          <span class="sfx-switch" style="width: 30px; height: 16px;">
-            <input type="checkbox" id="mobile-invert-toggle" onchange="syncInvert(this.checked)">
-            <span class="sfx-switch-slider" style="border-radius: 16px;"></span>
-          </span>
-        </label>
-      </div>
-      <!-- Scrollable Keycaps di HP -->
-      <div style="display: flex; gap: 5px; overflow-x: auto; padding-bottom: 2px;">
-        <button class="sfx-keycap is-active m-algo" data-algo="classic" onclick="setAlgorithm('classic')">Klasik</button>
-        <button class="sfx-keycap m-algo" data-algo="braille" onclick="setAlgorithm('braille')">Braille</button>
-        <button class="sfx-keycap m-algo" data-algo="retro" onclick="setAlgorithm('retro')">Retro</button>
-        <button class="sfx-keycap m-algo" data-algo="siluet" onclick="setAlgorithm('siluet')">Siluet</button>
-        <button class="sfx-keycap m-algo" data-algo="biner" onclick="setAlgorithm('biner')">Biner</button>
-        <button class="sfx-keycap m-algo" data-algo="numerik" onclick="setAlgorithm('numerik')">Numerik</button>
-        <button class="sfx-keycap m-algo" data-algo="minimalis" onclick="setAlgorithm('minimalis')">Minimalis</button>
-      </div>
+    <!-- STATUS STRIP RINGKAS MOBILE (< 960px) -->
+    <div class="tx-mobile-status">
+      <span class="sbt-status sbt-status--muted" id="mobile-status-badge">Menunggu Berkas</span>
+      <span class="sbt-status sbt-status--terbit" id="mobile-active-pill">Klasik · 100 CHR</span>
     </div>
 
-    <!-- TATA LETAK WORKSPACE UTAMA -->
-    <main class="sfx-workspace">
+    <!-- INLINE STATUS BANNER (PENGGANTI TOAST MENGAMBANG) -->
+    <div class="sbt-banner" id="teksturBanner" hidden><span data-sbt-banner-text></span></div>
 
-      <!-- ====================================================================
-           KOLOM KIRI: SIDEBAR KONTROL STUDIO & INSPECTOR DOSSIER
-           ==================================================================== -->
-      <aside class="sfx-sidebar">
-        <!-- 1. Kontrol Berkas & Pemasukan Citra -->
-        <div class="sidebar-section">
-          <div class="section-eyebrow">
-            <span>01. Kontrol Berkas</span>
+    <!-- MOBILE ERGONOMIC DOCK (LANGSUNG DI ATAS KANVAS PADA HP) -->
+    <section class="tx-mobile-dock" aria-label="Kontrol Cepat Ponsel">
+      <div class="tx-mobile-top">
+        <div class="tx-file-wrap" style="flex: 1;">
+          <button type="button" class="sbt-btn-obsidian sbt-btn--block" style="height: 38px;">
+            <i data-sbt-icon="images" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
+            <span>Pilih / Foto Citra</span>
+          </button>
+          <input type="file" class="mobile-image-input" accept="image/*" aria-label="Pilih berkas gambar" />
+        </div>
+
+        <button type="button" class="sbt-switch" id="mobileInvertSwitch" onclick="syncInvert(!isInverted)" aria-pressed="false" title="Balik Gelap Terang" style="height: 38px;">
+          <span class="sbt-switch-track" aria-hidden="true"><span class="sbt-switch-thumb"></span></span>
+          <i data-sbt-icon="sliders-horizontal" class="sbt-icon sbt-icon--sm sbt-switch-icon"></i>
+          <span>Negatif</span>
+        </button>
+      </div>
+
+      <!-- Swipe Horizontal: 7 Gaya Matriks -->
+      <div class="tx-mobile-scroll" role="tablist" aria-label="Gaya Matriks">
+        <button type="button" class="sbt-choice-btn is-active m-algo" data-algo="classic" onclick="setAlgorithm('classic')">Klasik</button>
+        <button type="button" class="sbt-choice-btn m-algo" data-algo="braille" onclick="setAlgorithm('braille')">Braille HD</button>
+        <button type="button" class="sbt-choice-btn m-algo" data-algo="retro" onclick="setAlgorithm('retro')">Retro</button>
+        <button type="button" class="sbt-choice-btn m-algo" data-algo="siluet" onclick="setAlgorithm('siluet')">Siluet</button>
+        <button type="button" class="sbt-choice-btn m-algo" data-algo="biner" onclick="setAlgorithm('biner')">Biner</button>
+        <button type="button" class="sbt-choice-btn m-algo" data-algo="numerik" onclick="setAlgorithm('numerik')">Numerik</button>
+        <button type="button" class="sbt-choice-btn m-algo" data-algo="minimalis" onclick="setAlgorithm('minimalis')">Minimalis</button>
+      </div>
+
+      <!-- Swipe Horizontal: 5 Preset Resolusi -->
+      <div class="tx-mobile-scroll" role="tablist" aria-label="Preset Resolusi">
+        <button type="button" class="sbt-choice-btn m-res" data-res="36" onclick="setResolution(36, true)">36 WA</button>
+        <button type="button" class="sbt-choice-btn m-res" data-res="64" onclick="setResolution(64, false)">64 Kompak</button>
+        <button type="button" class="sbt-choice-btn is-active m-res" data-res="100" onclick="setResolution(100, false)">100 Standar</button>
+        <button type="button" class="sbt-choice-btn m-res" data-res="140" onclick="setResolution(140, false)">140 Presisi</button>
+        <button type="button" class="sbt-choice-btn m-res" data-res="180" onclick="setResolution(180, false)">180 UHD</button>
+      </div>
+    </section>
+
+    <!-- WORKSPACE UTAMA 2-KOLOM -->
+    <main class="tx-workspace">
+
+      <!-- SIDEBAR KONTROL KIRI -->
+      <aside class="sbt-sheet tx-sidebar">
+
+        <!-- 01. Kontrol Berkas -->
+        <div class="tx-section">
+          <div class="tx-section-head">
+            <span class="tx-eyebrow">01 · Kontrol Berkas</span>
           </div>
-          <div class="primary-actions">
-            <div class="file-input-wrapper">
-              <button type="button" class="btn-sfx btn-sfx-orange" style="width: 100%;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                Unggah
+          <div class="tx-primary-actions">
+            <div class="tx-file-wrap">
+              <button type="button" class="sbt-btn-obsidian sbt-btn--block" style="height: 36px; padding: 0 12px;">
+                <i data-sbt-icon="folder" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
+                <span>Unggah</span>
               </button>
-              <input type="file" id="image-input" accept="image/*" />
+              <input type="file" id="image-input" accept="image/*" aria-label="Unggah berkas gambar" />
             </div>
-            <button type="button" class="btn-sfx btn-sfx-outline" onclick="copyAscii()">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin Teks
+            <button type="button" class="sbt-btn-fiksiblu sbt-btn--block" style="height: 36px; padding: 0 12px;" onclick="copyAscii(this)">
+              <i data-sbt-icon="copy" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
+              <span data-sbt-btn-text>Salin Teks</span>
             </button>
           </div>
         </div>
 
-        <!-- 2. Target Resolusi Karakter -->
-        <div class="sidebar-section">
-          <div class="section-eyebrow">
-            <span>02. Target Resolusi</span>
-            <span id="target-active-label" style="color: var(--sfx-orange); font-size: 0.65rem;">100 CHR</span>
+        <!-- 02. Target Resolusi -->
+        <div class="tx-section">
+          <div class="tx-section-head">
+            <span class="tx-eyebrow">02 · Target Resolusi</span>
+            <span class="sbt-status sbt-status--draf sbt-tabular" id="target-active-label">100 CHR</span>
           </div>
-          <div class="keycaps-grid">
-            <button type="button" class="sfx-keycap res-btn" id="res-36" onclick="setResolution(36, true)">36 (WhatsApp)</button>
-            <button type="button" class="sfx-keycap res-btn" id="res-64" onclick="setResolution(64, false)">64 (Kompak)</button>
-            <button type="button" class="sfx-keycap is-active res-btn" id="res-100" onclick="setResolution(100, false)">100 (Standar)</button>
-            <button type="button" class="sfx-keycap res-btn" id="res-140" onclick="setResolution(140, false)">140 (Presisi)</button>
-            <button type="button" class="sfx-keycap res-btn" id="res-180" onclick="setResolution(180, false)">180 (Ultra HD)</button>
+          <div class="sbt-choice-grid sbt-choice-grid--5">
+            <button type="button" class="sbt-choice-btn res-btn" id="res-36" onclick="setResolution(36, true)" title="36 Karakter (Format WhatsApp)">36</button>
+            <button type="button" class="sbt-choice-btn res-btn" id="res-64" onclick="setResolution(64, false)" title="64 Karakter (Kompak)">64</button>
+            <button type="button" class="sbt-choice-btn is-active res-btn" id="res-100" onclick="setResolution(100, false)" title="100 Karakter (Standar)">100</button>
+            <button type="button" class="sbt-choice-btn res-btn" id="res-140" onclick="setResolution(140, false)" title="140 Karakter (Presisi)">140</button>
+            <button type="button" class="sbt-choice-btn res-btn" id="res-180" onclick="setResolution(180, false)" title="180 Karakter (Ultra HD)">180</button>
+          </div>
+          <span class="sbt-hint">36 otomatis memakai format blok WhatsApp.</span>
+        </div>
+
+        <!-- 03. Gaya Matriks -->
+        <div class="tx-section">
+          <div class="tx-section-head">
+            <span class="tx-eyebrow">03 · Gaya Matriks</span>
+          </div>
+          <div class="sbt-choice-grid">
+            <button type="button" class="sbt-choice-btn is-active algo-btn" id="algo-classic" onclick="setAlgorithm('classic')">Klasik</button>
+            <button type="button" class="sbt-choice-btn algo-btn" id="algo-braille" onclick="setAlgorithm('braille')">Braille HD</button>
+            <button type="button" class="sbt-choice-btn algo-btn" id="algo-retro" onclick="setAlgorithm('retro')">Retro</button>
+            <button type="button" class="sbt-choice-btn algo-btn" id="algo-siluet" onclick="setAlgorithm('siluet')">Siluet</button>
+            <button type="button" class="sbt-choice-btn algo-btn" id="algo-biner" onclick="setAlgorithm('biner')">Biner</button>
+            <button type="button" class="sbt-choice-btn algo-btn" id="algo-numerik" onclick="setAlgorithm('numerik')">Numerik</button>
+            <button type="button" class="sbt-choice-btn sbt-choice-btn--span2 algo-btn" id="algo-minimalis" onclick="setAlgorithm('minimalis')">Minimalis</button>
           </div>
         </div>
 
-        <!-- 3. Pilihan Gaya Matriks Karakter -->
-        <div class="sidebar-section">
-          <div class="section-eyebrow">
-            <span>03. Gaya Matriks</span>
+        <!-- 04. Penyetelan Nilai Cahaya -->
+        <div class="tx-section">
+          <div class="tx-section-head">
+            <span class="tx-eyebrow">04 · Penyetelan Cahaya</span>
           </div>
-          <div class="keycaps-grid">
-            <button type="button" class="sfx-keycap is-active algo-btn" id="algo-classic" onclick="setAlgorithm('classic')">Klasik</button>
-            <button type="button" class="sfx-keycap algo-btn" id="algo-braille" onclick="setAlgorithm('braille')">Braille HD</button>
-            <button type="button" class="sfx-keycap algo-btn" id="algo-retro" onclick="setAlgorithm('retro')">Retro</button>
-            <button type="button" class="sfx-keycap algo-btn" id="algo-siluet" onclick="setAlgorithm('siluet')">Siluet</button>
-            <button type="button" class="sfx-keycap algo-btn" id="algo-biner" onclick="setAlgorithm('biner')">Biner</button>
-            <button type="button" class="sfx-keycap algo-btn" id="algo-numerik" onclick="setAlgorithm('numerik')">Numerik</button>
-            <button type="button" class="sfx-keycap algo-btn" id="algo-minimalis" onclick="setAlgorithm('minimalis')">Minimalis</button>
+          <div class="tx-switch-row">
+            <span class="sbt-label">Mode Negatif</span>
+            <input type="checkbox" id="invert-toggle" class="sbt-sr-only" onchange="syncInvert(this.checked)" />
+            <button type="button" class="sbt-switch" id="desktopInvertSwitch" onclick="syncInvert(!isInverted)" aria-pressed="false" title="Aktifkan Mode Negatif">
+              <span class="sbt-switch-track" aria-hidden="true"><span class="sbt-switch-thumb"></span></span>
+              <i data-sbt-icon="sliders-horizontal" class="sbt-icon sbt-icon--sm sbt-switch-icon"></i>
+              <span id="invertSwitchText">Positif</span>
+            </button>
           </div>
         </div>
 
-        <!-- 4. Penyetelan Nilai Cahaya & Pembalikan (Invert) -->
-        <div class="sidebar-section">
-          <div class="section-eyebrow">
-            <span>04. Penyetelan Nilai Cahaya</span>
+        <!-- 05. Inspector Dossier -->
+        <div class="sbt-well tx-dossier">
+          <div class="tx-section-head">
+            <span class="tx-dossier-title" id="dos-title">KLASIK</span>
+            <span class="sbt-status sbt-status--terbit" id="dos-badge">Gradasi Alami</span>
           </div>
-          <label class="sfx-toggle-row">
-            <span class="sfx-toggle-label">
-              <span>🌓</span> <span>Pembalikan Negatif / Positif</span>
-            </span>
-            <span class="sfx-switch">
-              <input type="checkbox" id="invert-toggle" onchange="syncInvert(this.checked)">
-              <span class="sfx-switch-slider"></span>
-            </span>
-          </label>
-        </div>
-
-        <!-- 5. Inspector Dossier Spesifikasi Karakter -->
-        <div class="sfx-inspector-dossier">
-          <div class="dossier-top">
-            <span class="dossier-title" id="dos-title">KLASIK</span>
-            <span class="sfx-pill-badge sfx-pill-blue" id="dos-badge">GRADASI ALAMI</span>
-          </div>
-          <p class="dossier-desc" id="dos-desc">
+          <p class="tx-dossier-desc" id="dos-desc">
             Pemetaan luminansi linier 10 tingkat densitas karakter untuk gradasi paling natural pada potret dan lanskap.
           </p>
-
-          <div class="dossier-ramp-block">
-            <span class="dossier-ramp-label">Ramp Karakter:</span>
-            <div class="dossier-ramp-container">
+          <div class="tx-section" style="gap: 4px;">
+            <span class="tx-eyebrow" style="font-size: 10px;">Ramp Karakter</span>
+            <div class="tx-ramp-box">
               <span id="dos-ramp">@%#*+=-:. </span>
             </div>
           </div>
-
-          <div class="dossier-spec-row">
-            <strong>Peruntukan Ideal:</strong>
-            <span id="dos-best" style="font-size: 0.74rem; color: var(--sfx-charcoal);">Foto potret wajah, pemandangan berarsir halus.</span>
+          <div class="tx-section" style="gap: 2px;">
+            <span class="tx-eyebrow" style="font-size: 10px;">Peruntukan Ideal</span>
+            <span id="dos-best" class="sbt-hint" style="color: var(--sbt-ink-primary);">Foto potret wajah, pemandangan berarsir halus.</span>
           </div>
         </div>
+
       </aside>
 
-      <!-- ====================================================================
-           KOLOM KANAN / PRIORITAS 1: VIEWPORT HASIL SENI TEKS
-           ==================================================================== -->
-      <section class="sfx-main-canvas-card">
-        <!-- Toolbar Atas Kanvas -->
-        <div class="canvas-header">
-          <div class="canvas-title-group">
-            <span class="canvas-title" id="canvas-header-title">KANVAS: KLASIK</span>
-            <span class="canvas-density-tag" id="canvas-density-tag">100 KARAKTER</span>
+      <!-- KANVAS PREVIEW KANAN -->
+      <section class="sbt-sheet tx-canvas-sheet">
+        <div class="tx-canvas-head">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span class="sbt-heading" style="font-size: 14px; font-weight: 800;" id="canvas-header-title">Kanvas: Klasik</span>
+            <span class="sbt-status sbt-status--terbit sbt-tabular" id="canvas-density-tag">100 Karakter</span>
           </div>
 
-          <div class="canvas-toolbar-actions">
-            <!-- Zoom Ukuran Font Karakter -->
-            <button type="button" class="btn-tool-sm" onclick="adjustFontSize(-1)" title="Perkecil Font">A−</button>
-            <button type="button" class="btn-tool-sm" onclick="adjustFontSize(1)" title="Perbesar Font">A+</button>
-
-            <!-- Toggle Mode Kertas / Terminal -->
-            <button type="button" class="btn-tool-sm" id="btn-theme-toggle" onclick="toggleCanvasTheme()" title="Ganti Tema Latar Kanvas">
-              <span>🌙</span> <span>Terminal</span>
+          <div class="tx-canvas-tools">
+            <button type="button" class="sbt-icon-key" style="width: 30px; height: 30px;" onclick="adjustFontSize(-1)" title="Perkecil Font Kanvas" aria-label="Perkecil Font">
+              <i data-sbt-icon="minus" class="sbt-icon sbt-icon--sm"></i>
             </button>
-
-            <!-- Tombol Aksi Cepat Salin -->
-            <button type="button" class="btn-tool-sm btn-tool-accent" onclick="copyAscii()" title="Salin Teks ASCII">
-              <span>📋</span> <span>Salin</span>
+            <button type="button" class="sbt-icon-key" style="width: 30px; height: 30px;" onclick="adjustFontSize(1)" title="Perbesar Font Kanvas" aria-label="Perbesar Font">
+              <i data-sbt-icon="plus" class="sbt-icon sbt-icon--sm"></i>
+            </button>
+            <button type="button" class="sbt-btn-ceramic tx-canvas-btn" id="btn-theme-toggle" onclick="toggleCanvasTheme()" title="Ganti Latar Kanvas Kertas / Terminal">
+              <span class="sbt-led" id="themeToggleLed" aria-hidden="true"></span>
+              <span id="themeToggleText">Terminal</span>
+            </button>
+            <button type="button" class="sbt-btn-obsidian tx-canvas-btn" onclick="copyAscii(this)" title="Salin Teks ASCII">
+              <i data-sbt-icon="copy" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
+              <span data-sbt-btn-text>Salin</span>
             </button>
           </div>
         </div>
 
-        <!-- Viewport Render Karakter -->
-        <div class="ascii-viewport" id="viewport-box">
-          <!-- Drop Overlay Visual -->
-          <div class="drop-overlay" id="drop-overlay">
-            <div style="font-size: 2.5rem; margin-bottom: 8px;">📥</div>
-            <div style="font-size: 1.1rem; font-weight: 800;">Lepaskan Berkas Citra di Sini</div>
-            <div style="font-size: 0.78rem; opacity: 0.85;">Format JPG, PNG, WEBP, atau SVG didukung</div>
+        <div class="tx-viewport" id="viewport-box">
+          <div class="tx-drop-overlay" id="drop-overlay">
+            <i data-sbt-icon="images" class="sbt-icon sbt-icon--xl sbt-icon-glow-suboren"></i>
+            <strong class="sbt-heading" style="font-size: 16px; color: var(--sbt-ink-on-dark);">Lepaskan Berkas Citra di Sini</strong>
+            <span class="sbt-hint" style="color: var(--sbt-ink-on-obsidian-muted);">Format JPG, PNG, WEBP, atau SVG didukung</span>
           </div>
 
-          <!-- Empty State Awal -->
-          <div class="empty-state-box" id="empty-state-wrap" onclick="triggerFileInput()">
-            <div class="empty-icon">🖼️</div>
-            <div class="empty-title">Seret atau Pilih Berkas Citra</div>
-            <div class="empty-desc">
-              Pilih foto potret, logo, atau lanskap untuk dikonversi menjadi seni teks tipografis secara langsung di browser Anda.
-            </div>
-            <button type="button" class="btn-sfx btn-sfx-orange" style="pointer-events: none;">
-              <span>📁</span> <span>Jelajahi Berkas</span>
-            </button>
+          <div class="sbt-well tx-empty-well" id="empty-state-wrap" onclick="triggerFileInput()">
+            <span class="tx-empty-icon">
+              <i data-sbt-icon="image" class="sbt-icon sbt-icon--xl"></i>
+            </span>
+            <h2 class="sbt-heading" style="font-size: 16px; font-weight: 800;">Seret atau Pilih Berkas Citra</h2>
+            <p class="sbt-hint" style="max-width: 300px;">
+              Pilih foto potret, logo, atau lanskap untuk dikonversi menjadi seni teks tipografis langsung di peramban Anda.
+            </p>
+            <span class="sbt-btn-obsidian sbt-btn--sm" style="pointer-events: none;">
+              <i data-sbt-icon="folder" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
+              <span>Jelajahi Berkas</span>
+            </span>
           </div>
 
-          <!-- Output Teks ASCII Sebenarnya -->
           <pre id="ascii-result" style="display: none;"></pre>
         </div>
       </section>
@@ -1037,67 +2834,704 @@
 
   </div>
 
-  <!-- Kanvas Pengolah Tersembunyi -->
   <canvas id="processor-canvas" style="display: none;"></canvas>
-  <div class="sfx-toast-container" id="toast-container"></div>
 
-  <!-- ==========================================================================
-       LOGIKA GENERATOR ASCII & PROTOKOL KOMUNIKASI HOST
-       ========================================================================== */ -->
   <script>
-    // 1. Deteksi Runner Iframe Desktop Blogger
+/* Subtils UI Kit — Offline Curated Phosphor Icons (Fill & Bold Standalone Glyphs, MIT License) */
+(function (global) {
+  const PATHS = {
+  "arrow-up-right": "<path d=\"M200,64V168a8,8,0,0,1-13.66,5.66L140,127.31,69.66,197.66a8,8,0,0,1-11.32-11.32L128.69,116,82.34,69.66A8,8,0,0,1,88,56H192A8,8,0,0,1,200,64Z\"/>",
+  "arrows-clockwise": "<path d=\"M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1-5.66-13.66L180.65,72a79.48,79.48,0,0,0-54.72-22.09h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27,96,96,0,0,1,192,60.7l18.36-18.36A8,8,0,0,1,224,48ZM186.41,183.29A80,80,0,0,1,75.35,184l18.31-18.31A8,8,0,0,0,88,152H40a8,8,0,0,0-8,8v48a8,8,0,0,0,13.66,5.66L64,195.3a95.42,95.42,0,0,0,66,26.76h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z\"/>",
+  "article": "<path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM176,168H80a8,8,0,0,1,0-16h96a8,8,0,0,1,0,16Zm0-32H80a8,8,0,0,1,0-16h96a8,8,0,0,1,0,16Zm0-32H80a8,8,0,0,1,0-16h96a8,8,0,0,1,0,16Z\"/>",
+  "book-open-text": "<path d=\"M232,48H168a32,32,0,0,0-32,32v87.73a8.17,8.17,0,0,1-7.47,8.25,8,8,0,0,1-8.53-8V80A32,32,0,0,0,88,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,23.94,7.9,7.9,0,0,0,5.12,7.55A8,8,0,0,0,136,232a24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM208,168H168.27a8.17,8.17,0,0,1-8.25-7.47,8,8,0,0,1,8-8.53h39.73a8.17,8.17,0,0,1,8.25,7.47A8,8,0,0,1,208,168Zm0-32H168.27a8.17,8.17,0,0,1-8.25-7.47,8,8,0,0,1,8-8.53h39.73a8.17,8.17,0,0,1,8.25,7.47A8,8,0,0,1,208,136Zm0-32H168.27A8.17,8.17,0,0,1,160,96.53,8,8,0,0,1,168,88h39.73A8.17,8.17,0,0,1,216,95.47,8,8,0,0,1,208,104Z\"/>",
+  "calendar-blank": "<path d=\"M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,48H48V48H72v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24Z\"/>",
+  "caret-down": "<path d=\"M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,48,88H208a8,8,0,0,1,5.66,13.66Z\"/>",
+  "caret-left": "<path d=\"M168,48V208a8,8,0,0,1-13.66,5.66l-80-80a8,8,0,0,1,0-11.32l80-80A8,8,0,0,1,168,48Z\"/>",
+  "caret-right": "<path d=\"M181.66,133.66l-80,80A8,8,0,0,1,88,208V48a8,8,0,0,1,13.66-5.66l80,80A8,8,0,0,1,181.66,133.66Z\"/>",
+  "caret-up": "<path d=\"M215.39,163.06A8,8,0,0,1,208,168H48a8,8,0,0,1-5.66-13.66l80-80a8,8,0,0,1,11.32,0l80,80A8,8,0,0,1,215.39,163.06Z\"/>",
+  "check-circle": "<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z\"/>",
+  "check": "<path d=\"M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z\"/>",
+  "clock-counter-clockwise": "<path d=\"M224,128A96,96,0,0,1,62.11,197.82a8,8,0,1,1,11-11.64A80,80,0,1,0,71.43,71.43C67.9,75,64.58,78.51,61.35,82L77.66,98.34A8,8,0,0,1,72,112H32a8,8,0,0,1-8-8V64a8,8,0,0,1,13.66-5.66L50,70.7c3.22-3.49,6.54-7,10.06-10.55A96,96,0,0,1,224,128ZM128,72a8,8,0,0,0-8,8v48a8,8,0,0,0,3.88,6.86l40,24a8,8,0,1,0,8.24-13.72L136,123.47V80A8,8,0,0,0,128,72Z\"/>",
+  "copy": "<path d=\"M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32Zm-8,128H176V88a8,8,0,0,0-8-8H96V48H208Z\"/>",
+  "dots-three-vertical": "<path d=\"M160,16H96A16,16,0,0,0,80,32V224a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16V32A16,16,0,0,0,160,16ZM128,208a12,12,0,1,1,12-12A12,12,0,0,1,128,208Zm0-68a12,12,0,1,1,12-12A12,12,0,0,1,128,140Zm0-68a12,12,0,1,1,12-12A12,12,0,0,1,128,72Z\"/>",
+  "eye": "<path d=\"M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z\"/>",
+  "eye-slash": "<path d=\"M96.68,57.87a4,4,0,0,1,2.08-6.6A130.13,130.13,0,0,1,128,48c34.88,0,66.57,13.26,91.66,38.35,18.83,18.83,27.3,37.62,27.65,38.41a8,8,0,0,1,0,6.5c-.35.79-8.82,19.57-27.65,38.4q-4.28,4.26-8.79,8.07a4,4,0,0,1-5.55-.36ZM213.92,210.62a8,8,0,1,1-11.84,10.76L180,197.13A127.21,127.21,0,0,1,128,208c-34.88,0-66.57-13.26-91.66-38.34C17.51,150.83,9,132.05,8.69,131.26a8,8,0,0,1,0-6.5C9,124,17.51,105.18,36.34,86.35a135,135,0,0,1,25-19.78L42.08,45.38A8,8,0,1,1,53.92,34.62Zm-65.49-48.25-52.69-58a40,40,0,0,0,52.69,58Z\"/>",
+  "flask": "<path d=\"M221.69,199.77,160,96.92V40h8a8,8,0,0,0,0-16H88a8,8,0,0,0,0,16h8V96.92L34.31,199.77A16,16,0,0,0,48,224H208a16,16,0,0,0,13.72-24.23Zm-90.08-42.91c-15.91-8.05-31.05-12.32-45.22-12.81l24.47-40.8A7.93,7.93,0,0,0,112,99.14V40h32V99.14a7.93,7.93,0,0,0,1.14,4.11L183.36,167C171.4,169.34,154.29,168.34,131.61,156.86Z\"/>",
+  "floppy-disk": "<path d=\"M219.31,72,184,36.69A15.86,15.86,0,0,0,172.69,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V83.31A15.86,15.86,0,0,0,219.31,72ZM208,208H184V152a16,16,0,0,0-16-16H88a16,16,0,0,0-16,16v56H48V48H172.69L208,83.31ZM160,72a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h56A8,8,0,0,1,160,72Z\"/>",
+  "folder": "<path d=\"M216,72H131.31L104,44.69A15.88,15.88,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.41,15.41,0,0,0,39.39,216h177.5A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40Z\"/>",
+  "funnel": "<path d=\"M227.81,66.76l-.08.09L160,139.17v55.49A16,16,0,0,1,152.87,208l-32,21.34A16,16,0,0,1,96,216V139.17L28.27,66.85l-.08-.09A16,16,0,0,1,40,40H216a16,16,0,0,1,11.84,26.76Z\"/>",
+  "gear": "<path d=\"M216,130.16q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.6,107.6,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.29,107.29,0,0,0-26.25-10.86,8,8,0,0,0-7.06,1.48L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.6,107.6,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z\"/>",
+  "globe": "<path d=\"M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm78.36,64H170.71a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM216,128a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM128,43a115.27,115.27,0,0,1,26,45H102A115.11,115.11,0,0,1,128,43ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.88a140.84,140.84,0,0,1,0,48Zm50.35,61.6a135.28,135.28,0,0,0,22.3-45.6h35.66A88.29,88.29,0,0,1,148.41,213.6Z\"/>",
+  "image": "<path d=\"M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM156,88a12,12,0,1,1-12,12A12,12,0,0,1,156,88Zm60,112H40V160.69l46.34-46.35a8,8,0,0,1,11.32,0h0L165,181.66a8,8,0,0,0,11.32-11.32l-17.66-17.65L173,138.34a8,8,0,0,1,11.31,0L216,170.07V200Z\"/>",
+  "images": "<path d=\"M216,40H72A16,16,0,0,0,56,56V72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V184h16a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM172,72a12,12,0,1,1-12,12A12,12,0,0,1,172,72Zm12,128H40V88H56v80a16,16,0,0,0,16,16H184Zm32-32H72V120.69l30.34-30.35a8,8,0,0,1,11.32,0L163.31,140,189,114.34a8,8,0,0,1,11.31,0L216,130.07V168Z\"/>",
+  "info": "<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm-4,48a12,12,0,1,1-12,12A12,12,0,0,1,124,72Zm12,112a16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40a8,8,0,0,1,0,16Z\"/>",
+  "link": "<path d=\"M117.18,188.74a12,12,0,0,1,0,17l-5.12,5.12A58.26,58.26,0,0,1,70.6,228h0A58.62,58.62,0,0,1,29.14,127.92L63.89,93.17a58.64,58.64,0,0,1,98.56,28.11,12,12,0,1,1-23.37,5.44,34.65,34.65,0,0,0-58.22-16.58L46.11,144.89A34.62,34.62,0,0,0,70.57,204h0a34.41,34.41,0,0,0,24.49-10.14l5.11-5.12A12,12,0,0,1,117.18,188.74ZM226.83,45.17a58.65,58.65,0,0,0-82.93,0l-5.11,5.11a12,12,0,0,0,17,17l5.12-5.12a34.63,34.63,0,1,1,49,49L175.1,145.86A34.39,34.39,0,0,1,150.61,156h0a34.63,34.63,0,0,1-33.69-26.72,12,12,0,0,0-23.38,5.44A58.64,58.64,0,0,0,150.56,180h.05a58.28,58.28,0,0,0,41.47-17.17l34.75-34.75a58.62,58.62,0,0,0,0-82.91Z\"/>",
+  "list": "<path d=\"M228,128a12,12,0,0,1-12,12H40a12,12,0,0,1,0-24H216A12,12,0,0,1,228,128ZM40,76H216a12,12,0,0,0,0-24H40a12,12,0,0,0,0,24ZM216,180H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24Z\"/>",
+  "lock": "<path d=\"M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80Zm-80,84a12,12,0,1,1,12-12A12,12,0,0,1,128,164Zm32-84H96V56a32,32,0,0,1,64,0Z\"/>",
+  "lock-open": "<path d=\"M208,80H96V56a32,32,0,0,1,32-32c15.37,0,29.2,11,32.16,25.59a8,8,0,0,0,15.68-3.18C171.32,24.15,151.2,8,128,8A48.05,48.05,0,0,0,80,56V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80Zm-80,84a12,12,0,1,1,12-12A12,12,0,0,1,128,164Z\"/>",
+  "magnifying-glass": "<path d=\"M168,112a56,56,0,1,1-56-56A56,56,0,0,1,168,112Zm61.66,117.66a8,8,0,0,1-11.32,0l-50.06-50.07a88,88,0,1,1,11.32-11.31l50.06,50.06A8,8,0,0,1,229.66,229.66ZM112,184a72,72,0,1,0-72-72A72.08,72.08,0,0,0,112,184Z\"/>",
+  "minus": "<path d=\"M228,128a12,12,0,0,1-12,12H40a12,12,0,0,1,0-24H216A12,12,0,0,1,228,128Z\"/>",
+  "paper-plane-tilt": "<path d=\"M231.4,44.34s0,.1,0,.15l-58.2,191.94a15.88,15.88,0,0,1-14,11.51q-.69.06-1.38.06a15.86,15.86,0,0,1-14.42-9.15L107,164.15a4,4,0,0,1,.77-4.58l57.92-57.92a8,8,0,0,0-11.31-11.31L96.43,148.26a4,4,0,0,1-4.58.77L17.08,112.64a16,16,0,0,1,2.49-29.8l191.94-58.2.15,0A16,16,0,0,1,231.4,44.34Z\"/>",
+  "pencil-simple": "<path d=\"M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM192,108.68,147.31,64l24-24L216,84.68Z\"/>",
+  "plus": "<path d=\"M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z\"/>",
+  "quotes": "<path d=\"M116,72v88a48.05,48.05,0,0,1-48,48,8,8,0,0,1,0-16,32,32,0,0,0,32-32v-8H40a16,16,0,0,1-16-16V72A16,16,0,0,1,40,56h60A16,16,0,0,1,116,72ZM216,56H156a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16h60v8a32,32,0,0,1-32,32,8,8,0,0,0,0,16,48.05,48.05,0,0,0,48-48V72A16,16,0,0,0,216,56Z\"/>",
+  "sign-out": "<path d=\"M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40A8,8,0,0,0,176,88v32H112a8,8,0,0,0,0,16h64v32a8,8,0,0,0,13.66,5.66l40-40A8,8,0,0,0,229.66,122.34Z\"/>",
+  "sliders-horizontal": "<path d=\"M32,80a8,8,0,0,1,8-8H77.17a28,28,0,0,1,53.66,0H216a8,8,0,0,1,0,16H130.83a28,28,0,0,1-53.66,0H40A8,8,0,0,1,32,80Zm184,88H194.83a28,28,0,0,0-53.66,0H40a8,8,0,0,0,0,16H141.17a28,28,0,0,0,53.66,0H216a8,8,0,0,0,0-16Z\"/>",
+  "speaker-high": "<path d=\"M160,32.25V223.69a8.29,8.29,0,0,1-3.91,7.18,8,8,0,0,1-9-.56l-65.57-51A4,4,0,0,1,80,176.16V79.84a4,4,0,0,1,1.55-3.15l65.57-51a8,8,0,0,1,10,.16A8.27,8.27,0,0,1,160,32.25ZM60,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H60a4,4,0,0,0,4-4V84A4,4,0,0,0,60,80Zm126.77,20.84a8,8,0,0,0-.72,11.3,24,24,0,0,1,0,31.72,8,8,0,1,0,12,10.58,40,40,0,0,0,0-52.88A8,8,0,0,0,186.74,100.84Zm40.89-26.17a8,8,0,1,0-11.92,10.66,64,64,0,0,1,0,85.34,8,8,0,1,0,11.92,10.66,80,80,0,0,0,0-106.66Z\"/>",
+  "speaker-slash": "<path d=\"M213.92,210.62a8,8,0,1,1-11.84,10.76L160,175.09v48.6a8.29,8.29,0,0,1-3.91,7.18,8,8,0,0,1-9-.56l-65.55-51A4,4,0,0,1,80,176.18V87.09L42.08,45.38A8,8,0,1,1,53.92,34.62Zm-27.21-55.46a8,8,0,0,0,11.29-.7,40,40,0,0,0,0-52.88,8,8,0,1,0-12,10.57,24,24,0,0,1,0,31.72A8,8,0,0,0,186.71,155.16Zm40.92-80.49a8,8,0,1,0-11.92,10.66,64,64,0,0,1,0,85.34,8,8,0,1,0,11.92,10.66,80,80,0,0,0,0-106.66ZM153,119.87a4,4,0,0,0,7-2.7V32.25a8.27,8.27,0,0,0-2.88-6.4,8,8,0,0,0-10-.16L103.83,59.33a4,4,0,0,0-.5,5.85ZM60,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H60a4,4,0,0,0,4-4V84A4,4,0,0,0,60,80Z\"/>",
+  "squares-four": "<path d=\"M120,56v48a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40h48A16,16,0,0,1,120,56Zm80-16H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm-96,96H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm96,0H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Z\"/>",
+  "star": "<path d=\"M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z\"/>",
+  "tag": "<path d=\"M243.31,136,144,36.69A15.86,15.86,0,0,0,132.69,32H40a8,8,0,0,0-8,8v92.69A15.86,15.86,0,0,0,36.69,144L136,243.31a16,16,0,0,0,22.63,0l84.68-84.68a16,16,0,0,0,0-22.63ZM84,96A12,12,0,1,1,96,84,12,12,0,0,1,84,96Z\"/>",
+  "text-b": "<path d=\"M185.08,114.46A48,48,0,0,0,148,36H80A12,12,0,0,0,68,48V200a12,12,0,0,0,12,12h80a52,52,0,0,0,25.08-97.54ZM92,60h56a24,24,0,0,1,0,48H92Zm68,128H92V132h68a28,28,0,0,1,0,56Z\"/>",
+  "text-h-two": "<path d=\"M156,56V176a12,12,0,0,1-24,0V128H52v48a12,12,0,0,1-24,0V56a12,12,0,0,1,24,0v48h80V56a12,12,0,0,1,24,0Zm84,140H216l28.74-38.33A36,36,0,1,0,182.05,124a12,12,0,0,0,22.63,8,11.67,11.67,0,0,1,1.73-3.22,12,12,0,1,1,19.15,14.46L182.4,200.8A12,12,0,0,0,192,220h48a12,12,0,0,0,0-24Z\"/>",
+  "text-italic": "<path d=\"M204,56a12,12,0,0,1-12,12H160.65l-40,120H144a12,12,0,0,1,0,24H64a12,12,0,0,1,0-24H95.35l40-120H112a12,12,0,0,1,0-24h80A12,12,0,0,1,204,56Z\"/>",
+  "trash": "<path d=\"M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM112,168a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm0-120H96V40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Z\"/>",
+  "user": "<path d=\"M230.93,220a8,8,0,0,1-6.93,4H32a8,8,0,0,1-6.92-12c15.23-26.33,38.7-45.21,66.09-54.16a72,72,0,1,1,73.66,0c27.39,8.95,50.86,27.83,66.09,54.16A8,8,0,0,1,230.93,220Z\"/>",
+  "warning-circle": "<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm-8,56a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm8,104a12,12,0,1,1,12-12A12,12,0,0,1,128,184Z\"/>",
+  "x": "<path d=\"M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z\"/>"
+};
+  function iconSvg(name, cls) {
+    const clean = String(name || "").replace(/-fill$/, "");
+    const inner = PATHS[clean] || "";
+    if (!inner) return "";
+    return "<svg viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"" + (cls ? " class=\"" + cls + "\"" : "") + ">" + inner + "</svg>";
+  }
+  function hydrateIcons(root) {
+    (root || document).querySelectorAll("[data-sbt-icon]").forEach(function (el) {
+      const name = el.getAttribute("data-sbt-icon");
+      if (!el.classList.contains("sbt-icon")) el.classList.add("sbt-icon");
+      el.innerHTML = iconSvg(name);
+    });
+  }
+  global.SubtilsIcons = { PATHS: PATHS, svg: iconSvg, hydrate: hydrateIcons };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { hydrateIcons(); });
+  } else {
+    hydrateIcons();
+  }
+})(window);
+  </script>
+  <script>
+/* ==========================================================================
+   SUBTILS UI KIT — VANILLA JS CONTROLLER (`@subfiksi/subtils-ui` v0.1.0)
+   Zero-dependency controller for Light Ceramic & Volumetric Obsidian widgets.
+   Safe for offline `file://` preview & Google Apps Script HtmlService.
+   ========================================================================== */
+(function (global) {
+  function uid(prefix) {
+    return (prefix || 'sbt') + '-' + Math.random().toString(36).slice(2, 8);
+  }
+
+  /* 1. Single & Ticked Slider Binding */
+  function initSliders(root) {
+    (root || document).querySelectorAll('[data-sbt-slider]').forEach(function (wrap) {
+      if (wrap.dataset.sbtBound) return;
+      wrap.dataset.sbtBound = '1';
+      const input = wrap.querySelector('input[type="range"]');
+      const fill = wrap.querySelector('.sbt-slider-fill');
+      const knob = wrap.querySelector('.sbt-slider-knob');
+      const out = wrap.dataset.sbtOut ? document.querySelector(wrap.dataset.sbtOut) : wrap.querySelector('[data-sbt-readout]');
+      const unit = wrap.dataset.sbtUnit || '';
+      if (!input || !fill || !knob) return;
+
+      function sync() {
+        const min = parseFloat(input.min || '0');
+        const max = parseFloat(input.max || '100');
+        const val = parseFloat(input.value || '0');
+        const pct = max > min ? ((val - min) / (max - min)) * 100 : 0;
+        fill.style.width = pct + '%';
+        knob.style.left = pct + '%';
+        if (out) out.textContent = val + unit;
+      }
+
+      input.addEventListener('input', sync);
+      sync();
+    });
+  }
+
+  /* 2. Dual-Thumb Range Slider with Obsidian Bubbles */
+  function initDualRanges(root) {
+    (root || document).querySelectorAll('[data-sbt-dual-range]').forEach(function (wrap) {
+      if (wrap.dataset.sbtBound) return;
+      wrap.dataset.sbtBound = '1';
+      const minIn = wrap.querySelector('[data-sbt-dual-min]');
+      const maxIn = wrap.querySelector('[data-sbt-dual-max]');
+      const fill = wrap.querySelector('.sbt-slider-fill');
+      const kMin = wrap.querySelector('[data-sbt-knob-min]');
+      const kMax = wrap.querySelector('[data-sbt-knob-max]');
+      const bMin = wrap.querySelector('[data-sbt-bubble-min]');
+      const bMax = wrap.querySelector('[data-sbt-bubble-max]');
+      const eqBars = wrap.querySelectorAll('.sbt-eq-bar');
+      if (!minIn || !maxIn || !fill) return;
+
+      const minGap = parseFloat(wrap.dataset.sbtGap || '1');
+      const lo = parseFloat(minIn.min || '0');
+      const hi = parseFloat(minIn.max || '10');
+
+      function sync(source) {
+        let a = parseFloat(minIn.value);
+        let b = parseFloat(maxIn.value);
+        if (b - a < minGap) {
+          if (source === minIn) {
+            a = b - minGap;
+            minIn.value = a;
+          } else {
+            b = a + minGap;
+            maxIn.value = b;
+          }
+        }
+        const p1 = ((a - lo) / (hi - lo)) * 100;
+        const p2 = ((b - lo) / (hi - lo)) * 100;
+        fill.style.left = p1 + '%';
+        fill.style.width = Math.max(0, p2 - p1) + '%';
+        if (kMin) kMin.style.left = p1 + '%';
+        if (kMax) kMax.style.left = p2 + '%';
+        if (bMin) { bMin.style.left = p1 + '%'; bMin.textContent = a; }
+        if (bMax) { bMax.style.left = p2 + '%'; bMax.textContent = b; }
+
+        if (eqBars.length) {
+          eqBars.forEach(function (bar, i) {
+            const pct = (i / Math.max(1, eqBars.length - 1)) * 100;
+            bar.classList.toggle('is-in-range', pct >= p1 && pct <= p2);
+          });
+        }
+        wrap.dispatchEvent(new CustomEvent('sbt:rangechange', { detail: { min: a, max: b } }));
+      }
+
+      minIn.addEventListener('input', function () { sync(minIn); });
+      maxIn.addEventListener('input', function () { sync(maxIn); });
+      sync();
+    });
+  }
+
+  /* 3. Custom Borderless Select Dropdowns */
+  function closeAllSelects(except) {
+    document.querySelectorAll('.sbt-select.is-open').forEach(function (sel) {
+      if (sel !== except) sel.classList.remove('is-open');
+    });
+  }
+
+  function initSelects(root) {
+    (root || document).querySelectorAll('[data-sbt-select]').forEach(function (sel) {
+      if (sel.dataset.sbtBound) return;
+      sel.dataset.sbtBound = '1';
+      const trigger = sel.querySelector('.sbt-select-trigger');
+      const label = sel.querySelector('[data-sbt-select-label]');
+      const hidden = sel.querySelector('input[type="hidden"]');
+      const opts = sel.querySelectorAll('.sbt-select-option');
+      if (!trigger) return;
+
+      trigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const willOpen = !sel.classList.contains('is-open');
+        closeAllSelects(sel);
+        sel.classList.toggle('is-open', willOpen);
+        trigger.setAttribute('aria-expanded', String(willOpen));
+      });
+
+      opts.forEach(function (opt) {
+        opt.addEventListener('click', function () {
+          opts.forEach(function (o) { o.classList.remove('is-selected'); });
+          opt.classList.add('is-selected');
+          const val = opt.dataset.value !== undefined ? opt.dataset.value : opt.textContent.trim();
+          const text = opt.dataset.label || opt.textContent.trim();
+          if (label) label.textContent = text;
+          if (hidden) hidden.value = val;
+          sel.dataset.value = val;
+          sel.classList.remove('is-open');
+          trigger.setAttribute('aria-expanded', 'false');
+          sel.dispatchEvent(new CustomEvent('sbt:change', { detail: { value: val, label: text } }));
+        });
+      });
+    });
+
+    if (!document.body.dataset.sbtSelectDocBound) {
+      document.body.dataset.sbtSelectDocBound = '1';
+      document.addEventListener('click', function () { closeAllSelects(null); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeAllSelects(null);
+      });
+    }
+  }
+
+  /* 4. Checkboxes, Switches, Segmented Tabs & Pagers */
+  function initToggles(root) {
+    (root || document).querySelectorAll('[data-sbt-check]').forEach(function (btn) {
+      if (btn.dataset.sbtBound) return;
+      btn.dataset.sbtBound = '1';
+      btn.addEventListener('click', function () {
+        const active = btn.classList.toggle('is-active');
+        btn.setAttribute('aria-checked', String(active));
+        btn.dispatchEvent(new CustomEvent('sbt:toggle', { detail: { checked: active } }));
+      });
+    });
+
+    (root || document).querySelectorAll('[data-sbt-switch]').forEach(function (sw) {
+      if (sw.dataset.sbtBound) return;
+      sw.dataset.sbtBound = '1';
+      sw.addEventListener('click', function () {
+        const active = sw.classList.toggle('is-active');
+        sw.setAttribute('aria-pressed', String(active));
+        sw.dispatchEvent(new CustomEvent('sbt:switch', { detail: { active: active } }));
+      });
+    });
+
+    (root || document).querySelectorAll('[data-sbt-segmented]').forEach(function (seg) {
+      if (seg.dataset.sbtBound) return;
+      seg.dataset.sbtBound = '1';
+      const items = seg.querySelectorAll('.sbt-seg-btn, .sbt-view-btn');
+      items.forEach(function (item) {
+        item.addEventListener('click', function () {
+          items.forEach(function (it) { it.classList.remove('is-active'); });
+          item.classList.add('is-active');
+          seg.dispatchEvent(new CustomEvent('sbt:tab', { detail: { value: item.dataset.value || item.textContent.trim() } }));
+        });
+      });
+    });
+  }
+
+  /* 5. Soft-3D Radial Obsidian Gauge Renderer (SVG) */
+  function renderGauge(el, opts) {
+    const target = typeof el === 'string' ? document.querySelector(el) : el;
+    if (!target) return;
+    const min = opts.min !== undefined ? opts.min : 0;
+    const max = opts.max !== undefined ? opts.max : 32;
+    const val = Math.min(max, Math.max(min, opts.value !== undefined ? opts.value : 18));
+    const ratio = max > min ? (val - min) / (max - min) : 0;
+    const id = uid('gauge');
+
+    const cx = 110, cy = 104, r = 74;
+    const startAng = Math.PI;
+    const endAng = 0;
+    const valAng = Math.PI * (1 - ratio);
+
+    function pt(ang, rad) {
+      return {
+        x: cx + Math.cos(ang) * rad,
+        y: cy - Math.sin(ang) * rad
+      };
+    }
+
+    const pStart = pt(startAng, r);
+    const pEnd = pt(endAng, r);
+    const pVal = pt(valAng, r);
+    const tip = pt(valAng, r + 6);
+    const baseL = pt(valAng + Math.PI / 2, 5.5);
+    const baseR = pt(valAng - Math.PI / 2, 5.5);
+
+    const trackPath = 'M ' + pStart.x.toFixed(1) + ' ' + pStart.y.toFixed(1) +
+      ' A ' + r + ' ' + r + ' 0 1 1 ' + pEnd.x.toFixed(1) + ' ' + pEnd.y.toFixed(1);
+    const arcPath = ratio <= 0.001
+      ? ''
+      : 'M ' + pStart.x.toFixed(1) + ' ' + pStart.y.toFixed(1) +
+        ' A ' + r + ' ' + r + ' 0 0 1 ' + pVal.x.toFixed(1) + ' ' + pVal.y.toFixed(1);
+
+    const needlePts = baseL.x.toFixed(1) + ',' + baseL.y.toFixed(1) + ' ' +
+      tip.x.toFixed(1) + ',' + tip.y.toFixed(1) + ' ' +
+      baseR.x.toFixed(1) + ',' + baseR.y.toFixed(1);
+
+    target.innerHTML =
+      '<div class="sbt-gauge-wrap">' +
+        '<svg class="sbt-gauge-svg" viewBox="0 0 220 124" aria-hidden="true">' +
+          '<defs>' +
+            '<linearGradient id="' + id + '-arc" x1="0%" y1="100%" x2="100%" y2="0%">' +
+              '<stop offset="0%" stop-color="#14161B"/>' +
+              '<stop offset="55%" stop-color="#2E323D"/>' +
+              '<stop offset="100%" stop-color="#181A20"/>' +
+            '</linearGradient>' +
+            '<filter id="' + id + '-shadow" x="-30%" y="-30%" width="160%" height="160%">' +
+              '<feDropShadow dx="2" dy="6" stdDeviation="4" flood-color="#14171F" flood-opacity="0.22"/>' +
+            '</filter>' +
+          '</defs>' +
+          '<path d="' + trackPath + '" fill="none" stroke="var(--sbt-bg-slot)" stroke-width="34" stroke-linecap="butt"/>' +
+          (arcPath ? '<path d="' + arcPath + '" fill="none" stroke="url(#' + id + '-arc)" stroke-width="34" stroke-linecap="butt" filter="url(#' + id + '-shadow)"/>' : '') +
+          '<polygon points="' + needlePts + '" fill="var(--sbt-obsidian-mid)" filter="url(#' + id + '-shadow)"/>' +
+          '<circle cx="' + cx + '" cy="' + cy + '" r="6" fill="var(--sbt-obsidian-top)"/>' +
+          (opts.suborenDot ? '<circle cx="' + cx + '" cy="' + cy + '" r="2.2" fill="var(--sbt-suboren)"/>' : '') +
+        '</svg>' +
+        '<div class="sbt-gauge-scale">' +
+          '<span>' + min + '</span>' +
+          '<span class="sbt-gauge-val">' + val + (opts.suffix || '') + '</span>' +
+          '<span>' + max + '</span>' +
+        '</div>' +
+      '</div>';
+  }
+
+  /* 6. Smooth Area Trend Chart Renderer (SVG) */
+  function renderAreaChart(el, points, secondaryPoints) {
+    const target = typeof el === 'string' ? document.querySelector(el) : el;
+    if (!target || !points || points.length < 2) return;
+    const id = uid('trend');
+    const w = 320, h = 100, padY = 12;
+    const maxV = Math.max.apply(null, points.concat(secondaryPoints || [1]));
+
+    function buildCurve(vals) {
+      const coords = vals.map(function (v, i) {
+        const x = (i / (vals.length - 1)) * w;
+        const y = h - 4 - ((v / (maxV || 1)) * (h - padY - 8));
+        return { x: x, y: y };
+      });
+      let d = 'M ' + coords[0].x.toFixed(1) + ' ' + coords[0].y.toFixed(1);
+      for (let i = 0; i < coords.length - 1; i++) {
+        const xc = (coords[i].x + coords[i + 1].x) / 2;
+        const yc = (coords[i].y + coords[i + 1].y) / 2;
+        d += ' Q ' + coords[i].x.toFixed(1) + ' ' + coords[i].y.toFixed(1) + ' ' + xc.toFixed(1) + ' ' + yc.toFixed(1);
+      }
+      const last = coords[coords.length - 1];
+      d += ' L ' + last.x.toFixed(1) + ' ' + last.y.toFixed(1);
+      return d + ' L ' + w + ' ' + h + ' L 0 ' + h + ' Z';
+    }
+
+    const secHtml = secondaryPoints
+      ? '<path d="' + buildCurve(secondaryPoints) + '" fill="var(--sbt-bg-slot)"/>'
+      : '';
+
+    target.innerHTML =
+      '<svg class="sbt-trend-svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" aria-hidden="true">' +
+        '<defs>' +
+          '<linearGradient id="' + id + '-fill" x1="0" y1="0" x2="0" y2="1">' +
+            '<stop offset="0%" stop-color="#3C414E"/>' +
+            '<stop offset="100%" stop-color="#14161A"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+        secHtml +
+        '<path d="' + buildCurve(points) + '" fill="url(#' + id + '-fill)"/>' +
+      '</svg>';
+  }
+
+  /* 7. In-Place Action Feedback Helper (No Floating Toast Slop) */
+  function flashButton(btn, tempText, durationMs, accentClass) {
+    if (!btn) return;
+    const textSpan = btn.querySelector('[data-sbt-btn-text]');
+    const iconSpan = !textSpan ? btn.querySelector('[data-sbt-icon]') : null;
+    if (!textSpan && iconSpan && global.SubtilsIcons) {
+      const origHtml = btn.dataset.sbtOrigIconHtml || iconSpan.innerHTML;
+      const origActive = btn.dataset.sbtOrigActive !== undefined ? (btn.dataset.sbtOrigActive === '1') : btn.classList.contains('is-active');
+      btn.dataset.sbtOrigIconHtml = origHtml;
+      btn.dataset.sbtOrigActive = origActive ? '1' : '0';
+      iconSpan.innerHTML = global.SubtilsIcons.svg('check');
+      btn.classList.add('is-active');
+      clearTimeout(btn._sbtFlashTimer);
+      btn._sbtFlashTimer = setTimeout(function () {
+        iconSpan.innerHTML = origHtml;
+        btn.classList.toggle('is-active', origActive);
+      }, durationMs || 900);
+      return;
+    }
+    const span = textSpan || btn;
+    const orig = btn.dataset.sbtOrigText || span.textContent;
+    btn.dataset.sbtOrigText = orig;
+    span.textContent = tempText;
+    if (accentClass) span.classList.add(accentClass);
+    clearTimeout(btn._sbtFlashTimer);
+    btn._sbtFlashTimer = setTimeout(function () {
+      span.textContent = orig;
+      if (accentClass) span.classList.remove(accentClass);
+    }, durationMs || 1600);
+  }
+
+  /* 8. Physical Stacked Card Deck Swap */
+  function initStackDecks(root) {
+    (root || document).querySelectorAll('[data-sbt-stack-deck]').forEach(function (deck) {
+      if (deck.dataset.sbtBound) return;
+      deck.dataset.sbtBound = '1';
+      const cards = Array.from(deck.querySelectorAll('.sbt-stack-card'));
+      if (cards.length < 2) return;
+      let active = 0;
+      let busy = false;
+
+      function applyPositions(skipIdx) {
+        const n = cards.length;
+        cards.forEach(function (card, idx) {
+          if (idx === skipIdx) return;
+          const rel = (idx - active + n) % n;
+          card.setAttribute('data-stack-pos', rel <= 2 ? String(rel) : 'hidden');
+        });
+      }
+
+      function step(dir) {
+        if (busy) return;
+        const n = cards.length;
+        const oldIdx = active;
+        const nextIdx = (active + dir + n) % n;
+        busy = true;
+
+        if (dir > 0) {
+          const exiting = cards[oldIdx];
+          exiting.classList.add('is-exiting-up');
+          active = nextIdx;
+          applyPositions(oldIdx);
+          setTimeout(function () {
+            exiting.classList.remove('is-exiting-up');
+            applyPositions(-1);
+            busy = false;
+          }, 260);
+        } else {
+          const incoming = cards[nextIdx];
+          incoming.classList.add('is-entering-top');
+          void incoming.offsetWidth;
+          active = nextIdx;
+          requestAnimationFrame(function () {
+            incoming.classList.remove('is-entering-top');
+            applyPositions(-1);
+            setTimeout(function () { busy = false; }, 280);
+          });
+        }
+        deck.dispatchEvent(new CustomEvent('sbt:stackchange', { detail: { index: active, card: cards[active] } }));
+      }
+
+      deck.addEventListener('click', function (e) {
+        if (e.target.closest('[data-stack-prev]')) step(-1);
+        else if (e.target.closest('[data-stack-next]')) step(1);
+      });
+
+      applyPositions(-1);
+    });
+  }
+
+  /* 9. Modal Controller */
+  function openModal(selectorOrEl) {
+    const el = typeof selectorOrEl === 'string' ? document.querySelector(selectorOrEl) : selectorOrEl;
+    if (el) el.classList.add('is-open');
+  }
+
+  function closeModal(selectorOrEl) {
+    const el = typeof selectorOrEl === 'string' ? document.querySelector(selectorOrEl) : selectorOrEl;
+    if (el) el.classList.remove('is-open');
+  }
+
+  /* 9b. Tactile Promise Confirm Dialog (Zero Native confirm()) */
+  let activeConfirmResolve = null;
+
+  function ensureConfirmDialog() {
+    let bd = document.getElementById('sbtConfirmDialog');
+    if (bd) return bd;
+    bd = document.createElement('div');
+    bd.id = 'sbtConfirmDialog';
+    bd.className = 'sbt-modal-backdrop';
+    bd.setAttribute('role', 'alertdialog');
+    bd.setAttribute('aria-modal', 'true');
+    bd.setAttribute('aria-labelledby', 'sbtConfirmTitle');
+    bd.innerHTML =
+      '<div class="sbt-modal-sheet sbt-confirm-sheet">' +
+        '<div class="sbt-modal-head">' +
+          '<div style="display:flex; align-items:center; gap:10px;">' +
+            '<span class="sbt-confirm-icon" id="sbtConfirmIcon"></span>' +
+            '<h3 id="sbtConfirmTitle" class="sbt-heading" style="font-size:17px;">Konfirmasi</h3>' +
+          '</div>' +
+          '<button type="button" class="sbt-icon-key is-obsidian" data-sbt-confirm-cancel aria-label="Tutup"></button>' +
+        '</div>' +
+        '<div class="sbt-confirm-body" id="sbtConfirmMessage"></div>' +
+        '<div class="sbt-modal-foot">' +
+          '<button type="button" class="sbt-btn-ceramic sbt-btn--sm" data-sbt-confirm-cancel id="sbtConfirmCancelBtn">Batal</button>' +
+          '<button type="button" class="sbt-btn-obsidian sbt-btn--sm" id="sbtConfirmOkBtn">' +
+            '<span class="sbt-led" id="sbtConfirmLed"></span>' +
+            '<span id="sbtConfirmOkLabel">Lanjutkan</span>' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+
+    const finish = function (val) {
+      bd.classList.remove('is-open');
+      if (activeConfirmResolve) {
+        const res = activeConfirmResolve;
+        activeConfirmResolve = null;
+        res(val);
+      }
+    };
+
+    bd.addEventListener('click', function (e) {
+      if (e.target === bd || e.target.closest('[data-sbt-confirm-cancel]')) finish(false);
+    });
+    bd.querySelector('#sbtConfirmOkBtn').addEventListener('click', function () {
+      finish(true);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && bd.classList.contains('is-open')) finish(false);
+    });
+
+    const host = document.querySelector('.sbt-root') || document.body;
+    host.appendChild(bd);
+    return bd;
+  }
+
+  function confirmDialog(opts) {
+    const cfg = typeof opts === 'string' ? { message: opts } : (opts || {});
+    if (activeConfirmResolve) {
+      const prev = activeConfirmResolve;
+      activeConfirmResolve = null;
+      prev(false);
+    }
+    const bd = ensureConfirmDialog();
+    const titleEl = bd.querySelector('#sbtConfirmTitle');
+    const msgEl = bd.querySelector('#sbtConfirmMessage');
+    const okLabel = bd.querySelector('#sbtConfirmOkLabel');
+    const cancelBtn = bd.querySelector('#sbtConfirmCancelBtn');
+    const iconEl = bd.querySelector('#sbtConfirmIcon');
+    const closeEl = bd.querySelector('[data-sbt-confirm-cancel]');
+    const ledEl = bd.querySelector('#sbtConfirmLed');
+
+    titleEl.textContent = cfg.title || 'Konfirmasi Aksi';
+    msgEl.textContent = cfg.message || '';
+    okLabel.textContent = cfg.confirmText || cfg.confirmLabel || 'Lanjutkan';
+    cancelBtn.textContent = cfg.cancelText || cfg.cancelLabel || 'Batal';
+
+    const isWarning = cfg.tone !== 'info';
+    iconEl.classList.toggle('is-info', !isWarning);
+    ledEl.classList.toggle('is-suboren', isWarning || !!cfg.suborenDot);
+
+    if (global.SubtilsIcons) {
+      iconEl.innerHTML = '<span class="sbt-icon sbt-icon--md">' + global.SubtilsIcons.svg(isWarning ? 'warning-circle' : 'info') + '</span>';
+      closeEl.innerHTML = '<span class="sbt-icon sbt-icon--sm sbt-icon-glow-white">' + global.SubtilsIcons.svg('x') + '</span>';
+    }
+
+    bd.classList.add('is-open');
+    const cancelFocus = bd.querySelector('#sbtConfirmCancelBtn');
+    if (cancelFocus) requestAnimationFrame(function () { cancelFocus.focus(); });
+
+    return new Promise(function (resolve) {
+      activeConfirmResolve = resolve;
+    });
+  }
+
+  /* 9c. Inline Status Banner Helper (Zero Floating Toast Overlays) */
+  function setBanner(target, message, tone) {
+    const el = typeof target === 'string' ? document.querySelector(target) : target;
+    if (!el) return;
+    el.classList.remove('sbt-banner--editing', 'sbt-banner--info', 'sbt-banner--success');
+    if (!message) {
+      el.hidden = true;
+      return;
+    }
+    const textEl = el.querySelector('[data-sbt-banner-text]') || el;
+    textEl.textContent = message;
+    if (tone === 'editing') el.classList.add('sbt-banner--editing');
+    else if (tone === 'info') el.classList.add('sbt-banner--info');
+    else if (tone === 'success') el.classList.add('sbt-banner--success');
+    el.hidden = false;
+  }
+
+  function initModals() {
+    document.querySelectorAll('.sbt-modal-backdrop').forEach(function (bd) {
+      if (bd.dataset.sbtBound) return;
+      bd.dataset.sbtBound = '1';
+      bd.addEventListener('click', function (e) {
+        if (e.target === bd) bd.classList.remove('is-open');
+      });
+    });
+    document.querySelectorAll('[data-sbt-close-modal]').forEach(function (btn) {
+      if (btn.dataset.sbtBound) return;
+      btn.dataset.sbtBound = '1';
+      btn.addEventListener('click', function () {
+        const bd = btn.closest('.sbt-modal-backdrop');
+        if (bd) bd.classList.remove('is-open');
+      });
+    });
+  }
+
+  function init(root) {
+    if (global.SubtilsIcons) global.SubtilsIcons.hydrate(root);
+    initSliders(root);
+    initDualRanges(root);
+    initSelects(root);
+    initToggles(root);
+    initStackDecks(root);
+    initModals();
+  }
+
+  global.SubtilsUI = {
+    init: init,
+    renderGauge: renderGauge,
+    renderAreaChart: renderAreaChart,
+    flashButton: flashButton,
+    openModal: openModal,
+    closeModal: closeModal,
+    confirm: confirmDialog,
+    setBanner: setBanner
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { init(); });
+  } else {
+    init();
+  }
+})(window);
+  </script>
+  <script>
+    // 1. Deteksi Runner Iframe Blogger
     const isInIframe = (window.self !== window.top);
     if (isInIframe) {
       document.documentElement.classList.add('sfx-in-iframe');
     }
 
-    // 2. Data Dossier Spesifikasi Matriks
+    // Inline Feedback Helper (Zero Floating Toast Slop)
+    let bannerTimer = null;
+    function setNotice(message, tone, durationMs) {
+      const bannerEl = document.getElementById('teksturBanner');
+      if (!bannerEl) return;
+      clearTimeout(bannerTimer);
+      if (window.SubtilsUI && typeof window.SubtilsUI.setBanner === 'function') {
+        window.SubtilsUI.setBanner(bannerEl, message, tone || 'info');
+      } else {
+        const textEl = bannerEl.querySelector('[data-sbt-banner-text]') || bannerEl;
+        textEl.textContent = message || '';
+        bannerEl.hidden = !message;
+      }
+      if (message && durationMs > 0) {
+        bannerTimer = setTimeout(() => {
+          if (window.SubtilsUI) window.SubtilsUI.setBanner(bannerEl, '', '');
+          else bannerEl.hidden = true;
+        }, durationMs);
+      }
+    }
+
+    // 2. Data Dossier Matriks
     const DOSSIER_DATA = {
       classic: {
         title: "KLASIK",
-        badge: "GRADASI ALAMI",
+        badge: "Gradasi Alami",
         desc: "Pemetaan luminansi linier 10 tingkat densitas karakter untuk gradasi paling natural pada potret dan lanskap.",
         ramp: "@%#*+=-:. ",
         best: "Foto potret wajah, pemandangan berarsir halus."
       },
       braille: {
         title: "BRAILLE HD",
-        badge: "SUB-PIXEL 2×4",
+        badge: "Sub-Pixel 2x4",
         desc: "Matriks Braille 8-titik per karakter. Menggandakan kerapatan visual hingga 400% di ruang teks yang sama.",
         ramp: "⠁⠃⠇⠏⠟⠿⣿",
         best: "Logo vektor, tipografi, dan mode WhatsApp (36 CHR)."
       },
       retro: {
         title: "RETRO",
-        badge: "ARCADE 8-BIT",
+        badge: "Arcade 8-Bit",
         desc: "Karakter blok arsir Unicode padat bergaya konsol arkade era 1980-an dan grafis pixel-art vintage.",
         ramp: "█▓▒░ ",
         best: "Seni pixel, grafis arcade retro, dan poster tebal."
       },
       siluet: {
         title: "SILUET",
-        badge: "1-BIT BINER",
+        badge: "1-Bit Biner",
         desc: "Memotong nilai abu-abu menjadi kontras ekstrem (hitam murni vs putih) untuk menghasilkan garis tepi tajam.",
         ramp: "#  [1-BIT]",
         best: "Stempel grafis, stensil tajam, ikon vektor monokrom."
       },
       biner: {
         title: "BINER",
-        badge: "CYBERPUNK",
-        desc: "Mengodekan intensitas cahaya ke dalam logika 0 dan 1. Memberikan estetika konsol peretas mainframe.",
+        badge: "Mainframe",
+        desc: "Mengodekan intensitas cahaya ke dalam logika 0 dan 1. Memberikan estetika konsol terminal.",
         ramp: "10. ",
-        best: "Visual bertema teknologi, tema sci-fi, dan estetika peretas."
+        best: "Visual bertema teknologi, sci-fi, dan komposisi tipografis."
       },
       numerik: {
         title: "NUMERIK",
-        badge: "ALIRAN DATA",
+        badge: "Aliran Data",
         desc: "Hierarki dibentuk dari luas goresan angka desimal 0–9, memberikan impresi visualisasi analitik matematis.",
         ramp: "896543210. ",
         best: "Infografis tipografi, visualisasi data, dan pola eksperimental."
       },
       minimalis: {
         title: "MINIMALIS",
-        badge: "RUANG BERSIH",
+        badge: "Ruang Bersih",
         desc: "Tanda baca terpilih berjarak renggang. Menghasilkan tampilan yang hening, bernapas, dan bersih dari distorsi.",
         ramp: "#+:. ",
         best: "Layout kontemporer, desain lapang, dan seni minimalis."
@@ -1122,7 +3556,6 @@
     let currentFontSizePx = 7;
     let isDarkTerminal = false;
 
-    // Referensi Elemen DOM
     const imageInput = document.getElementById("image-input");
     const mobileImageInput = document.querySelector(".mobile-image-input");
     const canvas = document.getElementById("processor-canvas");
@@ -1133,17 +3566,21 @@
     const dropOverlay = document.getElementById("drop-overlay");
 
     const statusBadge = document.getElementById("status-badge");
+    const mobileStatusBadge = document.getElementById("mobile-status-badge");
     const activeStylePill = document.getElementById("active-style-pill");
+    const mobileActivePill = document.getElementById("mobile-active-pill");
     const canvasHeaderTitle = document.getElementById("canvas-header-title");
     const canvasDensityTag = document.getElementById("canvas-density-tag");
     const targetActiveLabel = document.getElementById("target-active-label");
     const invertToggle = document.getElementById("invert-toggle");
-    const mobileInvertToggle = document.getElementById("mobile-invert-toggle");
-    const btnThemeToggle = document.getElementById("btn-theme-toggle");
+    const desktopInvertSwitch = document.getElementById("desktopInvertSwitch");
+    const mobileInvertSwitch = document.getElementById("mobileInvertSwitch");
+    const invertSwitchText = document.getElementById("invertSwitchText");
+    const themeToggleLed = document.getElementById("themeToggleLed");
+    const themeToggleText = document.getElementById("themeToggleText");
 
-    // 4. Inisialisasi Event Listener
     function triggerFileInput() {
-      imageInput.click();
+      if (imageInput) imageInput.click();
     }
 
     [imageInput, mobileImageInput].forEach(inp => {
@@ -1155,7 +3592,6 @@
       }
     });
 
-    // Dukungan Drag & Drop
     ['dragenter', 'dragover'].forEach(eventName => {
       window.addEventListener(eventName, (e) => {
         e.preventDefault();
@@ -1176,36 +3612,36 @@
 
     window.addEventListener('drop', (e) => {
       dropOverlay.classList.remove('active');
-      const dt = e.dataTransfer;
-      const files = dt.files;
-      if (files && files.length > 0) {
-        handleImageFile(files[0]);
-      }
+      const files = e.dataTransfer && e.dataTransfer.files;
+      if (files && files.length > 0) handleImageFile(files[0]);
     });
 
-    // Dukungan Paste Citra (Ctrl + V)
     window.addEventListener('paste', (e) => {
-      const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-      for (let index in items) {
-        const item = items[index];
+      const items = (e.clipboardData || (e.originalEvent && e.originalEvent.clipboardData) || {}).items || [];
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
         if (item.kind === 'file' && item.type.startsWith('image/')) {
-          const blob = item.getAsFile();
-          handleImageFile(blob);
+          handleImageFile(item.getAsFile());
           break;
         }
       }
     });
 
-    // Pemrosesan Berkas Citra
+    function updateStatusReadout(text, stateClass) {
+      [statusBadge, mobileStatusBadge].forEach(el => {
+        if (!el) return;
+        el.textContent = text;
+        el.className = 'sbt-status ' + stateClass;
+      });
+    }
+
     function handleImageFile(file) {
-      if (!file.type.startsWith('image/')) {
-        showToast("Format Salah", "Pilihlah berkas citra (JPG, PNG, WEBP).");
+      if (!file.type || !file.type.startsWith('image/')) {
+        setNotice("Format tidak didukung: pilih berkas JPG, PNG, WEBP, atau SVG.", "editing", 4000);
         return;
       }
 
-      statusBadge.textContent = "MEMPROSES...";
-      statusBadge.className = "sfx-pill-badge sfx-pill-blue";
-
+      updateStatusReadout("Memproses...", "sbt-status--terbit");
       const reader = new FileReader();
       reader.onload = (event) => {
         currentImage = new Image();
@@ -1213,9 +3649,8 @@
           emptyStateWrap.style.display = "none";
           asciiResult.style.display = "block";
           render();
-          statusBadge.textContent = "TERKONVERSI";
-          statusBadge.className = "sfx-pill-badge sfx-pill-orange";
-          showToast("Citra Dimuat", `${file.name || 'Gambar'} siap dirender.`);
+          updateStatusReadout("Terkonversi", "sbt-status--draf");
+          setNotice((file.name || "Citra") + " berhasil dikonversi menjadi teks tipografis.", "success", 3200);
           sfxReportHeight();
         };
         currentImage.src = event.target.result;
@@ -1223,19 +3658,21 @@
       reader.readAsDataURL(file);
     }
 
-    // 5. Penyetelan Resolusi & Font Size
     function setResolution(width, isWa) {
       targetWidth = width;
       isWaMode = isWa;
 
       document.querySelectorAll('.res-btn').forEach(btn => {
-        const id = btn.id.replace('res-', '');
-        btn.classList.toggle('is-active', parseInt(id) === width);
+        const id = parseInt(btn.id.replace('res-', ''), 10);
+        btn.classList.toggle('is-active', id === width);
+      });
+      document.querySelectorAll('.m-res').forEach(btn => {
+        const val = parseInt(btn.getAttribute('data-res'), 10);
+        btn.classList.toggle('is-active', val === width);
       });
 
-      targetActiveLabel.textContent = `${width} CHR${isWa ? ' (WA)' : ''}`;
+      targetActiveLabel.textContent = width + ' CHR' + (isWa ? ' (WA)' : '');
 
-      // Hitung font-size awal yang pas
       if (width === 36) currentFontSizePx = currentAlgorithm === 'braille' ? 12 : 13;
       else if (width === 64) currentFontSizePx = 9.5;
       else if (width === 100) currentFontSizePx = currentAlgorithm === 'braille' ? 6.5 : 7;
@@ -1250,23 +3687,20 @@
     function adjustFontSize(delta) {
       currentFontSizePx = Math.max(2, Math.min(24, currentFontSizePx + delta));
       applyFontSize();
-      showToast("Ukuran Font", `${currentFontSizePx.toFixed(1)} px`);
+      setNotice("Ukuran font kanvas: " + currentFontSizePx.toFixed(1) + " px", "info", 1800);
     }
 
     function applyFontSize() {
-      asciiResult.style.fontSize = `${currentFontSizePx}px`;
-      asciiResult.style.lineHeight = `${currentFontSizePx}px`;
+      asciiResult.style.fontSize = currentFontSizePx + "px";
+      asciiResult.style.lineHeight = currentFontSizePx + "px";
     }
 
-    // 6. Penyetelan Algoritma & Gaya Matriks
     function setAlgorithm(algo) {
       currentAlgorithm = algo;
 
       document.querySelectorAll('.algo-btn').forEach(btn => {
-        const id = btn.id.replace('algo-', '');
-        btn.classList.toggle('is-active', id === algo);
+        btn.classList.toggle('is-active', btn.id.replace('algo-', '') === algo);
       });
-
       document.querySelectorAll('.m-algo').forEach(btn => {
         btn.classList.toggle('is-active', btn.getAttribute('data-algo') === algo);
       });
@@ -1276,22 +3710,27 @@
     }
 
     function syncInvert(checked) {
-      isInverted = checked;
-      invertToggle.checked = checked;
-      mobileInvertToggle.checked = checked;
+      isInverted = Boolean(checked);
+      if (invertToggle) invertToggle.checked = isInverted;
+      [desktopInvertSwitch, mobileInvertSwitch].forEach(sw => {
+        if (!sw) return;
+        sw.classList.toggle('is-active', isInverted);
+        sw.setAttribute('aria-pressed', String(isInverted));
+      });
+      if (invertSwitchText) invertSwitchText.textContent = isInverted ? 'Negatif' : 'Positif';
       if (currentImage) render();
-      showToast("Pembalikan Nilai", checked ? "Mode Negatif Aktif" : "Mode Positif Normal");
     }
 
     function toggleCanvasTheme() {
       isDarkTerminal = !isDarkTerminal;
       viewportBox.classList.toggle('is-dark-terminal', isDarkTerminal);
-      btnThemeToggle.innerHTML = isDarkTerminal ? '<span>☀️</span> <span>Kertas</span>' : '<span>🌙</span> <span>Terminal</span>';
-      showToast("Tema Kanvas", isDarkTerminal ? "Mode Konsol Gelap" : "Mode Kertas Putih");
+      if (themeToggleLed) themeToggleLed.classList.toggle('is-suboren', isDarkTerminal);
+      if (themeToggleText) themeToggleText.textContent = isDarkTerminal ? 'Kertas' : 'Terminal';
     }
 
     function updateDossier(algo) {
       const d = DOSSIER_DATA[algo];
+      if (!d) return;
       document.getElementById("dos-title").textContent = d.title;
       document.getElementById("dos-badge").textContent = d.badge;
       document.getElementById("dos-desc").textContent = d.desc;
@@ -1302,26 +3741,23 @@
 
     function updateHeaderLabels() {
       const title = DOSSIER_DATA[currentAlgorithm].title;
-      canvasHeaderTitle.textContent = `KANVAS: ${title}`;
-      canvasDensityTag.textContent = `${targetWidth} KARAKTER${isWaMode ? ' (FORMAT WA)' : ''}`;
-      activeStylePill.textContent = `${title} • ${targetWidth} CHR`;
+      canvasHeaderTitle.textContent = "Kanvas: " + title;
+      canvasDensityTag.textContent = targetWidth + " Karakter" + (isWaMode ? " (Format WA)" : "");
+      const pillTxt = title + " · " + targetWidth + " CHR";
+      if (activeStylePill) activeStylePill.textContent = pillTxt;
+      if (mobileActivePill) mobileActivePill.textContent = pillTxt;
     }
 
-    // 7. Engine Render Seni Teks (Algoritma Standard & Braille HD)
     function render() {
       if (!currentImage) return;
-      if (currentAlgorithm === 'braille') {
-        renderBraille();
-      } else {
-        renderStandardRamp();
-      }
+      if (currentAlgorithm === 'braille') renderBraille();
+      else renderStandardRamp();
       sfxReportHeight();
     }
 
     function renderStandardRamp() {
       const w = targetWidth;
       const h = Math.max(1, Math.floor(w * (currentImage.height / currentImage.width) * 0.5));
-
       canvas.width = w;
       canvas.height = h;
       ctx.drawImage(currentImage, 0, 0, w, h);
@@ -1333,17 +3769,14 @@
       for (let i = 0; i < pixels.length; i += 4) {
         let lum = 0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2];
         if (isInverted) lum = 255 - lum;
-
         if (currentAlgorithm === 'siluet') {
           output += lum < 140 ? "#" : " ";
         } else {
           const idx = Math.floor((lum / 255) * (ramp.length - 1));
           output += ramp[idx];
         }
-
         if (((i / 4) + 1) % w === 0) output += "\n";
       }
-
       asciiResult.textContent = output;
     }
 
@@ -1351,17 +3784,15 @@
       const charW = targetWidth;
       const pixelW = charW * 2;
       const pixelH = Math.max(4, Math.floor(charW * (currentImage.height / currentImage.width) * 4));
-
       canvas.width = pixelW;
       canvas.height = pixelH;
       ctx.drawImage(currentImage, 0, 0, pixelW, pixelH);
 
       const imgData = ctx.getImageData(0, 0, pixelW, pixelH).data;
       let output = "";
-
       const dotMap = [
-        [0, 0, 0x1],  [0, 1, 0x2],  [0, 2, 0x4],
-        [1, 0, 0x8],  [1, 1, 0x10], [1, 2, 0x20],
+        [0, 0, 0x1], [0, 1, 0x2], [0, 2, 0x4],
+        [1, 0, 0x8], [1, 1, 0x10], [1, 2, 0x20],
         [0, 3, 0x40], [1, 3, 0x80]
       ];
 
@@ -1373,68 +3804,82 @@
             const py = y + dy;
             if (px < pixelW && py < pixelH) {
               const idx = (py * pixelW + px) * 4;
-              let lum = 0.299 * imgData[idx] + 0.587 * imgData[idx+1] + 0.114 * imgData[idx+2];
+              let lum = 0.299 * imgData[idx] + 0.587 * imgData[idx + 1] + 0.114 * imgData[idx + 2];
               if (isInverted) lum = 255 - lum;
-
-              if (lum < 140) {
-                byte |= mask;
-              }
+              if (lum < 140) byte |= mask;
             }
           }
           output += byte === 0 ? " " : String.fromCharCode(0x2800 + byte);
         }
         output += "\n";
       }
-
       asciiResult.textContent = output;
     }
 
-    // 8. Fungsi Ekspor: Salin Teks, Unduh TXT, Ekspor PNG
-    function copyAscii() {
+    function copyAscii(triggerBtn) {
       let text = asciiResult.textContent;
       if (!text || text.length === 0 || asciiResult.style.display === "none") {
-        showToast("Gagal Menyalin", "Belum ada citra yang terkonversi.");
+        setNotice("Belum ada citra yang terkonversi untuk disalin.", "editing", 3200);
         return;
       }
+      if (isWaMode) text = "```\n" + text + "\n```";
 
-      if (isWaMode) {
-        text = "```\n" + text + "\n```";
+      const targetBtn = triggerBtn || document.getElementById('btnHeaderCopy');
+      const done = () => {
+        if (targetBtn && window.SubtilsUI) window.SubtilsUI.flashButton(targetBtn, 'Disalin!', 1400);
+        setNotice(isWaMode ? "Format WhatsApp (```) disalin ke clipboard." : "Teks ASCII disalin ke clipboard.", "success", 2800);
+      };
+
+      const fallbackCopy = () => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+          if (document.execCommand('copy')) done();
+          else setNotice("Browser tidak mendukung penyalinan otomatis.", "editing", 3500);
+        } catch (err) {
+          setNotice("Gagal menyalin: " + err.message, "editing", 3500);
+        }
+        document.body.removeChild(ta);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
       }
-
-      navigator.clipboard.writeText(text).then(() => {
-        showToast("Berhasil Disalin", isWaMode ? "Format WhatsApp (```) disalin!" : "Teks ASCII disalin ke papan klip.");
-      }).catch(err => {
-        showToast("Gagal Menyalin", err.message);
-      });
     }
 
-    function downloadTxtFile() {
+    function downloadTxtFile(triggerBtn) {
       let text = asciiResult.textContent;
       if (!text || text.length === 0 || asciiResult.style.display === "none") {
-        showToast("Gagal Mengunduh", "Belum ada teks ASCII.");
+        setNotice("Belum ada teks ASCII untuk diunduh.", "editing", 3200);
         return;
       }
-
       if (isWaMode) text = "```\n" + text + "\n```";
 
       const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `TEKSTUR_${currentAlgorithm}_${targetWidth}chr.txt`;
+      link.download = "TEKSTUR_" + currentAlgorithm + "_" + targetWidth + "chr.txt";
       link.click();
       URL.revokeObjectURL(link.href);
-      showToast("Berkas Diunduh", "File teks ASCII (.txt) berhasil disimpan.");
+
+      const targetBtn = triggerBtn || document.getElementById('btnHeaderTxt');
+      if (targetBtn && window.SubtilsUI) window.SubtilsUI.flashButton(targetBtn, 'Terunduh', 1400);
+      setNotice("Berkas teks ASCII (.txt) berhasil diunduh.", "success", 2800);
     }
 
-    // Ekspor Gambar PNG Tajam Monokrom
-    function exportAsciiPNG() {
+    function exportAsciiPNG(triggerBtn) {
       const text = asciiResult.textContent;
       if (!text || text.length === 0 || asciiResult.style.display === "none") {
-        showToast("Gagal Ekspor", "Belum ada seni teks yang dapat diekspor.");
+        setNotice("Belum ada seni teks untuk diekspor menjadi PNG.", "editing", 3200);
         return;
       }
-
-      showToast("Memproses PNG", "Merender citra teks beresolusi tinggi...");
 
       const lines = text.split("\n");
       const lineCount = lines.length;
@@ -1443,10 +3888,9 @@
         if (line.length > maxLineLength) maxLineLength = line.length;
       }
 
-      // Ukuran font untuk ekspor PNG tajam
       const fontSize = 14;
       const lineHeight = 14;
-      const charWidth = fontSize * 0.60; // Rasio monospace JetBrains/Courier
+      const charWidth = fontSize * 0.60;
       const padding = 30;
 
       const exportCanvas = document.createElement("canvas");
@@ -1454,61 +3898,38 @@
       exportCanvas.height = Math.ceil(lineCount * lineHeight + padding * 2);
 
       const eCtx = exportCanvas.getContext("2d");
-
-      // Latar Belakang (Mengikuti tema aktif atau standar kontras)
-      eCtx.fillStyle = isDarkTerminal ? "#0b1120" : "#ffffff";
+      eCtx.fillStyle = isDarkTerminal ? "#1B1E26" : "#FFFFFF";
       eCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
 
-      // Gambar Teks
-      eCtx.fillStyle = isDarkTerminal ? "#f1f5f9" : "#0f172a";
-      eCtx.font = `${fontSize}px "JetBrains Mono", Consolas, monospace`;
+      eCtx.fillStyle = isDarkTerminal ? "#FFFFFF" : "#14171F";
+      eCtx.font = fontSize + 'px "JetBrains Mono", Consolas, monospace';
       eCtx.textBaseline = "top";
 
       for (let i = 0; i < lineCount; i++) {
         eCtx.fillText(lines[i], padding, padding + i * lineHeight);
       }
 
-      // Unduh Sebagai PNG
       const link = document.createElement("a");
-      link.download = `TEKSTUR_${currentAlgorithm}_${targetWidth}chr.png`;
+      link.download = "TEKSTUR_" + currentAlgorithm + "_" + targetWidth + "chr.png";
       link.href = exportCanvas.toDataURL("image/png");
       link.click();
-      showToast("Ekspor Selesai", "Citra PNG seni teks berhasil diunduh.");
+
+      const targetBtn = triggerBtn || document.getElementById('btnHeaderPng');
+      if (targetBtn && window.SubtilsUI) window.SubtilsUI.flashButton(targetBtn, 'Terekspor', 1500);
+      setNotice("Citra PNG seni teks berhasil diekspor.", "success", 2800);
     }
 
-    // 9. Toast Universal
-    function showToast(title, msg) {
-      const container = document.getElementById("toast-container");
-      const toast = document.createElement("div");
-      toast.className = "sfx-toast";
-      toast.innerHTML = `
-        <div style="flex: 1;">
-          <div style="font-weight: 800; font-size: 0.82rem; margin-bottom: 2px;">${title}</div>
-          <div style="font-size: 0.74rem; color: #cbd5e1;">${msg}</div>
-        </div>
-      `;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.2s ease';
-        setTimeout(() => toast.remove(), 200);
-      }, 3000);
-    }
-
-    // 10. Protokol Komunikasi Host-Child (Zero-Scrollbar Iframe Runner)
     let lastReportedHeight = 0;
     let resizeDebounceTimer = null;
 
     function sfxReportHeight() {
       if (!isInIframe) return;
-
       clearTimeout(resizeDebounceTimer);
       resizeDebounceTimer = setTimeout(() => {
         const wrapper = document.querySelector('.sfx-app-wrapper');
         if (!wrapper) return;
-
-        const h = Math.ceil(wrapper.getBoundingClientRect().height + 28);
-        if (Math.abs(h - lastReportedHeight) >= 14 && h >= 480 && h <= 1400) {
+        const h = Math.ceil(wrapper.getBoundingClientRect().height + 24);
+        if (Math.abs(h - lastReportedHeight) >= 14 && h >= 420 && h <= 1600) {
           lastReportedHeight = h;
           window.parent.postMessage({ type: 'SFX_LAB_RESIZE', height: h }, '*');
         }
