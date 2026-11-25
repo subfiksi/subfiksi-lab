@@ -1,0 +1,1394 @@
+/* ==========================================================================
+   SUBTILS UI KIT — VOLUMETRIC 3D BUTTONS & CERAMIC CONTROLS
+   Three 3D Action Families:
+     1. Obsidian 3D + White Glow (.sbt-btn-obsidian + .sbt-icon-glow-white)
+     2. Obsidian 3D + Suboren Glow (.sbt-btn-obsidian + .sbt-icon-glow-suboren)
+     3. Fiksiblu 3D + White Glow (.sbt-btn-fiksiblu)
+   ========================================================================== */
+
+/* Vector Icon Primitives (Phosphor Fill Solid SVG) */
+.sbt-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.sbt-icon > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: currentColor;
+}
+
+.sbt-icon--sm { width: 13px; height: 13px; }
+.sbt-icon--lg { width: 18px; height: 18px; }
+.sbt-icon--xl { width: 22px; height: 22px; }
+
+/* Luminous Glow Modifiers on Dark 3D Surfaces */
+.sbt-icon-glow-white {
+  color: var(--sbt-ink-on-dark);
+}
+
+.sbt-icon-glow-white > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-icon-glow-suboren {
+  color: var(--sbt-suboren);
+}
+
+.sbt-icon-glow-suboren > svg {
+  filter: var(--sbt-suboren-svg-glow);
+}
+
+/* 1 & 2. Volumetric 3D Obsidian Controls */
+.sbt-root a.sbt-btn-obsidian,
+.sbt-ctrl-obsidian,
+.sbt-btn-obsidian {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--sbt-radius-control);
+  box-shadow: var(--sbt-shadow-obsidian);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.sbt-btn-obsidian .sbt-icon:not(.sbt-icon-glow-suboren) > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-ctrl-obsidian:hover,
+.sbt-btn-obsidian:hover {
+  filter: brightness(1.08);
+  box-shadow: var(--sbt-shadow-obsidian-hover);
+}
+
+.sbt-ctrl-obsidian:active,
+.sbt-btn-obsidian:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: var(--sbt-shadow-obsidian-active);
+}
+
+.sbt-ctrl-obsidian:focus-visible,
+.sbt-btn-obsidian:focus-visible {
+  box-shadow: var(--sbt-shadow-obsidian), var(--sbt-focus-ring-obsidian);
+}
+
+.sbt-btn-obsidian:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 3. Volumetric 3D Fiksiblu Controls (+ White Glow) */
+.sbt-root a.sbt-btn-fiksiblu,
+.sbt-btn-fiksiblu {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+  background: var(--sbt-fiksiblu-grad);
+  color: var(--sbt-ink-on-dark);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--sbt-radius-control);
+  box-shadow: var(--sbt-shadow-fiksiblu);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.14s ease, filter 0.14s ease;
+}
+
+.sbt-btn-fiksiblu .sbt-icon > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-btn-fiksiblu:hover {
+  filter: brightness(1.09);
+  box-shadow: var(--sbt-shadow-fiksiblu-hover);
+}
+
+.sbt-btn-fiksiblu:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow: var(--sbt-shadow-fiksiblu-active);
+}
+
+.sbt-btn-fiksiblu:focus-visible {
+  box-shadow: var(--sbt-shadow-fiksiblu), var(--sbt-focus-ring);
+}
+
+/* Neutral Ceramic Secondary Action (Clean Minimalist Typography Only — Zero Colored Icons/Pills) */
+.sbt-btn-ceramic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-elevated);
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--sbt-radius-control);
+  box-shadow: var(--sbt-shadow-ceramic);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s ease, box-shadow 0.14s ease, background-color 0.14s ease, color 0.14s ease;
+}
+
+.sbt-btn-ceramic:hover {
+  color: var(--sbt-ink-primary);
+  box-shadow: var(--sbt-shadow-ceramic-hover);
+}
+
+.sbt-btn-ceramic:active {
+  transform: translateY(1px);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-btn-ceramic:focus-visible {
+  box-shadow: var(--sbt-shadow-ceramic), var(--sbt-focus-ring);
+}
+
+/* Quiet Textual Dismiss / Secondary Destructive Action */
+.sbt-btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sbt-ink-muted);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--sbt-radius-control);
+  cursor: pointer;
+  transition: color 0.14s ease, background-color 0.14s ease;
+}
+
+.sbt-btn-quiet:hover {
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-btn-quiet:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-btn--block {
+  width: 100%;
+}
+
+.sbt-root a.sbt-btn--sm,
+.sbt-btn--sm {
+  padding: 6px 13px;
+  min-height: 30px;
+  font-size: 11px;
+}
+
+/* Square / Squircle Icon Keys */
+.sbt-icon-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease, transform 0.1s ease;
+}
+
+.sbt-icon-key:hover {
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-icon-key:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-icon-key.is-obsidian,
+.sbt-icon-key.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-icon-key.is-obsidian .sbt-icon:not(.sbt-icon-glow-suboren) > svg,
+.sbt-icon-key.is-active .sbt-icon:not(.sbt-icon-glow-suboren) > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-icon-key.is-fiksiblu {
+  background: var(--sbt-fiksiblu-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-fiksiblu);
+}
+
+.sbt-icon-key.is-fiksiblu .sbt-icon > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-icon-key--well {
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+/* Segmented Switcher (Floating White Tray + Active Obsidian Soft-Rect) */
+.sbt-segmented {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-tray);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-segmented--recessed {
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-seg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  outline: none;
+  padding: 7px 16px;
+  border-radius: var(--sbt-radius-control);
+  background-color: transparent;
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.14s ease, background-color 0.14s ease;
+}
+
+.sbt-seg-btn:hover {
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-seg-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-seg-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-weight: 600;
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-seg-count {
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.72;
+  font-variant-numeric: tabular-nums;
+}
+
+.sbt-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Native Radio Pill Wrapper inside .sbt-segmented */
+.sbt-seg-radio {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.sbt-seg-radio > input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.sbt-seg-radio > input[type="radio"]:checked + .sbt-seg-btn {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-weight: 600;
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-seg-radio > input[type="radio"]:focus-visible + .sbt-seg-btn {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+/* View Toggle Tray (List / Grid Switcher) */
+.sbt-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background-color: transparent;
+  color: var(--sbt-ink-primary);
+  cursor: pointer;
+  transition: background-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-view-btn:hover {
+  background-color: var(--sbt-bg-slot);
+}
+
+.sbt-view-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-view-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+/* Pagination Tray (< 1 2 3 4 >) */
+.sbt-pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-page-btn:hover:not(:disabled) {
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-page-btn.is-nav {
+  background-color: transparent;
+}
+
+.sbt-page-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-page-btn:disabled {
+  color: var(--sbt-ink-placeholder);
+  background-color: transparent;
+  cursor: not-allowed;
+}
+
+.sbt-page-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+/* Carousel Dot Stepper */
+.sbt-dot-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-pill);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-dot-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sbt-ink-secondary);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sbt-dot-nav:hover { color: var(--sbt-ink-primary); }
+
+.sbt-dot-pip {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.sbt-dot-pip.is-active {
+  width: 10px;
+  height: 10px;
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+/* Squircle Checkbox */
+.sbt-check-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 14px 8px 8px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-tray);
+}
+
+.sbt-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 4px;
+  border-radius: var(--sbt-radius-control);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sbt-check:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-check-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--sbt-radius-check);
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-muted);
+  flex-shrink: 0;
+  transition: background-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease, transform 0.12s ease;
+}
+
+.sbt-check-box--compact {
+  width: 22px;
+  height: 22px;
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-check > input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.sbt-check.is-active .sbt-check-box,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-check.is-active .sbt-check-box > svg,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box > svg {
+  filter: var(--sbt-white-svg-glow);
+}
+
+.sbt-check.is-active .sbt-check-box.has-suboren,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box.has-suboren {
+  color: var(--sbt-suboren);
+}
+
+.sbt-check.is-active .sbt-check-box.has-suboren svg,
+.sbt-check > input[type="checkbox"]:checked + .sbt-check-box.has-suboren svg {
+  filter: var(--sbt-suboren-svg-glow);
+}
+
+.sbt-check > input[type="checkbox"]:not(:checked) + .sbt-check-box svg {
+  opacity: 0.18;
+}
+
+/* Tactile Obsidian Switch (Soft-Rect Shell, Lit Groove Slot, Square Thumb Pin) */
+.sbt-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 13px 5px 5px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+  color: var(--sbt-ink-on-obsidian-muted);
+  font-family: var(--sbt-font-body);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.18s ease, box-shadow 0.18s ease, filter 0.16s ease;
+}
+
+.sbt-switch:hover {
+  filter: brightness(1.07);
+  box-shadow: var(--sbt-shadow-obsidian-hover);
+}
+
+.sbt-switch:focus-visible {
+  box-shadow: var(--sbt-shadow-obsidian), var(--sbt-focus-ring-obsidian);
+}
+
+.sbt-switch-track {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: var(--sbt-radius-switch-track);
+  background: var(--sbt-obsidian-groove-bg);
+  box-shadow: var(--sbt-obsidian-groove-shadow);
+  padding: 3px;
+  flex-shrink: 0;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sbt-switch-thumb {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--sbt-radius-switch-thumb);
+  background: var(--sbt-obsidian-thumb-off);
+  box-shadow: var(--sbt-obsidian-thumb-off-shadow);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sbt-switch .sbt-switch-icon {
+  color: var(--sbt-ink-on-obsidian-muted);
+  transition: color 0.18s ease, filter 0.18s ease;
+}
+
+.sbt-switch.is-active {
+  color: var(--sbt-ink-on-dark);
+}
+
+.sbt-switch.is-active .sbt-switch-track {
+  background: var(--sbt-obsidian-groove-active-bg);
+  box-shadow: var(--sbt-obsidian-groove-active-shadow);
+}
+
+.sbt-switch.is-active .sbt-switch-thumb {
+  transform: translateX(16px);
+  background: var(--sbt-suboren-dome);
+  box-shadow: var(--sbt-suboren-dome-shadow);
+}
+
+.sbt-switch.is-active .sbt-switch-icon {
+  color: var(--sbt-suboren);
+}
+
+.sbt-switch.is-active .sbt-switch-icon > svg {
+  filter: var(--sbt-suboren-svg-glow);
+}
+
+/* Concave Recessed Form Inputs & Textareas */
+.sbt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sbt-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sbt-ink-secondary);
+}
+
+.sbt-hint {
+  font-size: 11px;
+  color: var(--sbt-ink-muted);
+  line-height: 1.45;
+}
+
+.sbt-input,
+.sbt-textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--sbt-radius-inner);
+  padding: 10px 14px;
+  box-shadow: var(--sbt-shadow-well);
+  transition: background-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.sbt-input::placeholder,
+.sbt-textarea::placeholder {
+  color: var(--sbt-ink-placeholder);
+}
+
+.sbt-input:focus,
+.sbt-textarea:focus {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile), var(--sbt-focus-ring);
+}
+
+.sbt-textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.65;
+}
+
+.sbt-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sbt-input-wrap .sbt-input {
+  padding-left: 38px;
+}
+
+.sbt-input-wrap--trailing .sbt-input {
+  padding-left: 14px;
+  padding-right: 40px;
+}
+
+.sbt-input-icon {
+  position: absolute;
+  left: 13px;
+  color: var(--sbt-ink-muted);
+  pointer-events: none;
+}
+
+.sbt-input-action {
+  position: absolute;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-control);
+  background: transparent;
+  color: var(--sbt-ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.sbt-input-action:hover {
+  background-color: var(--sbt-bg-elevated);
+  color: var(--sbt-ink-primary);
+}
+
+/* Custom Borderless Select Dropdown */
+.sbt-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.sbt-select--compact {
+  width: auto;
+}
+
+.sbt-select-trigger {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-well);
+  cursor: pointer;
+  transition: background-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-select--pill .sbt-select-trigger {
+  background-color: var(--sbt-bg-slot);
+  box-shadow: none;
+  padding: 6px 12px;
+  border-radius: var(--sbt-radius-control);
+  font-size: 11px;
+}
+
+.sbt-select-trigger:focus-visible,
+.sbt-select.is-open .sbt-select-trigger {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile), var(--sbt-focus-ring);
+}
+
+.sbt-select-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  min-width: 160px;
+  padding: 6px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-modal);
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sbt-select.is-open .sbt-select-menu {
+  display: flex;
+}
+
+.sbt-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--sbt-radius-control);
+  cursor: pointer;
+  text-align: left;
+}
+
+.sbt-select-option:hover {
+  background-color: var(--sbt-bg-slot);
+}
+
+.sbt-select-option.is-selected {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-weight: 600;
+}
+
+/* Native <select> Borderless Wrapper */
+.sbt-native-select-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+}
+
+.sbt-native-select-wrap--auto {
+  width: auto;
+}
+
+.sbt-native-select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 34px 10px 14px;
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-well);
+  cursor: pointer;
+  transition: background-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-native-select--compact {
+  padding: 7px 30px 7px 12px;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-ceramic);
+}
+
+.sbt-native-select:focus-visible {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile), var(--sbt-focus-ring);
+}
+
+.sbt-native-select-caret {
+  position: absolute;
+  right: 11px;
+  color: var(--sbt-ink-secondary);
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+input[type="date"].sbt-input {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Inline Typographic Tag Chips */
+.sbt-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sbt-ink-secondary);
+}
+
+.sbt-tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sbt-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-pill);
+  background: transparent;
+  color: var(--sbt-ink-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.sbt-tag-remove:hover {
+  background-color: var(--sbt-bg-recessed);
+  color: var(--sbt-suboren);
+}
+
+/* ==========================================================================
+   SLIDER & PRECISION RANGE FAMILY
+   ========================================================================== */
+.sbt-slider-shell {
+  position: relative;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.sbt-slider-groove {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+  overflow: hidden;
+}
+
+.sbt-slider-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--sbt-radius-pill);
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-slider-ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  pointer-events: none;
+}
+
+.sbt-slider-tick {
+  width: 2px;
+  height: 5px;
+  border-radius: 1px;
+  background-color: var(--sbt-ink-placeholder);
+  opacity: 0.55;
+}
+
+.sbt-slider-knob {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--sbt-radius-pill);
+  transform: translate(-50%, -50%);
+  background: var(--sbt-obsidian-soft-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 0.1s ease;
+}
+
+.sbt-slider-knob::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-ink-on-dark);
+}
+
+.sbt-slider-knob--suboren::after {
+  background-color: var(--sbt-suboren);
+  box-shadow: var(--sbt-suboren-glow);
+}
+
+.sbt-range-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.sbt-range-input:active + .sbt-slider-groove + .sbt-slider-knob {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.sbt-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--sbt-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.sbt-dual-wrap {
+  position: relative;
+  padding-top: 28px;
+}
+
+.sbt-dual-bubble {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 7px;
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sbt-shadow-obsidian);
+  pointer-events: none;
+}
+
+.sbt-dual-input {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28px;
+  height: 28px;
+  width: 100%;
+  margin: 0;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 5;
+}
+
+.sbt-dual-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.sbt-meter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 4px;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-meter-fill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 5px 9px;
+  border-radius: var(--sbt-radius-switch-track);
+  background: var(--sbt-obsidian-grad);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-meter-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sbt-meter-bar {
+  width: 2px;
+  height: 9px;
+  border-radius: 2px;
+  background-color: var(--sbt-ink-on-dark);
+  opacity: 0.72;
+}
+
+.sbt-meter-bar--ghost {
+  background-color: var(--sbt-ink-placeholder);
+  opacity: 0.45;
+}
+
+/* In-Place Banner Status */
+.sbt-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-strip);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-banner[hidden] {
+  display: none;
+}
+
+/* Tactile Choice Grid Matrix (Uniform Keypad, Flush Unselected Slots) */
+.sbt-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+}
+
+.sbt-choice-grid--5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.sbt-choice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  outline: none;
+  min-height: 32px;
+  padding: 6px 8px;
+  border-radius: var(--sbt-radius-control);
+  background-color: transparent;
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-choice-btn:hover {
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-choice-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-choice-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-choice-btn--span2 {
+  grid-column: span 2;
+}
+
+.sbt-banner--editing {
+  background-color: var(--sbt-suboren-soft);
+}
+
+.sbt-banner--info {
+  background-color: var(--sbt-fiksiblu-soft);
+  color: var(--sbt-fiksiblu);
+}
+
+.sbt-banner--success {
+  background-color: var(--sbt-bg-slot);
+  color: var(--sbt-ink-primary);
+}
+
+/* Narrow Media Card Icon-Only Action Row (Zero Text Truncation) */
+.sbt-card-icon-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sbt-card-icon-actions .sbt-icon-key {
+  flex: 1;
+  width: auto;
+  height: 30px;
+  border-radius: var(--sbt-radius-check);
+}
+
+/* Official Subtils Rich WYSIWYG Editor Primitives */
+.sbt-editor-shell {
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sbt-editor-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background-color: var(--sbt-bg-strip);
+}
+
+.sbt-editor-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sbt-editor-tools-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.sbt-editor-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-check);
+  background-color: var(--sbt-bg-elevated);
+  color: var(--sbt-ink-secondary);
+  font-family: var(--sbt-font-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--sbt-shadow-ceramic);
+  transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.sbt-editor-btn:hover {
+  color: var(--sbt-ink-primary);
+  box-shadow: var(--sbt-shadow-ceramic-hover);
+}
+
+.sbt-editor-btn.is-active {
+  background: var(--sbt-obsidian-grad);
+  color: var(--sbt-ink-on-dark);
+  box-shadow: var(--sbt-shadow-obsidian);
+}
+
+.sbt-editor-btn:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-editor-surface {
+  min-height: 280px;
+  max-height: 540px;
+  overflow-y: auto;
+  padding: 18px 20px;
+  background-color: var(--sbt-bg-recessed);
+  box-shadow: var(--sbt-shadow-well);
+  color: var(--sbt-ink-prose);
+  font-family: var(--sbt-font-body);
+  font-size: 14px;
+  line-height: 1.75;
+  outline: none;
+}
+
+.sbt-editor-surface:focus {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-editor-surface blockquote {
+  margin: 14px 0;
+  padding: 12px 16px;
+  border-radius: var(--sbt-radius-control);
+  background-color: var(--sbt-bg-quote);
+  color: var(--sbt-ink-secondary);
+  font-style: italic;
+}
+
+.sbt-editor-surface table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  margin: 14px 0;
+}
+
+.sbt-editor-surface th,
+.sbt-editor-surface td {
+  padding: 8px 12px;
+  background-color: var(--sbt-bg-slot);
+  text-align: left;
+  font-size: 12.5px;
+}
+
+.sbt-editor-surface th {
+  background-color: var(--sbt-bg-recessed);
+  font-weight: 700;
+  color: var(--sbt-ink-primary);
+}
+
+.sbt-editor-code {
+  width: 100%;
+  min-height: 280px;
+  border: none;
+  outline: none;
+  padding: 16px 20px;
+  background-color: var(--sbt-backdrop-obsidian);
+  color: var(--sbt-ink-on-dark);
+  font-size: 12.5px;
+  line-height: 1.65;
+  resize: vertical;
+}
+
+.sbt-editor-popover {
+  position: relative;
+  display: inline-flex;
+}
+
+.sbt-editor-pop-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 40;
+  min-width: 160px;
+  padding: 8px;
+  border-radius: var(--sbt-radius-inner);
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-modal);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}

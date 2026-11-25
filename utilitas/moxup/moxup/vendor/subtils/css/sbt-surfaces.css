@@ -1,0 +1,345 @@
+/* ==========================================================================
+   SUBTILS UI KIT — SURFACES, TYPOGRAPHY & LAYER HIERARCHY
+   ========================================================================== */
+
+.sbt-root {
+  background-color: var(--sbt-bg-base);
+  color: var(--sbt-ink-primary);
+  font-family: var(--sbt-font-body);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.sbt-root [hidden] {
+  display: none;
+}
+
+.sbt-root *,
+.sbt-root *::before,
+.sbt-root *::after {
+  box-sizing: border-box;
+}
+
+.sbt-root h1,
+.sbt-root h2,
+.sbt-root h3,
+.sbt-root h4,
+.sbt-root .sbt-heading {
+  font-family: var(--sbt-font-display);
+  letter-spacing: -0.028em;
+  color: var(--sbt-ink-primary);
+  margin: 0;
+}
+
+.sbt-root p {
+  margin: 0;
+}
+
+.sbt-root a:not([class*="sbt-btn"]) {
+  color: var(--sbt-fiksiblu);
+  text-decoration: none;
+}
+
+.sbt-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Concentric Radius Helpers */
+.sbt-radius-outer { border-radius: var(--sbt-radius-outer); }
+.sbt-radius-inner { border-radius: var(--sbt-radius-inner); }
+.sbt-radius-control { border-radius: var(--sbt-radius-control); }
+.sbt-radius-pill { border-radius: var(--sbt-radius-pill); }
+
+/* Layer 1: Matte Ceramic Floor (Flush items) */
+.sbt-surface-base {
+  background-color: var(--sbt-bg-base);
+}
+
+/* Layer 2: Elevated Pure White Sheets (Main Canvas, Modals, Stat Cards) */
+.sbt-sheet {
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-outer);
+  box-shadow: var(--sbt-shadow-sheet);
+  border: none;
+}
+
+.sbt-sheet--compact {
+  border-radius: var(--sbt-radius-inner);
+  padding: 20px;
+}
+
+.sbt-sheet-strip {
+  background-color: var(--sbt-bg-strip);
+  border: none;
+}
+
+/* Floating White Control Tray (Reference #2 & #3 Pattern: Pagination, Tabs, Toggles) */
+.sbt-tray {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-tray);
+  box-shadow: var(--sbt-shadow-tray);
+  border: none;
+}
+
+.sbt-tray--inner {
+  border-radius: var(--sbt-radius-inner);
+  padding: 7px;
+}
+
+/* Layer 3: Concave Recessed Wells & Tracks */
+.sbt-well {
+  background-color: var(--sbt-bg-recessed);
+  border-radius: var(--sbt-radius-inner);
+  box-shadow: var(--sbt-shadow-well);
+  border: none;
+}
+
+.sbt-well--pill {
+  border-radius: var(--sbt-radius-pill);
+}
+
+/* Selectable List Tile (Flush on Ceramic -> Rises White on Selection) */
+.sbt-tile {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  border: none;
+  outline: none;
+  border-radius: var(--sbt-radius-inner);
+  background-color: transparent;
+  color: var(--sbt-ink-primary);
+  cursor: pointer;
+  transition: background-color 0.16s ease, box-shadow 0.18s ease, transform 0.14s ease;
+}
+
+.sbt-tile:hover {
+  background-color: var(--sbt-bg-hover-tile);
+}
+
+.sbt-tile:focus-visible {
+  box-shadow: var(--sbt-focus-ring);
+}
+
+.sbt-tile.is-active {
+  background-color: var(--sbt-bg-elevated);
+  box-shadow: var(--sbt-shadow-tile);
+}
+
+/* Unboxed Subfiksi Brand Status & Metadata Typography */
+.sbt-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.sbt-status--terbit {
+  color: var(--sbt-fiksiblu);
+}
+
+.sbt-status--draf {
+  color: var(--sbt-suboren);
+}
+
+.sbt-status--muted {
+  color: var(--sbt-ink-muted);
+}
+
+.sbt-tags-inline {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sbt-ink-secondary);
+}
+
+.sbt-accent-bar {
+  width: 40px;
+  height: 3px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-suboren);
+}
+
+/* Geometric LED Signal Pips */
+.sbt-led {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--sbt-radius-pill);
+  background-color: var(--sbt-pip-muted);
+  flex-shrink: 0;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.sbt-led.is-suboren {
+  background-color: var(--sbt-suboren);
+  box-shadow: var(--sbt-suboren-glow);
+}
+
+.sbt-led.is-fiksiblu {
+  background-color: var(--sbt-fiksiblu);
+}
+
+/* Stacked Depth Card Container & Physical Card-Deck Swap */
+.sbt-stack-stage {
+  background-color: var(--sbt-backdrop-obsidian);
+  border-radius: var(--sbt-radius-outer);
+  padding: 24px 24px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sbt-stack-deck {
+  position: relative;
+  width: 100%;
+  min-height: 74px;
+}
+
+.sbt-stack-card {
+  position: relative;
+  z-index: 2;
+  background-color: var(--sbt-bg-elevated);
+  border-radius: var(--sbt-radius-inner);
+  padding: 14px 16px;
+  box-shadow: var(--sbt-shadow-tile);
+}
+
+.sbt-stack-card:not(.sbt-stack-deck .sbt-stack-card)::before,
+.sbt-stack-card:not(.sbt-stack-deck .sbt-stack-card)::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -8px;
+  height: 18px;
+  border-radius: 0 0 var(--sbt-radius-inner) var(--sbt-radius-inner);
+  background-color: var(--sbt-stack-layer-1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sbt-stack-card:not(.sbt-stack-deck .sbt-stack-card)::after {
+  left: 26px;
+  right: 26px;
+  bottom: -15px;
+  background-color: var(--sbt-stack-layer-2);
+  z-index: -2;
+}
+
+.sbt-stack-deck .sbt-stack-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transform-origin: center top;
+  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease, box-shadow 0.28s ease;
+  will-change: transform, opacity;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="0"] {
+  z-index: 4;
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="1"] {
+  z-index: 3;
+  transform: translateY(11px) scale(0.94);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="2"] {
+  z-index: 2;
+  transform: translateY(21px) scale(0.88);
+  opacity: 0.36;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card[data-stack-pos="hidden"] {
+  z-index: 1;
+  transform: translateY(24px) scale(0.84);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card.is-exiting-up {
+  z-index: 5;
+  transform: translateY(-22px) scale(0.95) rotate(-0.8deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sbt-stack-deck .sbt-stack-card.is-entering-top {
+  z-index: 5;
+  transform: translateY(-20px) scale(0.95) rotate(0.8deg);
+  opacity: 0;
+  transition: none !important;
+  pointer-events: none;
+}
+
+/* Editorial Preview Prose */
+.sbt-prose {
+  font-size: 16px;
+  line-height: 1.82;
+  color: var(--sbt-ink-prose);
+}
+
+.sbt-prose h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.sbt-prose p {
+  margin-bottom: 1.15rem;
+}
+
+.sbt-prose blockquote {
+  background-color: var(--sbt-bg-quote);
+  padding: 16px 20px;
+  border-radius: var(--sbt-radius-inner);
+  margin: 1.35rem 0;
+  color: var(--sbt-ink-secondary);
+  font-style: italic;
+  border: none;
+}
+
+/* Clean Custom Scrollbars */
+.sbt-root ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.sbt-root ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sbt-root ::-webkit-scrollbar-thumb {
+  background: var(--sbt-scroll-thumb);
+  border-radius: var(--sbt-radius-pill);
+}
+
+.sbt-root ::-webkit-scrollbar-thumb:hover {
+  background: var(--sbt-scroll-thumb-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sbt-root *,
+  .sbt-root *::before,
+  .sbt-root *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
