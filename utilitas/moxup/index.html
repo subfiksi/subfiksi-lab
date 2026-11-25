@@ -1429,8 +1429,91 @@
       display: none;
     }
 
+    dialog.mox-dialog {
+      width: calc(100vw - 28px);
+      max-width: 400px;
+      max-height: 78dvh;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    dialog.mox-dialog .sbt-modal-head {
+      margin-bottom: 10px;
+    }
+
+    dialog.mox-dialog .sbt-modal-foot {
+      margin-top: 12px;
+    }
+
+    #credits .mox-cred-lead {
+      margin: 0 0 10px;
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+
     .mox-team-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .mox-team-col {
+      gap: 8px;
+    }
+
+    .mox-dev-card {
+      padding: 10px;
+      gap: 4px;
+    }
+
+    .mox-dev-role {
+      font-size: 9.5px;
+      padding: 2px 6px;
+    }
+
+    .mox-dev-name {
+      font-size: 12.5px;
+    }
+
+    .mox-dev-desc {
+      font-size: 10.5px;
+      line-height: 1.35;
+    }
+
+    .mox-brand-tile {
+      padding: 8px 6px;
+      gap: 4px;
+    }
+
+    .mox-brand-slot {
+      height: 24px;
+    }
+
+    .mox-brand-logo--next {
+      height: 22px;
+    }
+
+    .mox-brand-logo--sub4ge {
+      height: 16px;
+    }
+
+    .mox-brand-copy {
+      font-size: 10px;
+    }
+
+    .mox-help-steps {
+      margin-bottom: 10px;
+      gap: 6px;
+    }
+
+    .mox-help-step {
+      padding: 8px 10px;
+      font-size: 11.5px;
+    }
+
+    .mox-shortcuts {
+      padding: 8px 10px;
+      font-size: 11px;
+      gap: 6px 10px;
     }
   }
 
