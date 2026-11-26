@@ -30,6 +30,7 @@ scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnviron
 const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
 export const controls = new OrbitControls(camera, canvas);
 controls.enablePan = false;
+controls.mouseButtons.MIDDLE = THREE.MOUSE.ROTATE; // right button opens the app's menu; zoom stays on the wheel
 controls.minDistance = 1.5;
 controls.maxDistance = 40;
 controls.addEventListener('change', requestRender);
@@ -428,6 +429,12 @@ export async function preload(m) {
   const p = await prepared.get(m.id);
   ready.set(m.id, p);
   return p;
+}
+
+// Drops a product's loaded geometry so the next preload builds it again (e.g. a new paste mode).
+export function forget(id) {
+  prepared.delete(id);
+  ready.delete(id);
 }
 
 function meshesOf(p, bodyMat, matOf) {

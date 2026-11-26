@@ -195,7 +195,7 @@ new ResizeObserver(layoutFrame).observe(stageEl);
 // ---------- settings -> controls ----------
 let layersKey = '';
 function renderLayers() {
-  const key = JSON.stringify(state.layers.map((l) => [l.id, l.name, l.visible, l.text, l.asset])) + state.selected;
+  const key = JSON.stringify(state.layers.map((l) => [l.id, l.name, l.visible, l.locked, l.text, l.asset])) + state.selected;
   if (key === layersKey) return;
   layersKey = key;
   const list = $('#layers');
@@ -206,6 +206,7 @@ function renderLayers() {
     li.className = (L.id === state.selected ? 'on ' : '') + (L.visible ? '' : 'off');
     li.innerHTML = `<button type="button" class="pick" data-act="layer-select"><span class="th">${L.type === 'text' ? icon('text-h-two') : ''}</span><span class="nm"></span></button>
       <button type="button" class="sbt-icon-key" data-act="layer-eye" title="${L.visible ? 'Sembunyikan' : 'Tampilkan'}" aria-label="${L.visible ? 'Sembunyikan' : 'Tampilkan'}">${icon(L.visible ? 'eye' : 'eye-slash')}</button>
+      <button type="button" class="sbt-icon-key" data-act="layer-lock" title="${L.locked ? 'Buka kunci posisi' : 'Kunci posisi'}" aria-label="${L.locked ? 'Buka kunci posisi' : 'Kunci posisi'}">${icon(L.locked ? 'lock' : 'lock-open')}</button>
       <button type="button" class="sbt-icon-key" data-act="layer-del" title="Hapus" aria-label="Hapus">${icon('trash')}</button>`;
     $('.nm', li).textContent = L.type === 'text' ? L.text.replace(/\s+/g, ' ').trim() || 'Teks kosong' : L.name;
     if (L.type === 'image') $('.th', li).style.backgroundImage = `url(${design.thumbUrl(L.asset)})`;
@@ -325,8 +326,9 @@ async function travel(step) {
   for (const k of Object.keys(state)) delete state[k];
   Object.assign(state, JSON.parse(hist.list[j]));
   state.selected = state.layers.some((l) => l.id === keep) ? keep : null;
-  if (state.product !== model.id) {
-    const m = MODELS.find((x) => x.id === state.product);
+  const m = MODELS.find((x) => x.id === state.product);
+  if (!m) state.product = model.id; // that uploaded model was deleted: stay on the product on stage
+  else if (m !== model) {
     await stage.preload(m);
     stage.showProduct(m);
     model = m;
@@ -452,6 +454,8 @@ async function readImage(file) {
 }
 
 async function addImages(files) {
+  const at = imageAt;
+  imageAt = null;
   let added = 0;
   for (const file of files) {
     let img;
@@ -464,7 +468,7 @@ async function addImages(files) {
     state.layers = state.layers.filter((l) => !l.sample); // the example makes way for real art
     addLayer({
       type: 'image', asset: design.addAsset(img), name: file.name || 'Gambar tempel', aspect: img.naturalWidth / img.naturalHeight,
-      bright: 1, contrast: 1, sat: 1, cut: false, cutTol: 0.12, tintMode: 'none', tintColor: '#FF6600',
+      bright: 1, contrast: 1, sat: 1, cut: false, cutTol: 0.12, tintMode: 'none', tintColor: '#FF6600', ...at,
     });
     added++;
   }
@@ -573,10 +577,11 @@ const ACTIONS = {
   product: (b) => setProduct(b.dataset.id).then(commit),
   'pick-image': () => $('#file').click(),
   'pick-photo': () => $('#photo').click(),
-  'add-text': () => {
+  'pick-glb': () => $('#glb').click(),
+  'add-text': (b, at) => {
     addLayer({
       type: 'text', text: 'Teks Anda', font: FONTS[0].name, color: '#14171F', bold: true, italic: false,
-      align: 'center', spacing: 0, stroke: 0, strokeColor: '#ffffff', curve: 0,
+      align: 'center', spacing: 0, stroke: 0, strokeColor: '#ffffff', curve: 0, ...at,
     });
     changed('layers');
     commit();
@@ -594,7 +599,20 @@ const ACTIONS = {
     changed('layers');
     commit();
   },
-  'layer-del': (b) => removeLayer(b.closest('li').dataset.id),
+  // from the layer list (its row) or from the right-click menu (the selected layer)
+  'layer-lock': (b) => {
+    const L = state.layers.find((l) => l.id === (b.closest('li')?.dataset.id ?? state.selected));
+    if (!L) return;
+    L.locked = !L.locked;
+    changed('layers');
+    commit();
+  },
+  'layer-del': (b) => removeLayer(b.closest('li')?.dataset.id ?? state.selected),
+  'ctx-image': () => {
+    imageAt = ctxAt;
+    $('#file').click();
+  },
+  'ctx-text': () => ACTIONS['add-text'](null, ctxAt),
   'layer-dup': () => withLayer((L) => {
     const copy = { ...clone(L), id: 'L' + ++layerSerial, x: stage.area.wrap ? mod1(L.x + 0.04) : Math.min(1, L.x + 0.04), y: Math.max(0, L.y - 0.04) };
     delete copy.sample;
@@ -714,7 +732,9 @@ document.addEventListener('click', (e) => {
     return;
   }
   const b = e.target.closest('[data-act]');
-  if (b) ACTIONS[b.dataset.act]?.(b);
+  if (!b) return;
+  if (ctxMenu.contains(b)) ctxMenu.hidePopover();
+  ACTIONS[b.dataset.act]?.(b);
 });
 
 document.addEventListener('input', (e) => {
@@ -756,6 +776,7 @@ $('#file').addEventListener('change', (e) => {
   addImages([...e.target.files]);
   e.target.value = ''; // picking the same file again still fires change
 });
+$('#file').addEventListener('cancel', () => { imageAt = null; });
 $('#photo').addEventListener('change', async (e) => {
   const file = e.target.files[0];
   e.target.value = '';
@@ -768,6 +789,151 @@ $('#photo').addEventListener('change', async (e) => {
   } catch (err) {
     toast('Foto ini tidak bisa dibuka. Pakai PNG atau JPG.', true);
   }
+});
+
+// ---------- the user's own .glb models ----------
+// The file never leaves the browser: it is read into a blob: URL that only this tab can open.
+// Nothing is sent anywhere (serve.ps1 only serves the app's own files and accepts no uploads).
+let customSerial = 0;
+const MAX_GLB = 200 * 1024 * 1024;
+
+async function isGlb(file) {
+  const head = new Uint8Array(await file.slice(0, 4).arrayBuffer());
+  return String.fromCharCode(...head) === 'glTF'; // binary glTF magic
+}
+
+const hasUv = (p) => p.parts.some((x) => !x.part && x.g.attributes.uv);
+const NO_UV = 'Model ini tidak punya peta UV. Pilih cara tempel "Melingkar badan" atau "Permukaan atas".';
+
+async function refreshThumb(m) {
+  try {
+    const urls = await stage.thumbnails([m]);
+    const img = $('#thumb-' + m.id);
+    if (img && urls[m.id]) img.src = urls[m.id];
+  } catch (e) { /* the list keeps an empty picture */ }
+}
+
+async function addCustomGlb(file) {
+  if (!file) return;
+  if (file.size > MAX_GLB) { toast('File GLB terlalu besar (maksimal 200 MB).', true); return; }
+  if (!/\.glb$/i.test(file.name) || !(await isGlb(file))) {
+    toast('Pilih file .glb (glTF biner). File .gltf dengan file terpisah belum didukung.', true);
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  const cm = Number($('#glbCm').value);
+  const m = {
+    id: 'custom-' + ++customSerial, cat: 'custom', custom: true,
+    name: file.name.replace(/\.glb$/i, '').slice(0, 28) || 'Model saya',
+    file: url, mode: $('#glbMode').value, realCm: cm > 0 ? cm : 10, finish: 'glossy',
+    credit: `"${file.name}" oleh Anda, file lokal, via perangkat ini`,
+  };
+  let p;
+  try {
+    p = await stage.preload(m);
+  } catch (e) {
+    URL.revokeObjectURL(url);
+    toast('Model GLB ini tidak bisa dibuka. Pastikan file tidak rusak.', true);
+    return;
+  }
+  MODELS.push(m);
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.dataset.act = 'product';
+  btn.dataset.id = m.id;
+  btn.dataset.cat = m.cat;
+  btn.innerHTML = `<img alt="" id="thumb-${m.id}">`;
+  btn.append(m.name);
+  $('#products').append(btn);
+  const active = $('#productCats .is-active')?.dataset.cat;
+  btn.hidden = !!active && active !== 'all' && active !== 'custom';
+  renderGlbList();
+  await setProduct(m.id);
+  commit();
+  refreshThumb(m);
+  if (m.mode === 'uv' && !hasUv(p)) toast(NO_UV, true);
+  else toast(`Model "${m.name}" dimuat di browser Anda.`);
+}
+
+// One row per uploaded model: its name (editable) and a delete button. Names and the group name
+// live only as long as the page, like the files themselves, and are not undo steps.
+function renderGlbList() {
+  const list = $('#glbList');
+  list.replaceChildren();
+  for (const m of MODELS.filter((x) => x.custom)) {
+    const li = document.createElement('li');
+    li.dataset.id = m.id;
+    li.innerHTML = `<input type="text" class="sbt-input" maxlength="28" aria-label="Nama model">
+      <button type="button" class="sbt-icon-key" data-act="glb-del" title="Hapus model">${icon('trash')}</button>`;
+    $('input', li).value = m.name;
+    $('button', li).setAttribute('aria-label', `Hapus model ${m.name}`);
+    list.append(li);
+  }
+}
+
+$('#glbList').addEventListener('change', (e) => {
+  const m = MODELS.find((x) => x.id === e.target.closest('li').dataset.id);
+  if (!m) return;
+  const name = e.target.value.trim().slice(0, 28);
+  if (name) { // an empty name is refused: the row goes back to the old one
+    m.name = name;
+    m.credit = `"${name}" oleh Anda, file lokal, via perangkat ini`;
+    $(`#products button[data-id="${m.id}"]`).lastChild.textContent = name;
+    if (model === m) renderCredit(m);
+  }
+  // not re-rendered: this fires on blur, and replacing the row would swallow a click on its delete button
+  e.target.value = m.name;
+  e.target.nextElementSibling.setAttribute('aria-label', `Hapus model ${m.name}`);
+});
+
+$('#glbGroup').addEventListener('input', (e) => {
+  $('#productCats [data-cat="custom"]').textContent = e.target.value.trim() || 'Milik Saya';
+});
+
+ACTIONS['glb-del'] = async (b) => {
+  const m = MODELS.find((x) => x.id === b.closest('li').dataset.id);
+  if (!m) return;
+  const ok = await window.SubtilsUI.confirm({
+    title: 'Hapus model ini?',
+    message: `"${m.name}" dihapus dari daftar produk. Desain Anda tetap ada.`,
+    confirmText: 'Ya, hapus',
+    cancelText: 'Batal',
+    tone: 'warning',
+  });
+  if (!ok) return;
+  if (model === m) {
+    await setProduct(MODELS[0].id);
+    if (model === m) return; // could not switch away: keep it rather than leave nothing on stage
+    commit();
+  }
+  MODELS.splice(MODELS.indexOf(m), 1);
+  $(`#products button[data-id="${m.id}"]`).remove();
+  stage.forget(m.id);
+  URL.revokeObjectURL(m.file);
+  renderGlbList();
+};
+
+$('#glb').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  e.target.value = ''; // picking the same file again still fires change
+  addCustomGlb(file);
+});
+
+// Changing the paste mode or size re-applies to the custom model on stage.
+$('#glbMode').addEventListener('change', async (e) => {
+  if (!model?.custom || model.mode === e.target.value) return;
+  const m = model;
+  m.mode = e.target.value;
+  stage.forget(m.id);
+  await setProduct(m.id);
+  commit();
+  refreshThumb(m);
+  const p = await stage.preload(m);
+  if (m.mode === 'uv' && !hasUv(p)) toast(NO_UV, true);
+});
+$('#glbCm').addEventListener('change', (e) => {
+  const cm = Number(e.target.value);
+  if (model?.custom && cm > 0) { model.realCm = cm; changed('layers'); }
 });
 
 // ---------- dragging the design on the product ----------
@@ -796,6 +962,8 @@ frame.addEventListener('pointerdown', (e) => {
     showTab('desain');
     changed('selected');
   }
+  // locked: selecting is all; no drag (it would let go of the layer on release), the camera turns instead
+  if (hit.L.locked) { downAt = null; return; }
   drag = { mode: hit.mode, L: hit.L, start: { L: { ...hit.L }, X: hit.p.X, Y: hit.p.Y }, moved: false };
   stage.controls.enabled = false;
   stage.canvas.setPointerCapture(e.pointerId);
@@ -803,7 +971,10 @@ frame.addEventListener('pointerdown', (e) => {
 
 frame.addEventListener('pointermove', (e) => {
   if (!drag) {
-    if (e.buttons === 0) frame.style.cursor = { move: 'move', scale: 'nwse-resize', rotate: 'grab' }[under(e)?.mode] || '';
+    if (e.buttons === 0) {
+      const hit = under(e);
+      frame.style.cursor = hit?.L.locked ? '' : { move: 'move', scale: 'nwse-resize', rotate: 'grab' }[hit?.mode] || '';
+    }
     return;
   }
   const p = stage.pick(e.clientX, e.clientY);
@@ -845,6 +1016,33 @@ frame.addEventListener('dblclick', (e) => {
   $('#textBox').focus();
 });
 
+// ---------- right-click menu on the picture ----------
+const ctxMenu = $('#ctxMenu');
+let ctxAt = null;   // { x, y } of the last right-click on the bare product, for what the menu adds there
+let imageAt = null; // ctxAt handed to the image picker; used or cleared by the next addImages / cancel
+
+frame.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  if (drag) return;
+  const hit = under(e);
+  ctxAt = null;
+  if (hit) {
+    state.selected = hit.L.id;
+    changed('selected');
+    const lock = $('[data-act="layer-lock"]', ctxMenu);
+    lock.innerHTML = icon(hit.L.locked ? 'lock-open' : 'lock') + '<span></span>';
+    lock.lastChild.textContent = hit.L.locked ? 'Buka kunci posisi' : 'Kunci posisi';
+  } else {
+    const p = stage.pick(e.clientX, e.clientY), a = stage.area;
+    if (p) ctxAt = { x: p.X / a.w, y: 1 - p.Y / a.h }; // inverse of layout.boxOf
+  }
+  for (const g of $$('[data-ctx]', ctxMenu)) g.hidden = g.dataset.ctx !== (hit ? 'layer' : 'empty');
+  if (!ctxMenu.matches(':popover-open')) ctxMenu.showPopover(); // closes itself on Esc or a click outside
+  ctxMenu.style.left = Math.max(8, Math.min(e.clientX, innerWidth - ctxMenu.offsetWidth - 8)) + 'px';
+  ctxMenu.style.top = Math.max(8, Math.min(e.clientY, innerHeight - ctxMenu.offsetHeight - 8)) + 'px';
+  $('[data-ctx]:not([hidden]) button', ctxMenu).focus();
+});
+
 // ---------- drop, paste, keyboard ----------
 const hasFiles = (e) => [...(e.dataTransfer?.types || [])].includes('Files');
 stageEl.addEventListener('dragover', (e) => {
@@ -872,7 +1070,8 @@ document.addEventListener('paste', (e) => {
 document.addEventListener('keydown', (e) => {
   const t = e.target;
   // while typing, every key belongs to the text box
-  if (t.matches('textarea, select, input[type=text]') || $('#help').open || $('#credits').open) return;
+  // the open right-click menu keeps its keys too (Esc closes it, it must not also let go of the layer)
+  if (t.matches('textarea, select, input[type=text]') || t.closest('#ctxMenu') || $('#help').open || $('#credits').open) return;
   const ctrl = e.ctrlKey || e.metaKey, key = e.key.toLowerCase();
   if (ctrl && key === 'z') { e.preventDefault(); travel(e.shiftKey ? 1 : -1); return; }
   if (ctrl && key === 'y') { e.preventDefault(); travel(1); return; }
@@ -885,6 +1084,7 @@ document.addEventListener('keydown', (e) => {
   const move = { arrowleft: [-step, 0], arrowright: [step, 0], arrowup: [0, step], arrowdown: [0, -step] }[key];
   if (!move) return;
   e.preventDefault();
+  if (L.locked) return;
   withLayer((l) => {
     l.x = stage.area.wrap ? mod1(l.x + move[0]) : Math.min(1, Math.max(0, l.x + move[0]));
     l.y = Math.min(1, Math.max(0, l.y + move[1]));

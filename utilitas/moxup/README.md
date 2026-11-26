@@ -53,6 +53,10 @@ tabung atau piring bisa dipakai tanpa diedit di Blender.
 
 Gambar kecil di daftar produk dibuat otomatis.
 
+Tanpa mengubah kode: tab **1. Produk → Model 3D Sendiri (.glb)** membuka file `.glb` langsung di browser
+(lewat `blob:` URL, tidak dikirim ke server). Pilih cara tempel (melingkar / permukaan atas / peta UV) dan
+tinggi asli dalam cm. Model ini hilang saat halaman dimuat ulang.
+
 Menambah pilihan cahaya: taruh file `.hdr` di `env/`, tambah satu baris `ENVS` di `presets.js`.
 
 ## Tes

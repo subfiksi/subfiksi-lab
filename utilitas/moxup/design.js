@@ -288,6 +288,7 @@ function drawSelection(g, area, L) {
     g.lineWidth = lw;
     g.strokeStyle = '#003380';
     g.strokeRect(-b.w / 2, -b.h / 2, b.w, b.h);
+    if (L.locked) { g.restore(); continue; } // nothing to grab: frame only
     g.beginPath();
     g.moveTo(0, -b.h / 2);
     g.lineTo(0, knob);

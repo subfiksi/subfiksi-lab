@@ -795,6 +795,31 @@
     opacity: 0.48;
   }
 
+  .mox-layers .sbt-input {
+    flex: 1;
+    min-width: 0;
+    padding: 7px 10px;
+  }
+
+  /* Right-click menu on the picture */
+  .mox-ctx {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    width: 200px;
+    padding: 6px;
+    border: none;
+    border-radius: var(--sbt-radius-inner);
+    background-color: var(--sbt-bg-elevated);
+    box-shadow: var(--sbt-shadow-sheet), 0 0 0 1px rgba(16, 24, 40, 0.04);
+    color: var(--sbt-ink-primary);
+  }
+
+  .mox-ctx .sbt-btn-quiet {
+    justify-content: flex-start;
+    color: var(--sbt-ink-primary);
+  }
+
   /* Text Format Bar */
   .mox-text-bar {
     display: flex;
@@ -1603,8 +1628,29 @@
               <button type="button" class="sbt-seg-btn" data-act="cat" data-cat="drink">Gelas</button>
               <button type="button" class="sbt-seg-btn" data-act="cat" data-cat="box">Kemasan</button>
               <button type="button" class="sbt-seg-btn" data-act="cat" data-cat="apparel">Baju</button>
+              <button type="button" class="sbt-seg-btn" data-act="cat" data-cat="custom">Milik Saya</button>
             </div>
             <div class="mox-products" id="products"></div>
+          </div>
+
+          <div class="sbt-sheet sbt-sheet--compact mox-card">
+            <h2 class="mox-card-title">Model 3D Sendiri (.glb)</h2>
+            <label class="mox-line-row"><span>Cara tempel desain</span>
+              <select id="glbMode" class="sbt-native-select" aria-label="Cara tempel desain pada model sendiri">
+                <option value="cyl">Melingkar badan (mug, botol)</option>
+                <option value="top">Permukaan atas (piring)</option>
+                <option value="uv">Peta UV model (baju, kemasan)</option>
+              </select>
+            </label>
+            <label class="mox-line-row"><span>Tinggi asli (cm)</span>
+              <input type="number" id="glbCm" min="1" max="500" step="0.5" value="10" style="width:80px" aria-label="Tinggi asli produk dalam cm">
+            </label>
+            <button type="button" class="sbt-btn-obsidian sbt-btn--sm sbt-btn--block" data-act="pick-glb">Unggah File GLB</button>
+            <label class="mox-line-row"><span>Nama grup</span>
+              <input type="text" id="glbGroup" class="sbt-input" maxlength="20" placeholder="Milik Saya" style="width:150px" aria-label="Nama grup model sendiri">
+            </label>
+            <ul class="mox-layers" id="glbList"></ul>
+            <p class="mox-note">File dibuka langsung di browser ini dan tidak dikirim ke server mana pun. Model hilang saat halaman dimuat ulang.</p>
           </div>
 
           <div class="sbt-sheet sbt-sheet--compact mox-card">
@@ -2106,9 +2152,9 @@
 
         <main class="mox-stage" id="stage">
           <div class="mox-frame" id="frame">
-            <canvas id="view" role="img" aria-label="Pratinjau 3D produk. Seret untuk memutar, gulir untuk memperbesar."></canvas>
+            <canvas id="view" role="img" aria-label="Pratinjau 3D produk. Seret atau klik tengah untuk memutar, gulir untuk memperbesar, klik kanan untuk menu."></canvas>
           </div>
-          <p class="mox-tip">Seret desain untuk memindah &middot; seret ruang kosong untuk memutar &middot; gulir untuk zoom</p>
+          <p class="mox-tip">Seret desain untuk memindah &middot; seret ruang kosong / klik tengah untuk memutar &middot; klik kanan untuk menu &middot; gulir untuk zoom</p>
           <div class="mox-drop" id="drop" hidden>Lepaskan gambar di sini</div>
           <p class="mox-startup" id="startup">Menyiapkan produk MOXUP&hellip;</p>
         </main>
@@ -2222,8 +2268,22 @@
     </div>
   </div>
 
+  <div id="ctxMenu" popover="auto" class="mox-ctx" aria-label="Menu cepat">
+    <div data-ctx="layer">
+      <button type="button" class="sbt-btn-quiet sbt-btn--block" data-act="tab" data-tab="desain"><i data-sbt-icon="gear" class="sbt-icon sbt-icon--sm"></i><span>Pengaturan</span></button>
+      <button type="button" class="sbt-btn-quiet sbt-btn--block" data-act="layer-lock"></button>
+      <button type="button" class="sbt-btn-quiet sbt-btn--block" data-act="layer-dup"><i data-sbt-icon="copy" class="sbt-icon sbt-icon--sm"></i><span>Gandakan</span></button>
+      <button type="button" class="sbt-btn-quiet sbt-btn--block" data-act="layer-del"><i data-sbt-icon="trash" class="sbt-icon sbt-icon--sm"></i><span>Hapus</span></button>
+    </div>
+    <div data-ctx="empty">
+      <button type="button" class="sbt-btn-quiet sbt-btn--block" data-act="ctx-image"><i data-sbt-icon="image" class="sbt-icon sbt-icon--sm"></i><span>Tambah logo/gambar</span></button>
+      <button type="button" class="sbt-btn-quiet sbt-btn--block" data-act="ctx-text"><i data-sbt-icon="text-h-two" class="sbt-icon sbt-icon--sm"></i><span>Tambah teks</span></button>
+    </div>
+  </div>
+
   <input type="file" id="file" accept="image/*" multiple hidden>
   <input type="file" id="photo" accept="image/*" hidden>
+  <input type="file" id="glb" accept=".glb,model/gltf-binary" hidden>
 
   <script>
     addEventListener('error', function () {
