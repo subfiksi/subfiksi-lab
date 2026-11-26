@@ -2528,24 +2528,43 @@ input[type="date"].sbt-input {
 
 
     /* ==========================================================================
-       JELAI STUDIO — SUBTILS CERAMIC & OBSIDIAN LAYOUT + MOBILE-FIRST DOCK
+       JELAI ALCHEMY LAB — SEMI-REALISTIC VOLUMETRIC GLASS, LIQUID & 3D CHASSIS
        ========================================================================== */
     :root {
-      --jl-jeruk: #ff6600;
-      --jl-beri: #2563eb;
-      --jl-stroberi: #f43f5e;
-      --jl-melon: #10b981;
-      --jl-yuzu: #eab308;
+      --jl-jeruk: #ff6b0a;
+      --jl-beri: #3b82f6;
+      --jl-stroberi: #fb3765;
+      --jl-melon: #10d48e;
+      --jl-yuzu: #f5c418;
+
+      --jl-surface-deep: #090e1a;
+      --jl-surface-mid: #10182b;
+      --jl-surface-panel: linear-gradient(165deg, rgba(28, 39, 64, 0.94) 0%, rgba(15, 22, 39, 0.96) 58%, rgba(10, 15, 28, 0.98) 100%);
+      --jl-well-dark: linear-gradient(180deg, #070b15 0%, #0c1322 100%);
+      --jl-rim-light: rgba(255, 255, 255, 0.16);
+      --jl-rim-dim: rgba(255, 255, 255, 0.06);
+      --jl-ink: #f1f5f9;
+      --jl-ink-soft: #cbd5e1;
+      --jl-ink-muted: #7e8ea8;
     }
 
     html {
       -webkit-tap-highlight-color: transparent;
+      background-color: var(--jl-surface-deep);
     }
 
     body.jl-root {
       user-select: none;
       -webkit-user-select: none;
       overscroll-behavior: contain;
+      color: var(--jl-ink);
+      background-color: var(--jl-surface-deep);
+      background-image:
+        radial-gradient(62% 48% at 24% 26%, rgba(255, 102, 0, 0.13) 0%, transparent 64%),
+        radial-gradient(58% 52% at 78% 22%, rgba(0, 82, 204, 0.22) 0%, transparent 66%),
+        radial-gradient(75% 40% at 50% 96%, rgba(16, 212, 142, 0.09) 0%, transparent 68%),
+        radial-gradient(ellipse at 50% 0%, #17233d 0%, #090e1a 74%);
+      min-height: 100dvh;
     }
 
     .jl-root [hidden] {
@@ -2554,9 +2573,9 @@ input[type="date"].sbt-input {
 
     .jl-shell {
       min-height: 100dvh;
-      max-width: 1060px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 16px 20px 32px;
+      padding: 16px 18px 28px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -2571,35 +2590,72 @@ input[type="date"].sbt-input {
 
     html.sfx-in-iframe .jl-shell {
       min-height: 0 !important;
-      padding: 10px 12px 18px;
+      padding: 12px 14px 18px;
+      gap: 10px;
     }
 
-    /* Top App Bar (34px Datum) */
+    /* ==================== TOP INSTRUMENT BAR (3D DARK BEVEL) ==================== */
     .jl-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: nowrap;
-      padding: 0 2px;
+      padding: 7px 10px 7px 12px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(31, 43, 70, 0.92) 0%, rgba(16, 23, 40, 0.96) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.45),
+        0 10px 24px -6px rgba(0, 0, 0, 0.55);
     }
 
     .jl-brand-wrap {
       display: inline-flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       min-width: 0;
+    }
+
+    .jl-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 8px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(0, 0, 0, 0.24) 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .jl-gem-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffd0a6 0%, #ff6600 55%, #a83800 100%);
+      box-shadow: 0 0 10px rgba(255, 102, 0, 0.85), inset 0 -1px 2px rgba(0, 0, 0, 0.4);
+      flex-shrink: 0;
+    }
+
+    .jl-brand-name {
+      font-family: var(--sbt-font-display);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
     .jl-hud-strip {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      height: 34px;
-      padding: 0 12px;
-      border-radius: var(--sbt-radius-control);
-      background-color: var(--sbt-bg-elevated);
-      box-shadow: var(--sbt-shadow-tray);
+      gap: 12px;
+      height: 32px;
+      padding: 0 14px;
+      border-radius: 10px;
+      background: var(--jl-well-dark);
+      box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.72),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.09);
     }
 
     .jl-hud-item {
@@ -2611,85 +2667,266 @@ input[type="date"].sbt-input {
     }
 
     .jl-hud-k {
-      font-weight: 600;
-      color: var(--sbt-ink-muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--jl-ink-muted);
     }
 
     .jl-hud-v {
+      font-family: var(--sbt-font-display);
+      font-size: 13.5px;
       font-weight: 800;
-      color: var(--sbt-ink-primary);
+      color: #f8fafc;
       font-variant-numeric: tabular-nums;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
     .jl-hud-v.is-accent {
-      color: var(--sbt-suboren);
+      color: #ff8c38;
+      text-shadow: 0 0 12px rgba(255, 102, 0, 0.45);
     }
 
     .jl-hud-sep {
-      width: 3px;
-      height: 3px;
-      border-radius: var(--sbt-radius-pill);
-      background-color: var(--sbt-pip-muted);
+      width: 1px;
+      height: 14px;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.14), transparent);
     }
 
-    /* Level Meter (Concave Ceramic Well + Solid Suboren Bar) */
+    .jl-header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Tactile 3D Dark Lab Hardware Buttons */
+    .jl-hw-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 11px;
+      border: none;
+      border-radius: 9px;
+      cursor: pointer;
+      font-family: var(--sbt-font-body);
+      font-size: 12px;
+      font-weight: 700;
+      color: #e2e8f0;
+      background: linear-gradient(180deg, #2d3b5c 0%, #1c253c 60%, #141b2e 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.45),
+        0 4px 10px rgba(0, 0, 0, 0.42);
+      transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .jl-hw-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .jl-hw-btn:active {
+      transform: translateY(1px);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .jl-hw-btn.is-blue {
+      color: #ffffff;
+      background: linear-gradient(180deg, #1659bf 0%, #003b96 58%, #002766 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.34),
+        inset 0 -2px 3px rgba(0, 14, 42, 0.6),
+        0 4px 12px rgba(0, 51, 128, 0.48);
+    }
+
+    .jl-hw-btn.is-amber {
+      color: #ffffff;
+      background: linear-gradient(180deg, #ff852d 0%, #ff6600 54%, #cc4c00 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        inset 0 -2px 3px rgba(96, 28, 0, 0.55),
+        0 5px 14px rgba(255, 102, 0, 0.42);
+    }
+
+    .jl-hw-btn.is-muted {
+      color: #64748b;
+      background: linear-gradient(180deg, #1b2234 0%, #121726 100%);
+    }
+
+    .jl-btn-block {
+      width: 100%;
+      height: 36px;
+      font-size: 12.5px;
+    }
+
+    .jl-icon-hw-btn {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border-radius: 10px;
+    }
+
+    /* Illuminated Plasma Level Bar */
     .jl-level-meter {
-      height: 6px;
-      background-color: var(--sbt-bg-recessed);
-      box-shadow: var(--sbt-shadow-well);
-    }
-
-    /* Main 2-Column Workspace */
-    .jl-workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1.04fr) minmax(320px, 0.96fr);
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .jl-sheet-card {
-      display: flex;
-      flex-direction: column;
+      height: 7px;
+      border-radius: 999px;
+      padding: 1.5px;
+      background: #070b15;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(255, 255, 255, 0.08);
       overflow: hidden;
     }
 
-    .jl-card-head {
-      display: flex;
+    .jl-level-meter .sbt-meter-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff6600 0%, #ff9933 65%, #ffd24d 100%);
+      box-shadow: 0 0 12px rgba(255, 102, 0, 0.72), inset 0 1px 1px rgba(255, 255, 255, 0.65);
+      transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ==================== MAIN 2-COLUMN ALCHEMY LAB STAGE ==================== */
+    .jl-workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(270px, 0.94fr);
+      gap: 18px;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 13px 18px;
-      background-color: var(--sbt-bg-strip);
     }
 
-    .jl-card-title {
-      font-family: var(--sbt-font-display);
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--sbt-ink-primary);
-    }
-
-    /* Left Column: Jar Canvas */
-    .jl-jar-body {
-      flex: 1;
-      padding: 18px 20px 20px;
+    /* Left Stage: Physical Glass Vessel + Metal Cap & Base */
+    .jl-stage-col {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
+      position: relative;
+      padding: 4px 0 6px;
     }
 
+    .jl-alchemy-rig {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 342px;
+      transition: transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .jl-alchemy-rig.is-thud {
+      transform: translateY(3.5px) scaleX(1.008) scaleY(0.992);
+    }
+
+    /* Metallic Brass/Titanium Vial Neck & Cap */
+    .jl-vessel-neck {
+      width: 72%;
+      height: 16px;
+      border-radius: 9px 9px 3px 3px;
+      background: linear-gradient(90deg, #334155 0%, #64748b 18%, #94a3b8 38%, #475569 70%, #1e293b 100%);
+      box-shadow:
+        inset 0 2px 2px rgba(255, 255, 255, 0.42),
+        inset 0 -3px 4px rgba(0, 0, 0, 0.65),
+        0 4px 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      z-index: 4;
+    }
+
+    .jl-vessel-neck-collar {
+      width: 82%;
+      height: 9px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #1e293b 0%, #475569 24%, #cbd5e1 44%, #334155 76%, #0f172a 100%);
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.45),
+        0 3px 6px rgba(0, 0, 0, 0.55);
+      margin-top: -1px;
+      z-index: 4;
+    }
+
+    .jl-neck-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #0f172a;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+      text-transform: uppercase;
+    }
+
+    /* Side Energy Conduit Frame around Glass Tube */
+    .jl-vessel-frame {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 0 14px;
+      z-index: 3;
+    }
+
+    /* Left & Right Wall Portal Energy Pillars ("Connect Left <-> Right" Cue) */
+    .jl-portal-rail {
+      position: absolute;
+      top: 12%;
+      bottom: 6%;
+      width: 10px;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #1a243d 0%, #0d1424 100%);
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.14),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.8),
+        0 4px 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 2.5px;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .jl-portal-rail.is-left { left: 4px; }
+    .jl-portal-rail.is-right { right: 4px; }
+
+    .jl-portal-pip {
+      width: 5px;
+      height: 14px;
+      border-radius: 3px;
+      background: rgba(148, 163, 184, 0.18);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.6);
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .jl-portal-rail.has-contact .jl-portal-pip {
+      background: #ffb366;
+      box-shadow: 0 0 8px rgba(255, 102, 0, 0.85);
+    }
+
+    /* Cylindrical 3D Glass Jar Container */
     .jl-jar-well {
       position: relative;
       width: 100%;
-      max-width: 292px;
+      max-width: 296px;
       aspect-ratio: 40 / 72;
-      padding: 0;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-strip);
-      box-shadow: var(--sbt-shadow-well), inset 0 0 0 1px rgba(16, 24, 40, 0.05);
+      border-radius: 16px 16px 26px 26px;
+      background:
+        radial-gradient(90% 80% at 50% 42%, rgba(28, 44, 78, 0.65) 0%, rgba(10, 16, 30, 0.94) 100%);
+      box-shadow:
+        /* Inner glass thickness refraction */
+        inset 8px 0 14px rgba(148, 197, 255, 0.14),
+        inset -8px 0 14px rgba(148, 197, 255, 0.11),
+        inset 0 10px 18px rgba(255, 255, 255, 0.08),
+        inset 0 -14px 24px rgba(0, 0, 0, 0.65),
+        inset 0 0 0 2px rgba(203, 224, 255, 0.26),
+        /* Outer ambient depth */
+        0 20px 38px -8px rgba(0, 0, 0, 0.72),
+        0 0 28px rgba(37, 99, 235, 0.14);
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -2697,32 +2934,112 @@ input[type="date"].sbt-input {
       touch-action: none;
     }
 
+    /* Specular Glass Reflections + Lab Scale Markings Overlay */
+    .jl-jar-well::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background:
+        linear-gradient(90deg,
+          rgba(255, 255, 255, 0.20) 0%,
+          rgba(255, 255, 255, 0.07) 4.5%,
+          transparent 11%,
+          transparent 85%,
+          rgba(255, 255, 255, 0.06) 93%,
+          rgba(255, 255, 255, 0.15) 100%),
+        linear-gradient(125deg,
+          rgba(255, 255, 255, 0.10) 0%,
+          transparent 34%);
+    }
+
+    .jl-jar-graduations {
+      position: absolute;
+      top: 14%;
+      bottom: 8%;
+      left: 8px;
+      width: 14px;
+      pointer-events: none;
+      z-index: 4;
+      background: repeating-linear-gradient(
+        180deg,
+        rgba(203, 224, 255, 0.34) 0px,
+        rgba(203, 224, 255, 0.34) 1.5px,
+        transparent 1.5px,
+        transparent 36px
+      );
+      opacity: 0.45;
+    }
+
+    /* Heavy Beveled Lab Pedestal Under Vessel */
+    .jl-vessel-base {
+      width: 92%;
+      height: 22px;
+      margin-top: -5px;
+      border-radius: 6px 6px 14px 14px;
+      background: linear-gradient(90deg, #161f33 0%, #334155 20%, #475569 44%, #25334f 78%, #0f172a 100%);
+      box-shadow:
+        inset 0 2px 1px rgba(255, 255, 255, 0.26),
+        inset 0 -4px 6px rgba(0, 0, 0, 0.78),
+        0 14px 24px -4px rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .jl-base-plate {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .jl-base-led {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #a7f3d0 0%, #10b981 65%, #064e3b 100%);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.85);
+    }
+
     #jelai-canvas {
       width: 100%;
       height: 100%;
       display: block;
+      position: relative;
+      z-index: 2;
     }
 
     .jl-jar-toast {
       position: absolute;
-      top: 22%;
+      top: 19%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      background: var(--sbt-obsidian-grad);
-      color: var(--sbt-ink-on-dark);
-      padding: 7px 14px;
-      border-radius: var(--sbt-radius-control);
-      box-shadow: var(--sbt-shadow-obsidian);
+      transform: translate(-50%, -50%) scale(0.86);
+      background: linear-gradient(180deg, #ff852d 0%, #e04f00 100%);
+      color: #ffffff;
+      padding: 7px 15px;
+      border-radius: 999px;
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.55),
+        0 8px 20px rgba(255, 102, 0, 0.55),
+        0 2px 6px rgba(0, 0, 0, 0.45);
       font-family: var(--sbt-font-display);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.02em;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.18s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 6;
+      transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 8;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
     .jl-jar-toast.show {
@@ -2730,12 +3047,13 @@ input[type="date"].sbt-input {
       transform: translate(-50%, -50%) scale(1);
     }
 
+    /* Game Title / Pause Glass Overlay Inside Vessel */
     .jl-jar-overlay {
       position: absolute;
       inset: 0;
-      background-color: var(--sbt-backdrop-ceramic);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: radial-gradient(circle at 50% 35%, rgba(16, 26, 48, 0.72) 0%, rgba(7, 11, 22, 0.86) 100%);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -2753,11 +3071,14 @@ input[type="date"].sbt-input {
 
     .jl-menu-card {
       width: 100%;
-      max-width: 248px;
-      background-color: var(--sbt-bg-elevated);
-      border-radius: var(--sbt-radius-outer);
-      box-shadow: var(--sbt-shadow-sheet);
-      padding: 16px 14px;
+      max-width: 222px;
+      background: linear-gradient(175deg, rgba(29, 41, 69, 0.96) 0%, rgba(14, 21, 38, 0.98) 100%);
+      border-radius: 18px;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.6),
+        0 20px 44px rgba(0, 0, 0, 0.72);
+      padding: 15px 14px 14px;
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -2768,13 +3089,36 @@ input[type="date"].sbt-input {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
+    }
+
+    .jl-menu-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2.5px 9px;
+      border-radius: 999px;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #ffd8b8;
+      background: rgba(255, 102, 0, 0.2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    }
+
+    .jl-root .jl-menu-title {
+      font-family: var(--sbt-font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #ffffff;
+      text-shadow: 0 2px 12px rgba(255, 102, 0, 0.42);
     }
 
     .jl-menu-sub {
-      font-size: 11.5px;
-      line-height: 1.4;
-      color: var(--sbt-ink-secondary);
+      font-size: 11px;
+      line-height: 1.35;
+      color: var(--jl-ink-soft);
       font-variant-numeric: tabular-nums;
     }
 
@@ -2782,62 +3126,127 @@ input[type="date"].sbt-input {
       width: 100%;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      padding: 4px;
+      padding: 3.5px;
+      border-radius: 10px;
+      background: #080d19;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+      gap: 3px;
     }
 
     .jl-speed-tray .sbt-seg-btn {
-      padding: 5px 4px;
+      padding: 5.5px 4px;
       font-size: 11px;
+      font-weight: 700;
+      border-radius: 7px;
+      color: var(--jl-ink-muted);
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .jl-speed-tray .sbt-seg-btn.is-active {
+      color: #ffffff;
+      background: linear-gradient(180deg, #274a9e 0%, #003380 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 6px rgba(0, 0, 0, 0.5);
     }
 
     .jl-menu-actions {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
 
-    .jl-menu-actions > button {
-      height: 36px;
-      font-size: 12px;
-      padding: 0 12px;
+    .jl-menu-icons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 2px;
     }
 
-    /* Right Side Panel */
+    .jl-menu-icons .jl-icon-hw-btn {
+      flex: 1;
+      height: 34px;
+      width: auto;
+    }
+
+    /* ==================== RIGHT SIDE INSTRUMENT CONSOLE ==================== */
     .jl-side-panel {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
     }
 
-    .jl-side-body {
-      padding: 18px 20px 20px;
+    .jl-console-module {
+      border-radius: 16px;
+      background: var(--jl-surface-panel);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.5),
+        0 14px 30px -8px rgba(0, 0, 0, 0.62);
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
+    }
+
+    .jl-mod-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .jl-mod-title {
+      font-family: var(--sbt-font-display);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--jl-ink-soft);
+    }
+
+    .jl-mod-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #7dd3fc;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(14, 165, 233, 0.14);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
     }
 
     .jl-next-row {
       display: grid;
-      grid-template-columns: 112px minmax(0, 1fr);
+      grid-template-columns: 106px minmax(0, 1fr);
       gap: 12px;
       align-items: stretch;
     }
 
+    /* Glowing Specimen Lens for Next Jelly */
     .jl-next-well {
-      padding: 10px;
+      position: relative;
+      border-radius: 14px;
+      padding: 10px 8px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(30, 58, 118, 0.42) 0%, rgba(7, 11, 22, 0.96) 100%);
+      box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.88),
+        inset 0 0 0 1.5px rgba(148, 197, 255, 0.2),
+        inset 4px 4px 10px rgba(255, 255, 255, 0.06);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
+      overflow: hidden;
     }
 
     .jl-eyebrow {
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: var(--sbt-ink-muted);
+      color: var(--jl-ink-muted);
     }
 
     #next-canvas {
@@ -2853,9 +3262,12 @@ input[type="date"].sbt-input {
     }
 
     .jl-stat-well {
-      padding: 10px 12px;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-slot);
+      padding: 9px 11px;
+      border-radius: 11px;
+      background: var(--jl-well-dark);
+      box-shadow:
+        inset 0 2px 5px rgba(0, 0, 0, 0.72),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -2863,154 +3275,249 @@ input[type="date"].sbt-input {
     }
 
     .jl-stat-k {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
-      color: var(--sbt-ink-muted);
+      color: var(--jl-ink-muted);
     }
 
     .jl-stat-v {
       font-family: var(--sbt-font-display);
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       letter-spacing: -0.02em;
-      color: var(--sbt-ink-primary);
+      color: #f8fafc;
       font-variant-numeric: tabular-nums;
       line-height: 1.15;
     }
 
-    .jl-stat-v.is-suboren { color: var(--sbt-suboren); }
-    .jl-stat-v.is-fiksiblu { color: var(--sbt-fiksiblu); }
+    .jl-stat-v.is-suboren { color: #ff8c38; text-shadow: 0 0 10px rgba(255, 102, 0, 0.35); }
+    .jl-stat-v.is-fiksiblu { color: #60a5fa; text-shadow: 0 0 10px rgba(59, 130, 246, 0.35); }
 
-    /* 5-Flavor Matrix Strip */
+    /* 5 Vector Fruit Alchemy Vials (Icon-Only + Level Lock Badge) */
     .jl-flavor-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 6px;
-      padding: 5px;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-recessed);
-      box-shadow: var(--sbt-shadow-well);
+      gap: 7px;
+      padding: 7px;
+      border-radius: 13px;
+      background: #070b15;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.85), inset 0 -1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .jl-flavor-chip {
-      height: 30px;
-      display: inline-flex;
+      position: relative;
+      height: 46px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      border-radius: var(--sbt-radius-control);
-      background-color: var(--sbt-bg-elevated);
-      box-shadow: var(--sbt-shadow-ceramic);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--sbt-ink-primary);
-      padding: 0 4px;
-      transition: opacity 0.2s ease;
+      border-radius: 10px;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.07) 0%, transparent 72%),
+        linear-gradient(180deg, rgba(35, 48, 78, 0.94) 0%, rgba(16, 23, 40, 0.98) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.55),
+        0 4px 8px rgba(0, 0, 0, 0.48);
+      transition: opacity 0.22s ease, transform 0.2s ease, filter 0.22s ease;
+    }
+
+    .jl-flavor-chip:hover {
+      transform: translateY(-1px);
+    }
+
+    .jl-fruit-svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+    }
+
+    .jl-lock-pip {
+      display: none;
+      position: absolute;
+      right: 3px;
+      bottom: 3px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(15, 23, 42, 0.9);
+      color: #fde047;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      line-height: 1.2;
+      box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.35);
     }
 
     .jl-flavor-chip.is-locked {
-      opacity: 0.42;
-      background-color: var(--sbt-bg-slot);
-      box-shadow: none;
+      opacity: 0.45;
+      filter: saturate(0.4);
+      background: rgba(13, 19, 34, 0.78);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7);
     }
 
-    .jl-swatch {
-      width: 9px;
-      height: 9px;
-      border-radius: var(--sbt-radius-pip);
-      flex-shrink: 0;
+    .jl-flavor-chip.is-locked .jl-lock-pip {
+      display: inline-block;
     }
 
-    .jl-swatch--1 { background-color: var(--jl-jeruk); }
-    .jl-swatch--2 { background-color: var(--jl-beri); }
-    .jl-swatch--3 { background-color: var(--jl-stroberi); }
-    .jl-swatch--4 { background-color: var(--jl-melon); }
-    .jl-swatch--5 { background-color: var(--jl-yuzu); }
-
-    /* Tactile 5-Key Directional Control Pad */
-    .jl-pad-tray {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 6px;
-      padding: 6px;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-recessed);
-      box-shadow: var(--sbt-shadow-well);
-      width: 100%;
-    }
-
-    .jl-pad-btn {
-      height: 52px;
-      width: 100%;
-      padding: 0 4px;
-      flex-direction: column;
-      gap: 4px;
-      border-radius: var(--sbt-radius-control);
-    }
-
-    .jl-pad-lbl {
-      font-size: 10.5px;
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: 0.01em;
-    }
-
-    /* Compact Keyboard Hint Strip */
+    /* Compact Keyboard Legend Strip */
     .jl-kbd-strip {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px 12px;
-      padding: 10px 12px;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-slot);
-      font-size: 11.5px;
-      font-weight: 500;
-      color: var(--sbt-ink-secondary);
+      flex-wrap: nowrap;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #080d19;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75);
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--jl-ink-muted);
     }
 
     .jl-kbd-pair {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       white-space: nowrap;
     }
 
     .jl-kbd {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
-      color: var(--sbt-ink-primary);
-      background-color: var(--sbt-bg-elevated);
-      box-shadow: var(--sbt-shadow-ceramic);
-      border-radius: var(--sbt-radius-check);
-      min-width: 22px;
-      height: 22px;
-      padding: 0 6px;
+      color: #f8fafc;
+      background: linear-gradient(180deg, #2b3856 0%, #172033 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 4px rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+      min-width: 20px;
+      height: 19px;
+      padding: 0 5px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       line-height: 1;
     }
 
-    /* Mobile HUD + Touch Controls (Hidden on Desktop) */
+    /* Two-Thumb Ergonomic Mobile Arcade Pad (<= 680px) */
+    .jl-pad-dock {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 2px 2px 0;
+    }
+
+    .jl-dpad-cluster {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      padding: 6px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #101728 0%, #090d18 100%);
+      box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.85),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+      flex: 1.25;
+    }
+
+    .jl-action-cluster {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 9px;
+      padding: 6px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #101728 0%, #090d18 100%);
+      box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.85),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .jl-pad-btn {
+      height: 52px;
+      width: 100%;
+      padding: 0;
+      border-radius: 11px;
+    }
+
+    .jl-act-btn {
+      width: 54px;
+      height: 52px;
+      padding: 0;
+      border-radius: 14px;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .jl-act-btn.is-primary-rot {
+      width: 64px;
+      height: 56px;
+      border-radius: 16px;
+    }
+
+    .jl-pad-lbl {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      opacity: 0.9;
+    }
+
+    /* Mobile HUD + Touch Controls (Hidden on Desktop > 680px) */
     .jl-mobile-hud,
     .jl-touch-dock {
       display: none;
     }
 
-    /* Modals Compat (.is-open & .active) */
+    /* ==================== ALCHEMY DARK LAB MODALS ==================== */
+    .jl-root .sbt-modal-backdrop {
+      background-color: rgba(5, 9, 18, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
     .sbt-modal-backdrop.active {
       display: flex;
     }
 
-    .jl-modal-card {
+    .jl-root .jl-modal-card {
       max-height: 90dvh;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 14px;
+      background: var(--jl-surface-panel);
+      color: var(--jl-ink);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 28px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .jl-root .jl-modal-card .sbt-heading {
+      color: #ffffff;
+    }
+
+    .jl-root .jl-modal-card .sbt-hint,
+    .jl-root .jl-modal-card .sbt-label {
+      color: var(--jl-ink-soft);
+    }
+
+    .jl-root .jl-modal-card .sbt-input {
+      background-color: #080d19 !important;
+      color: #ffffff;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    }
+
+    .jl-root .jl-modal-card .sbt-btn-ceramic,
+    .jl-root .jl-modal-card .sbt-icon-key {
+      color: #f1f5f9;
+      background: linear-gradient(180deg, #2d3b5c 0%, #182138 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.5),
+        0 4px 10px rgba(0, 0, 0, 0.45);
     }
 
     .jl-guide-list {
@@ -3024,17 +3531,18 @@ input[type="date"].sbt-input {
       align-items: flex-start;
       gap: 12px;
       padding: 12px 14px;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-slot);
+      border-radius: 12px;
+      background: var(--jl-well-dark);
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.65), inset 0 -1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .jl-step-num {
       width: 28px;
       height: 28px;
-      border-radius: var(--sbt-radius-control);
-      background: var(--sbt-obsidian-grad);
-      color: var(--sbt-ink-on-dark);
-      box-shadow: var(--sbt-shadow-obsidian);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #ff852d 0%, #cc4c00 100%);
+      color: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 10px rgba(255, 102, 0, 0.4);
       font-size: 11px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
@@ -3047,20 +3555,21 @@ input[type="date"].sbt-input {
     .jl-guide-row h4 {
       font-size: 13px;
       font-weight: 700;
-      color: var(--sbt-ink-primary);
+      color: #ffffff;
       margin-bottom: 2px;
     }
 
     .jl-guide-row p {
       font-size: 12px;
       line-height: 1.5;
-      color: var(--sbt-ink-secondary);
+      color: var(--jl-ink-soft);
     }
 
     .jl-score-hero {
       padding: 16px;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-slot);
+      border-radius: 14px;
+      background: radial-gradient(circle at 50% 35%, rgba(255, 102, 0, 0.16), rgba(7, 11, 22, 0.96));
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(255, 102, 0, 0.26);
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -3072,7 +3581,8 @@ input[type="date"].sbt-input {
       font-size: 36px;
       font-weight: 800;
       letter-spacing: -0.03em;
-      color: var(--sbt-suboren);
+      color: #ff8c38;
+      text-shadow: 0 0 18px rgba(255, 102, 0, 0.45);
       line-height: 1.05;
       font-variant-numeric: tabular-nums;
     }
@@ -3088,6 +3598,8 @@ input[type="date"].sbt-input {
       display: flex;
       flex-direction: column;
       gap: 8px;
+      background: var(--jl-well-dark);
+      border-radius: 12px;
     }
 
     .jl-save-row {
@@ -3109,21 +3621,22 @@ input[type="date"].sbt-input {
       justify-content: space-between;
       gap: 10px;
       padding: 10px 12px;
-      border-radius: var(--sbt-radius-inner);
-      background-color: var(--sbt-bg-slot);
+      border-radius: 12px;
+      background: var(--jl-well-dark);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.65);
     }
 
     .jl-lb-item.top-1 {
-      background-color: var(--sbt-bg-elevated);
-      box-shadow: var(--sbt-shadow-tray);
+      background: linear-gradient(135deg, rgba(255, 102, 0, 0.18), rgba(16, 23, 40, 0.95));
+      box-shadow: inset 0 0 0 1px rgba(255, 102, 0, 0.35);
     }
 
     .jl-lb-rank {
       width: 24px;
       height: 24px;
-      border-radius: var(--sbt-radius-check);
-      background-color: var(--sbt-bg-recessed);
-      color: var(--sbt-ink-primary);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
       font-size: 11px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
@@ -3134,29 +3647,29 @@ input[type="date"].sbt-input {
     }
 
     .jl-lb-item.top-1 .jl-lb-rank {
-      background: var(--sbt-obsidian-grad);
-      color: var(--sbt-suboren);
+      background: linear-gradient(180deg, #ff852d 0%, #cc4c00 100%);
+      color: #ffffff;
     }
 
     .jl-lb-item.top-2 .jl-lb-rank {
-      background: var(--sbt-fiksiblu-grad);
-      color: var(--sbt-ink-on-dark);
+      background: linear-gradient(180deg, #1659bf 0%, #003380 100%);
+      color: #ffffff;
     }
 
     .jl-lb-item.top-3 .jl-lb-rank {
-      background-color: var(--sbt-ink-primary);
-      color: var(--sbt-ink-on-dark);
+      background: #334155;
+      color: #ffffff;
     }
 
     .jl-lb-name {
       font-size: 13px;
       font-weight: 700;
-      color: var(--sbt-ink-primary);
+      color: #ffffff;
     }
 
     .jl-lb-meta {
       font-size: 11px;
-      color: var(--sbt-ink-muted);
+      color: var(--jl-ink-muted);
       display: block;
     }
 
@@ -3164,7 +3677,7 @@ input[type="date"].sbt-input {
       font-family: var(--sbt-font-display);
       font-size: 14px;
       font-weight: 800;
-      color: var(--sbt-suboren);
+      color: #ff8c38;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
@@ -3357,14 +3870,40 @@ input[type="date"].sbt-input {
       color: var(--sbt-ink-muted);
     }
 
+    @media (max-width: 860px) {
+      .jl-workspace {
+        grid-template-columns: minmax(0, 1fr) minmax(256px, 0.96fr);
+        gap: 14px;
+      }
+
+      .jl-console-module {
+        padding: 12px 13px;
+      }
+
+      .jl-flavor-grid {
+        gap: 5px;
+        padding: 5px;
+      }
+
+      .jl-flavor-chip {
+        height: 40px;
+      }
+
+      .jl-fruit-svg {
+        width: 21px;
+        height: 21px;
+      }
+    }
+
     /* ==================== MOBILE RESPONSIVE (ONE-VIEWPORT HP ERGONOMICS) ==================== */
-    @media (max-width: 820px) {
+    @media (max-width: 680px) {
       .jl-shell {
         padding: 10px 10px 22px;
         gap: 8px;
       }
 
       .jl-header {
+        padding: 6px 8px;
         gap: 8px;
       }
 
@@ -3378,9 +3917,9 @@ input[type="date"].sbt-input {
         justify-content: space-between;
         gap: 8px;
         padding: 6px 10px;
-        border-radius: var(--sbt-radius-inner);
-        background-color: var(--sbt-bg-elevated);
-        box-shadow: var(--sbt-shadow-tray);
+        border-radius: 12px;
+        background: var(--jl-surface-panel);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 8px 18px rgba(0, 0, 0, 0.45);
       }
 
       .jl-mobile-metrics {
@@ -3394,8 +3933,9 @@ input[type="date"].sbt-input {
         align-items: center;
         gap: 6px;
         padding: 4px 8px;
-        border-radius: var(--sbt-radius-control);
-        background-color: var(--sbt-bg-slot);
+        border-radius: 9px;
+        background: var(--jl-well-dark);
+        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.75);
       }
 
       #next-canvas-mobile {
@@ -3409,21 +3949,12 @@ input[type="date"].sbt-input {
         gap: 10px;
       }
 
-      .jl-card-head.is-jar-head {
-        display: none;
+      .jl-alchemy-rig {
+        max-width: clamp(220px, calc((100dvh - 255px) * 40 / 72 + 28px), 278px);
       }
 
-      .jl-jar-body {
-        padding: 10px;
-        gap: 10px;
-      }
-
-      .jl-jar-well {
-        max-width: clamp(208px, calc((100dvh - 235px) * 40 / 72), 248px);
-      }
-
-      html.sfx-in-iframe .jl-jar-well {
-        max-width: 242px;
+      html.sfx-in-iframe .jl-alchemy-rig {
+        max-width: 266px;
       }
 
       .jl-touch-dock {
@@ -3441,14 +3972,12 @@ input[type="date"].sbt-input {
         display: none;
       }
 
-      .jl-root .sbt-header-actions .sbt-btn-ceramic,
-      .jl-root .sbt-header-actions .sbt-btn-obsidian,
-      .jl-root .sbt-header-actions .sbt-btn-fiksiblu {
-        padding: 0 10px;
+      .jl-hw-btn {
+        padding: 0 9px;
       }
 
       .jl-pad-btn {
-        height: 48px;
+        height: 46px;
       }
     }
 
@@ -3458,12 +3987,12 @@ input[type="date"].sbt-input {
 
   <div class="jl-shell sfx-app-wrapper">
 
-    <!-- GLOBAL TOP BAR (SUBTILS 34px DATUM) -->
-    <header class="sbt-header jl-header">
+    <!-- TOP GAME INSTRUMENT BAR -->
+    <header class="jl-header">
       <div class="jl-brand-wrap">
-        <div class="sbt-brand">
-          <span class="sbt-led is-suboren" aria-hidden="true"></span>
-          <span class="sbt-brand-name">JELAI</span>
+        <div class="jl-brand">
+          <span class="jl-gem-dot" aria-hidden="true"></span>
+          <span class="jl-brand-name">JELAI</span>
         </div>
 
         <div class="jl-hud-strip" aria-label="Status Permainan">
@@ -3475,23 +4004,26 @@ input[type="date"].sbt-input {
         </div>
       </div>
 
-      <div class="sbt-header-actions">
-        <button type="button" class="sbt-btn-ceramic" id="btn-open-menu" title="Buka Menu Permainan (Esc)">
-          <i data-sbt-icon="list" class="sbt-icon sbt-icon--sm"></i>
-          <span>Menu</span>
+      <div class="jl-header-actions">
+        <button type="button" class="jl-hw-btn jl-icon-hw-btn" id="btn-sound" title="Suara Efek Jeli (M)" aria-label="Suara">
+          <i data-sbt-icon="speaker-high" class="sbt-icon sbt-icon--sm" id="sound-btn-icon"></i>
         </button>
-        <button type="button" class="sbt-btn-ceramic" id="btn-open-lb" title="Papan Peringkat Lokal" aria-label="Papan Peringkat">
+        <button type="button" class="jl-hw-btn jl-icon-hw-btn" id="btn-open-guide-top" title="Cara Bermain" aria-label="Cara Bermain">
+          <i data-sbt-icon="info" class="sbt-icon sbt-icon--sm"></i>
+        </button>
+        <button type="button" class="jl-hw-btn jl-icon-hw-btn" id="btn-open-lb" title="Papan Peringkat Lokal" aria-label="Papan Peringkat">
           <i data-sbt-icon="trophy" class="sbt-icon sbt-icon--sm"></i>
-          <span class="jl-hide-xs">Peringkat</span>
         </button>
-        <button type="button" class="sbt-btn-ceramic" id="btn-pause" title="Jeda atau Lanjutkan (P)">
-          <i data-sbt-icon="pause" class="sbt-icon sbt-icon--sm" id="pause-btn-icon"></i>
-          <span id="pause-btn-label">Jeda</span>
+        <button type="button" class="jl-hw-btn jl-icon-hw-btn is-blue" id="btn-pause" title="Jeda atau Lanjutkan (P)" aria-label="Jeda atau Lanjutkan">
+          <i data-sbt-icon="pause" class="sbt-icon sbt-icon--sm sbt-icon-glow-white" id="pause-btn-icon"></i>
+        </button>
+        <button type="button" class="jl-hw-btn jl-icon-hw-btn" id="btn-open-menu" title="Menu Permainan (Esc)" aria-label="Menu Permainan">
+          <i data-sbt-icon="list" class="sbt-icon sbt-icon--sm"></i>
         </button>
       </div>
     </header>
 
-    <!-- MOBILE COMPACT HUD (< 820px) -->
+    <!-- MOBILE COMPACT HUD (<= 680px) -->
     <div class="jl-mobile-hud" aria-label="Ringkasan Ponsel">
       <div class="jl-mobile-metrics">
         <span class="jl-hud-item"><span class="jl-hud-k">Lv</span><span class="jl-hud-v" id="mob-level">1</span></span>
@@ -3505,191 +4037,210 @@ input[type="date"].sbt-input {
     </div>
 
     <!-- LEVEL PROGRESS METER -->
-    <div class="sbt-meter jl-level-meter" title="Progres menuju level berikutnya">
+    <div class="jl-level-meter" title="Progres menuju level berikutnya">
       <div class="sbt-meter-fill" id="level-progress-bar" style="width: 0%;"></div>
     </div>
 
     <!-- INLINE BANNER (PENGGANTI ALERT) -->
     <div class="sbt-banner" id="jelaiBanner" hidden><span data-sbt-banner-text></span></div>
 
-    <!-- WORKSPACE 2-KOLOM -->
+    <!-- WORKSPACE: TABUNG ALKIMIA + KONSOL SAMPING -->
     <main class="jl-workspace">
 
-      <!-- KOLOM KIRI: WADAH JELI + KONTROL SENTUH MOBILE -->
-      <section class="sbt-sheet jl-sheet-card">
-        <div class="jl-card-head is-jar-head">
-          <span class="jl-card-title">Wadah Jeli</span>
-          <span class="sbt-status sbt-status--muted" id="jar-status-tag">Kepingan J · E · L · A · I</span>
-        </div>
+      <!-- KOLOM KIRI: TABUNG ALKIMIA KACA 3D + PAD SENTUH MOBILE -->
+      <section class="jl-stage-col" aria-label="Wadah Alkimia Jeli">
+        <div class="jl-alchemy-rig" id="alchemy-rig">
+          <div class="jl-vessel-neck" aria-hidden="true">
+            <span class="jl-neck-badge">J · E · L · A · I</span>
+          </div>
+          <div class="jl-vessel-neck-collar" aria-hidden="true"></div>
 
-        <div class="jl-jar-body">
-          <div class="jl-jar-well" id="jar-touch-zone">
-            <canvas id="jelai-canvas" width="320" height="576"></canvas>
-            <div class="jl-jar-toast" id="jar-toast">PECAH! +250</div>
+          <div class="jl-vessel-frame">
+            <!-- Indikator Kontak Dinding Kiri & Kanan -->
+            <div class="jl-portal-rail is-left" id="portal-left" aria-hidden="true">
+              <span class="jl-portal-pip"></span><span class="jl-portal-pip"></span><span class="jl-portal-pip"></span><span class="jl-portal-pip"></span>
+            </div>
 
-            <div class="jl-jar-overlay is-open" id="menu-overlay" role="region" aria-label="Menu Permainan">
-              <div class="jl-menu-card">
-                <div class="jl-menu-head">
-                  <span class="sbt-status sbt-status--terbit" id="menu-badge">Menu Utama</span>
-                  <h2 class="sbt-heading" id="menu-title" style="font-size: 17px;">Alkimia JELAI</h2>
-                  <p class="jl-menu-sub" id="menu-summary">Susun huruf kenyal hingga menyambung kiri ke kanan.</p>
-                </div>
+            <div class="jl-jar-well" id="jar-touch-zone">
+              <div class="jl-jar-graduations" aria-hidden="true"></div>
+              <canvas id="jelai-canvas" width="320" height="576"></canvas>
+              <div class="jl-jar-toast" id="jar-toast">PECAH! +250</div>
 
-                <div class="sbt-segmented sbt-segmented--recessed jl-speed-tray" role="group" aria-label="Kecepatan Jatuh">
-                  <button type="button" class="sbt-seg-btn" data-speed="chill">Santai</button>
-                  <button type="button" class="sbt-seg-btn is-active" data-speed="normal">Normal</button>
-                  <button type="button" class="sbt-seg-btn" data-speed="fast">Cepat</button>
-                </div>
+              <div class="jl-jar-overlay is-open" id="menu-overlay" role="region" aria-label="Menu Permainan">
+                <div class="jl-menu-card">
+                  <div class="jl-menu-head">
+                    <span class="jl-menu-pill" id="menu-badge">Alkimia Jeli</span>
+                    <h1 class="jl-menu-title" id="menu-title">JELAI</h1>
+                    <p class="jl-menu-sub" id="menu-summary">Sambungkan warna kiri ke kanan.</p>
+                  </div>
 
-                <div class="jl-menu-actions">
-                  <button type="button" class="sbt-btn-obsidian sbt-btn--block" id="btn-menu-continue" hidden>
-                    <i data-sbt-icon="play" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
-                    <span>Lanjutkan</span>
-                  </button>
-                  <button type="button" class="sbt-btn-obsidian sbt-btn--block" id="btn-menu-new">
-                    <i data-sbt-icon="arrows-clockwise" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
-                    <span>Permainan Baru</span>
-                  </button>
-                  <button type="button" class="sbt-btn-ceramic sbt-btn--block" id="btn-menu-guide">
-                    <i data-sbt-icon="info" class="sbt-icon sbt-icon--sm"></i>
-                    <span>Cara Bermain</span>
-                  </button>
-                  <button type="button" class="sbt-btn-ceramic sbt-btn--block" id="btn-menu-lb">
-                    <i data-sbt-icon="trophy" class="sbt-icon sbt-icon--sm"></i>
-                    <span>Papan Peringkat</span>
-                  </button>
-                  <button type="button" class="sbt-btn-ceramic sbt-btn--block" id="btn-menu-cert" hidden>
-                    <i data-sbt-icon="article" class="sbt-icon sbt-icon--sm"></i>
-                    <span>Klaim Sertifikat</span>
-                  </button>
+                  <div class="jl-speed-tray" role="group" aria-label="Kecepatan Jatuh">
+                    <button type="button" class="sbt-seg-btn" data-speed="chill">Santai</button>
+                    <button type="button" class="sbt-seg-btn is-active" data-speed="normal">Normal</button>
+                    <button type="button" class="sbt-seg-btn" data-speed="fast">Cepat</button>
+                  </div>
+
+                  <div class="jl-menu-actions">
+                    <button type="button" class="jl-hw-btn is-amber jl-btn-block" id="btn-menu-continue" hidden>
+                      <i data-sbt-icon="play" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
+                      <span>Lanjutkan</span>
+                    </button>
+                    <button type="button" class="jl-hw-btn is-amber jl-btn-block" id="btn-menu-new">
+                      <i data-sbt-icon="play" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
+                      <span>Mulai</span>
+                    </button>
+                    <div class="jl-menu-icons">
+                      <button type="button" class="jl-hw-btn jl-icon-hw-btn" id="btn-menu-guide" title="Cara Bermain" aria-label="Cara Bermain">
+                        <i data-sbt-icon="info" class="sbt-icon sbt-icon--sm"></i>
+                      </button>
+                      <button type="button" class="jl-hw-btn jl-icon-hw-btn" id="btn-menu-lb" title="Papan Peringkat" aria-label="Papan Peringkat">
+                        <i data-sbt-icon="trophy" class="sbt-icon sbt-icon--sm"></i>
+                      </button>
+                      <button type="button" class="jl-hw-btn jl-icon-hw-btn is-blue" id="btn-menu-cert" hidden title="Selesaikan &amp; Klaim Sertifikat" aria-label="Klaim Sertifikat">
+                        <i data-sbt-icon="article" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div class="jl-portal-rail is-right" id="portal-right" aria-hidden="true">
+              <span class="jl-portal-pip"></span><span class="jl-portal-pip"></span><span class="jl-portal-pip"></span><span class="jl-portal-pip"></span>
+            </div>
           </div>
 
-          <!-- MOBILE ERGONOMIC TOUCH PAD (Tampil <= 820px) -->
-          <div class="jl-touch-dock" aria-label="Kontrol Sentuh Ponsel">
-            <div class="jl-pad-tray">
-              <button type="button" class="sbt-btn-ceramic jl-pad-btn" id="ctrl-left" aria-label="Geser Kiri">
-                <i data-sbt-icon="caret-left" class="sbt-icon sbt-icon--sm"></i>
-                <span class="jl-pad-lbl">Kiri</span>
+          <div class="jl-vessel-base" aria-hidden="true">
+            <span class="jl-base-plate">MK-02 ALCHEMY VESSEL</span>
+            <span class="jl-base-led"></span>
+          </div>
+        </div>
+
+        <!-- MOBILE ERGONOMIC TWO-THUMB ARCADE PAD (Tampil <= 680px) -->
+        <div class="jl-touch-dock" aria-label="Kontrol Sentuh Ponsel">
+          <div class="jl-pad-dock">
+            <div class="jl-dpad-cluster" aria-label="Arah Gerak">
+              <button type="button" class="jl-hw-btn jl-pad-btn" id="ctrl-left" aria-label="Geser Kiri">
+                <i data-sbt-icon="caret-left" class="sbt-icon sbt-icon--md"></i>
               </button>
-              <button type="button" class="sbt-btn-fiksiblu jl-pad-btn" id="ctrl-rotate" aria-label="Putar Jeli">
-                <i data-sbt-icon="arrows-clockwise" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
-                <span class="jl-pad-lbl">Putar</span>
+              <button type="button" class="jl-hw-btn jl-pad-btn" id="ctrl-down" aria-label="Turun Cepat">
+                <i data-sbt-icon="caret-down" class="sbt-icon sbt-icon--md"></i>
               </button>
-              <button type="button" class="sbt-btn-ceramic jl-pad-btn" id="ctrl-down" aria-label="Turun Cepat">
-                <i data-sbt-icon="caret-down" class="sbt-icon sbt-icon--sm"></i>
-                <span class="jl-pad-lbl">Turun</span>
+              <button type="button" class="jl-hw-btn jl-pad-btn" id="ctrl-right" aria-label="Geser Kanan">
+                <i data-sbt-icon="caret-right" class="sbt-icon sbt-icon--md"></i>
               </button>
-              <button type="button" class="sbt-btn-obsidian jl-pad-btn" id="ctrl-drop" aria-label="Jatuhkan Langsung">
-                <i data-sbt-icon="arrow-line-down" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
+            </div>
+
+            <div class="jl-action-cluster" aria-label="Tombol Aksi">
+              <button type="button" class="jl-hw-btn is-amber jl-act-btn" id="ctrl-drop" aria-label="Jatuhkan Langsung">
+                <i data-sbt-icon="arrow-line-down" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
                 <span class="jl-pad-lbl">Jatuh</span>
               </button>
-              <button type="button" class="sbt-btn-ceramic jl-pad-btn" id="ctrl-right" aria-label="Geser Kanan">
-                <i data-sbt-icon="caret-right" class="sbt-icon sbt-icon--sm"></i>
-                <span class="jl-pad-lbl">Kanan</span>
+              <button type="button" class="jl-hw-btn is-blue jl-act-btn is-primary-rot" id="ctrl-rotate" aria-label="Putar Jeli">
+                <i data-sbt-icon="arrows-clockwise" class="sbt-icon sbt-icon--md sbt-icon-glow-white"></i>
+                <span class="jl-pad-lbl">Putar</span>
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- KOLOM KANAN: NEXT, STATISTIK & KENDALI DESKTOP -->
+      <!-- KOLOM KANAN: KONSOL INSTRUMEN ALKIMIA RINGKAS -->
       <aside class="jl-side-panel">
-
-        <!-- KARTU 1: HURUF BERIKUTNYA & STATISTIK -->
-        <section class="sbt-sheet jl-sheet-card">
-          <div class="jl-card-head">
-            <span class="jl-card-title">Huruf Berikutnya &amp; Statistik</span>
-            <span class="sbt-status sbt-status--terbit" id="flavor-count-tag">4 Varian Aktif</span>
+        <section class="jl-console-module">
+          <div class="jl-mod-head">
+            <span class="jl-mod-title">Instrumen</span>
+            <span class="jl-mod-tag" id="flavor-count-tag">4 Rasa Aktif</span>
           </div>
 
-          <div class="jl-side-body">
-            <div class="jl-next-row">
-              <div class="sbt-well jl-next-well">
-                <span class="jl-eyebrow" id="desktop-next-letter">HURUF "J"</span>
-                <canvas id="next-canvas" width="96" height="96"></canvas>
-              </div>
+          <div class="jl-next-row">
+            <div class="jl-next-well">
+              <span class="jl-eyebrow" id="desktop-next-letter">HURUF "J"</span>
+              <canvas id="next-canvas" width="96" height="96"></canvas>
+            </div>
 
-              <div class="jl-stats-grid">
-                <div class="jl-stat-well">
-                  <span class="jl-stat-k">Total Pecah</span>
-                  <span class="jl-stat-v is-suboren" id="stat-pops">0</span>
-                </div>
-                <div class="jl-stat-well">
-                  <span class="jl-stat-k">Combo Maks</span>
-                  <span class="jl-stat-v is-fiksiblu" id="stat-max-combo">1x</span>
-                </div>
-                <div class="jl-stat-well">
-                  <span class="jl-stat-k">Rekor Terbaik</span>
-                  <span class="jl-stat-v" id="stat-high-score">0</span>
-                </div>
-                <div class="jl-stat-well">
-                  <span class="jl-stat-k">Kepadatan</span>
-                  <span class="jl-stat-v" id="stat-density">0%</span>
-                </div>
+            <div class="jl-stats-grid">
+              <div class="jl-stat-well">
+                <span class="jl-stat-k">Pecah</span>
+                <span class="jl-stat-v is-suboren" id="stat-pops">0</span>
+              </div>
+              <div class="jl-stat-well">
+                <span class="jl-stat-k">Combo Maks</span>
+                <span class="jl-stat-v is-fiksiblu" id="stat-max-combo">1x</span>
+              </div>
+              <div class="jl-stat-well">
+                <span class="jl-stat-k">Rekor</span>
+                <span class="jl-stat-v" id="stat-high-score">0</span>
+              </div>
+              <div class="jl-stat-well">
+                <span class="jl-stat-k">Isi Wadah</span>
+                <span class="jl-stat-v" id="stat-density">0%</span>
               </div>
             </div>
+          </div>
 
-            <div class="jl-flavor-grid" aria-label="Spektrum Varian Rasa Jeli">
-              <span class="jl-flavor-chip"><span class="jl-swatch jl-swatch--1"></span>Jeruk</span>
-              <span class="jl-flavor-chip"><span class="jl-swatch jl-swatch--2"></span>Beri</span>
-              <span class="jl-flavor-chip"><span class="jl-swatch jl-swatch--3"></span>Stroberi</span>
-              <span class="jl-flavor-chip"><span class="jl-swatch jl-swatch--4"></span>Melon</span>
-              <span class="jl-flavor-chip is-locked" id="chip-yuzu" title="Terbuka mulai Level 4"><span class="jl-swatch jl-swatch--5"></span>Yuzu</span>
-            </div>
+          <!-- 5 Vektor Buah Rasa Jeli -->
+          <div class="jl-flavor-grid" aria-label="Spektrum Varian Buah Jeli">
+            <!-- 1. Jeruk Mandarin -->
+            <span class="jl-flavor-chip" title="Jeruk Mandarin">
+              <svg class="jl-fruit-svg" viewBox="0 0 32 32" aria-hidden="true">
+                <defs><radialGradient id="fg-orange" cx="35%" cy="32%" r="68%"><stop offset="0%" stop-color="#ffd089"/><stop offset="55%" stop-color="#ff6b0a"/><stop offset="100%" stop-color="#b53d00"/></radialGradient></defs>
+                <path d="M16 7 C17 3 22 3 24 6 C21 8 18 8 16 7Z" fill="#22c55e"/>
+                <path d="M15.5 7.5 L16 4" stroke="#78350f" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="16" cy="18" r="10.2" fill="url(#fg-orange)"/>
+                <ellipse cx="12.2" cy="14" rx="2.8" ry="1.6" transform="rotate(-28 12.2 14)" fill="#ffffff" opacity="0.55"/>
+              </svg>
+            </span>
+            <!-- 2. Beri Biru -->
+            <span class="jl-flavor-chip" title="Beri Biru">
+              <svg class="jl-fruit-svg" viewBox="0 0 32 32" aria-hidden="true">
+                <defs><radialGradient id="fg-berry" cx="34%" cy="32%" r="68%"><stop offset="0%" stop-color="#93c5fd"/><stop offset="55%" stop-color="#2563eb"/><stop offset="100%" stop-color="#172554"/></radialGradient></defs>
+                <circle cx="16" cy="17.5" r="10" fill="url(#fg-berry)"/>
+                <path d="M12 8.2 L14 6 L16 8 L18 6 L20 8.2 L16 10 Z" fill="#1e3a8a"/>
+                <ellipse cx="12.2" cy="13.8" rx="2.7" ry="1.5" transform="rotate(-26 12.2 13.8)" fill="#ffffff" opacity="0.58"/>
+              </svg>
+            </span>
+            <!-- 3. Stroberi Rose -->
+            <span class="jl-flavor-chip" title="Stroberi Rose">
+              <svg class="jl-fruit-svg" viewBox="0 0 32 32" aria-hidden="true">
+                <defs><radialGradient id="fg-straw" cx="35%" cy="32%" r="68%"><stop offset="0%" stop-color="#fda4af"/><stop offset="52%" stop-color="#fb3765"/><stop offset="100%" stop-color="#881337"/></radialGradient></defs>
+                <path d="M16 28 C10.5 25.5 6.5 19.5 7.2 13.8 C7.8 9.6 11.4 8.5 16 9.5 C20.6 8.5 24.2 9.6 24.8 13.8 C25.5 19.5 21.5 25.5 16 28Z" fill="url(#fg-straw)"/>
+                <path d="M10.5 9.8 C12.5 6.8 19.5 6.8 21.5 9.8 L18 11 L16 9 L14 11 Z" fill="#10b981"/>
+                <circle cx="13" cy="15" r="0.9" fill="#fde68a"/><circle cx="19" cy="15.5" r="0.9" fill="#fde68a"/><circle cx="16" cy="19" r="0.9" fill="#fde68a"/><circle cx="13.5" cy="22" r="0.85" fill="#fde68a"/><circle cx="18.5" cy="21.5" r="0.85" fill="#fde68a"/>
+                <ellipse cx="12" cy="12.5" rx="2.1" ry="1.1" transform="rotate(-24 12 12.5)" fill="#ffffff" opacity="0.52"/>
+              </svg>
+            </span>
+            <!-- 4. Melon Mint -->
+            <span class="jl-flavor-chip" title="Melon Mint">
+              <svg class="jl-fruit-svg" viewBox="0 0 32 32" aria-hidden="true">
+                <defs><radialGradient id="fg-melon" cx="34%" cy="30%" r="70%"><stop offset="0%" stop-color="#a7f3d0"/><stop offset="52%" stop-color="#10d48e"/><stop offset="100%" stop-color="#064e3b"/></radialGradient></defs>
+                <path d="M16 6.5 L16 3.8 C16 3 18 2.8 19 4" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="16" cy="17.5" r="10.2" fill="url(#fg-melon)"/>
+                <path d="M11 8.8 C9 14 9 21 11 26.2 M16 7.4 L16 27.6 M21 8.8 C23 14 23 21 21 26.2" fill="none" stroke="#065f46" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+                <ellipse cx="12" cy="13.5" rx="2.6" ry="1.4" transform="rotate(-28 12 13.5)" fill="#ffffff" opacity="0.52"/>
+              </svg>
+            </span>
+            <!-- 5. Lemon Yuzu -->
+            <span class="jl-flavor-chip is-locked" id="chip-yuzu" title="Lemon Yuzu (Terbuka mulai Level 4)">
+              <svg class="jl-fruit-svg" viewBox="0 0 32 32" aria-hidden="true">
+                <defs><radialGradient id="fg-yuzu" cx="35%" cy="32%" r="68%"><stop offset="0%" stop-color="#fef9c3"/><stop offset="55%" stop-color="#f5c418"/><stop offset="100%" stop-color="#92400e"/></radialGradient></defs>
+                <path d="M16.5 6.8 C18.5 3.5 23 4.2 24.5 7 C21.5 8.6 18.2 8.2 16.5 6.8Z" fill="#22c55e"/>
+                <path d="M16 7 C22 7 26.5 11.8 26.5 18 C26.5 23.8 22 27.5 16 27.5 C10 27.5 5.5 23.8 5.5 18 C5.5 11.8 10 7 16 7Z" fill="url(#fg-yuzu)"/>
+                <circle cx="16" cy="7.5" r="2.2" fill="#eab308"/>
+                <ellipse cx="12" cy="13.8" rx="2.6" ry="1.4" transform="rotate(-25 12 13.8)" fill="#ffffff" opacity="0.62"/>
+              </svg>
+              <span class="jl-lock-pip">Lv4</span>
+            </span>
+          </div>
+
+          <div class="jl-kbd-strip" aria-label="Pintasan Papan Ketik">
+            <span class="jl-kbd-pair"><kbd class="jl-kbd">A/D</kbd>◀▶</span>
+            <span class="jl-kbd-pair"><kbd class="jl-kbd">R</kbd>↻</span>
+            <span class="jl-kbd-pair"><kbd class="jl-kbd">S</kbd>▼</span>
+            <span class="jl-kbd-pair"><kbd class="jl-kbd">SPACE</kbd>⤓</span>
+            <span class="jl-kbd-pair"><kbd class="jl-kbd">P</kbd>⏸</span>
           </div>
         </section>
-
-        <!-- KARTU 2: KENDALI PERMAINAN & SERTIFIKAT -->
-        <section class="sbt-sheet jl-sheet-card" style="flex: 1;">
-          <div class="jl-card-head">
-            <span class="jl-card-title">Kendali Permainan</span>
-            <button type="button" class="sbt-btn-ceramic sbt-btn--sm" id="btn-open-guide-inline">
-              Cara Kerja
-            </button>
-          </div>
-
-          <div class="jl-side-body" style="flex: 1; justify-content: space-between;">
-            <div class="jl-pad-tray" aria-label="Pad Kontrol Desktop">
-              <button type="button" class="sbt-btn-ceramic jl-pad-btn" id="desk-left" title="Geser Kiri (Panah Kiri / A)">
-                <i data-sbt-icon="caret-left" class="sbt-icon sbt-icon--sm"></i>
-                <span class="jl-pad-lbl">Kiri</span>
-              </button>
-              <button type="button" class="sbt-btn-fiksiblu jl-pad-btn" id="desk-rotate" title="Putar Bentuk (Panah Atas / R)">
-                <i data-sbt-icon="arrows-clockwise" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
-                <span class="jl-pad-lbl">Putar</span>
-              </button>
-              <button type="button" class="sbt-btn-ceramic jl-pad-btn" id="desk-down" title="Turun Cepat (Panah Bawah / S)">
-                <i data-sbt-icon="caret-down" class="sbt-icon sbt-icon--sm"></i>
-                <span class="jl-pad-lbl">Turun</span>
-              </button>
-              <button type="button" class="sbt-btn-obsidian jl-pad-btn" id="desk-drop" title="Jatuhkan Langsung (Spasi)">
-                <i data-sbt-icon="arrow-line-down" class="sbt-icon sbt-icon--sm sbt-icon-glow-suboren"></i>
-                <span class="jl-pad-lbl">Jatuh</span>
-              </button>
-              <button type="button" class="sbt-btn-ceramic jl-pad-btn" id="desk-right" title="Geser Kanan (Panah Kanan / D)">
-                <i data-sbt-icon="caret-right" class="sbt-icon sbt-icon--sm"></i>
-                <span class="jl-pad-lbl">Kanan</span>
-              </button>
-            </div>
-
-            <div class="jl-kbd-strip" aria-label="Pintasan Papan Ketik">
-              <span class="jl-kbd-pair"><kbd class="jl-kbd">A / D</kbd> Geser</span>
-              <span class="jl-kbd-pair"><kbd class="jl-kbd">R</kbd> Putar</span>
-              <span class="jl-kbd-pair"><kbd class="jl-kbd">S</kbd> Turun</span>
-              <span class="jl-kbd-pair"><kbd class="jl-kbd">SPACE</kbd> Jatuh</span>
-              <span class="jl-kbd-pair"><kbd class="jl-kbd">P</kbd> Jeda</span>
-            </div>
-
-            <button type="button" class="sbt-btn-fiksiblu sbt-btn--block" id="btn-finish-early" style="height: 42px;">
-              <i data-sbt-icon="article" class="sbt-icon sbt-icon--sm sbt-icon-glow-white"></i>
-              <span>Selesaikan &amp; Klaim Sertifikat</span>
-            </button>
-          </div>
-        </section>
-
       </aside>
 
     </main>
@@ -4522,14 +5073,15 @@ input[type="date"].sbt-input {
     const STORAGE_KEY_LB = 'SFX_JELAI_LEADERBOARD_V1';
     const STORAGE_KEY_SAVE = 'SFX_JELAI_SAVE_V1';
     const STORAGE_KEY_SPEED = 'SFX_JELAI_SPEED_V1';
+    const STORAGE_KEY_SFX = 'SFX_JELAI_SFX_V1';
 
     const FLAVORS = [
       null,
-      { id: 1, name: 'Jeruk Mandarin', main: '#ff6600', light: '#ff944d', shade: '#d95300' },
-      { id: 2, name: 'Beri Biru',      main: '#2563eb', light: '#60a5fa', shade: '#1d4ed8' },
-      { id: 3, name: 'Stroberi Rose',  main: '#f43f5e', light: '#fb7185', shade: '#e11d48' },
-      { id: 4, name: 'Melon Mint',     main: '#10b981', light: '#34d399', shade: '#059669' },
-      { id: 5, name: 'Lemon Yuzu',     main: '#eab308', light: '#fde047', shade: '#ca8a04' }
+      { id: 1, name: 'Jeruk Mandarin', main: '#ff6600', light: '#ffaa66', glow: '#ffd9b8', shade: '#b53d00' },
+      { id: 2, name: 'Beri Biru',      main: '#2563eb', light: '#6fa8ff', glow: '#dbeafe', shade: '#17389c' },
+      { id: 3, name: 'Stroberi Rose',  main: '#fb3765', light: '#ff85a2', glow: '#ffe4eb', shade: '#a61438' },
+      { id: 4, name: 'Melon Mint',     main: '#10d48e', light: '#6ee7be', glow: '#d1fae5', shade: '#047857' },
+      { id: 5, name: 'Lemon Yuzu',     main: '#f5c418', light: '#fde68a', glow: '#fef9c3', shade: '#a16207' }
     ];
 
     const LETTER_SHAPES = [
@@ -4589,6 +5141,61 @@ input[type="date"].sbt-input {
     let freshness = [];
     let popMask = [];
     let particles = [];
+    let floatingTexts = [];
+    let ambientBubbles = Array.from({ length: 14 }, (_, i) => ({
+      x: 18 + ((i * 53) % 284),
+      y: (i * 41) % 576,
+      r: 1.4 + (i % 3) * 0.9,
+      vy: 0.22 + (i % 4) * 0.11,
+      a: 0.08 + (i % 3) * 0.05
+    }));
+    let sfxEnabled = true;
+
+    const jlSfx = (() => {
+      let ac = null;
+      const getCtx = () => {
+        if (!sfxEnabled) return null;
+        try {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (!Ctx) return null;
+          if (!ac) ac = new Ctx();
+          if (ac.state === 'suspended') ac.resume();
+          return ac;
+        } catch (e) { return null; }
+      };
+      const tone = (freq0, freq1, dur, type = 'sine', gain = 0.08, delay = 0) => {
+        const c = getCtx();
+        if (!c) return;
+        const t0 = c.currentTime + delay;
+        const osc = c.createOscillator();
+        const g = c.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq0, t0);
+        osc.frequency.exponentialRampToValueAtTime(Math.max(40, freq1), t0 + dur);
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.linearRampToValueAtTime(gain, t0 + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        osc.connect(g).connect(c.destination);
+        osc.start(t0);
+        osc.stop(t0 + dur + 0.02);
+      };
+      return {
+        move: () => tone(240, 300, 0.045, 'sine', 0.03),
+        rotate: () => tone(310, 470, 0.075, 'triangle', 0.045),
+        land: () => tone(190, 92, 0.11, 'sine', 0.085),
+        drop: () => { tone(250, 75, 0.14, 'sine', 0.11); tone(140, 62, 0.12, 'triangle', 0.06, 0.015); },
+        pop: (combo = 1) => {
+          const root = Math.min(720, 340 + (combo - 1) * 75);
+          tone(root, root * 1.35, 0.12, 'sine', 0.09);
+          tone(root * 1.25, root * 1.65, 0.14, 'triangle', 0.065, 0.045);
+          if (combo >= 2) tone(root * 1.5, root * 2.0, 0.18, 'sine', 0.06, 0.09);
+        },
+        gameover: () => {
+          tone(320, 220, 0.18, 'triangle', 0.08);
+          tone(220, 110, 0.3, 'sine', 0.08, 0.14);
+        }
+      };
+    })();
 
     let activePiece = null;
     let nextPiece = null;
@@ -4653,6 +5260,22 @@ input[type="date"].sbt-input {
     const elPauseBtn = document.getElementById('btn-pause');
     const elPauseBtnIcon = document.getElementById('pause-btn-icon');
     const elPauseBtnLabel = document.getElementById('pause-btn-label');
+    const elSoundBtn = document.getElementById('btn-sound');
+    const elSoundBtnIcon = document.getElementById('sound-btn-icon');
+    const elSoundBtnLabel = document.getElementById('sound-btn-label');
+    const elPortalLeft = document.getElementById('portal-left');
+    const elPortalRight = document.getElementById('portal-right');
+    const elAlchemyRig = document.getElementById('alchemy-rig');
+
+    let thudTimer = null;
+    function triggerVesselThud() {
+      if (!elAlchemyRig) return;
+      elAlchemyRig.classList.remove('is-thud');
+      void elAlchemyRig.offsetWidth;
+      elAlchemyRig.classList.add('is-thud');
+      if (thudTimer) clearTimeout(thudTimer);
+      thudTimer = setTimeout(() => elAlchemyRig.classList.remove('is-thud'), 135);
+    }
 
     const elGuideModal = document.getElementById('guide-modal');
     const elResultModal = document.getElementById('result-modal');
@@ -4803,6 +5426,7 @@ input[type="date"].sbt-input {
       if (moved) {
         wobbleScaleX = 1.1;
         wobbleScaleY = 0.91;
+        jlSfx.move();
       }
     }
 
@@ -4824,6 +5448,7 @@ input[type="date"].sbt-input {
           activePiece.x += dx;
           wobbleScaleX = 0.86;
           wobbleScaleY = 1.14;
+          jlSfx.rotate();
           return;
         }
       }
@@ -4835,6 +5460,7 @@ input[type="date"].sbt-input {
         activePiece.y += 1;
         return true;
       } else {
+        jlSfx.land();
         lockActivePiece();
         return false;
       }
@@ -4850,6 +5476,8 @@ input[type="date"].sbt-input {
       score += Math.floor(droppedRows / 2);
       wobbleScaleX = 1.24;
       wobbleScaleY = 0.78;
+      jlSfx.drop();
+      triggerVesselThud();
       lockActivePiece();
       updateStatsUI();
     }
@@ -5020,9 +5648,14 @@ input[type="date"].sbt-input {
 
       const comboText = currentCombo > 1 ? `COMBO ${currentCombo}x! ` : 'PECAH! ';
       showJarToast(`${comboText}+${gained.toLocaleString('id-ID')}`);
+      jlSfx.pop(currentCombo);
+      triggerVesselThud();
 
+      let sumX = 0, sumY = 0;
       for (let i = 0; i < popCellsList.length; i++) {
         const { r, c, color } = popCellsList[i];
+        sumX += (c + 0.5) * CELL;
+        sumY += (r + 0.5) * CELL;
         grid[r][c] = 0;
         freshness[r][c] = 0;
         popMask[r][c] = 0;
@@ -5032,14 +5665,24 @@ input[type="date"].sbt-input {
           particles.push({
             x: (c + 0.5) * CELL,
             y: (r + 0.5) * CELL,
-            vx: (Math.random() - 0.5) * 6.5,
-            vy: (Math.random() - 0.75) * 6.5,
-            radius: Math.random() * 4.5 + 3,
+            vx: (Math.random() - 0.5) * 7.2,
+            vy: (Math.random() - 0.85) * 7.5,
+            radius: Math.random() * 4.5 + 3.2,
             color: flv.main,
+            light: flv.light,
             alpha: 1
           });
         }
       }
+
+      floatingTexts.push({
+        x: Math.max(66, Math.min(canvas.width - 66, sumX / count)),
+        y: Math.max(44, Math.min(canvas.height - 30, sumY / count)),
+        text: currentCombo > 1 ? `${currentCombo}x COMBO! +${gained}` : `+${gained}`,
+        color: currentCombo > 1 ? '#fde047' : '#ffffff',
+        alpha: 1,
+        vy: -1.35
+      });
 
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
@@ -5074,10 +5717,28 @@ input[type="date"].sbt-input {
       return gy;
     }
 
+    function drawGlossyDroplet(targetCtx, x, y, w, h, flv, rad = 3) {
+      const grad = targetCtx.createLinearGradient(x, y, x + w * 0.25, y + h);
+      grad.addColorStop(0, flv.light);
+      grad.addColorStop(0.45, flv.main);
+      grad.addColorStop(1, flv.shade);
+      targetCtx.fillStyle = grad;
+      targetCtx.beginPath();
+      targetCtx.roundRect(x, y, w, h, rad);
+      targetCtx.fill();
+
+      // Top glossy rim shine
+      targetCtx.fillStyle = 'rgba(255, 255, 255, 0.52)';
+      targetCtx.beginPath();
+      targetCtx.roundRect(x + w * 0.14, y + Math.max(1, h * 0.08), w * 0.72, Math.max(1.6, h * 0.2), rad * 0.5);
+      targetCtx.fill();
+    }
+
     function renderGame() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.strokeStyle = 'rgba(162, 172, 190, 0.22)';
+      // Faint inner cylindrical chamber grid & depth vignette
+      ctx.strokeStyle = 'rgba(148, 197, 255, 0.055)';
       ctx.lineWidth = 1;
       for (let x = 4 * CELL; x < canvas.width; x += 4 * CELL) {
         ctx.beginPath();
@@ -5085,11 +5746,34 @@ input[type="date"].sbt-input {
         ctx.lineTo(x, canvas.height);
         ctx.stroke();
       }
+      for (let y = 6 * CELL; y < canvas.height; y += 6 * CELL) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
 
+      // Subtle rising alchemy micro-bubbles inside chamber
+      for (let i = 0; i < ambientBubbles.length; i++) {
+        const b = ambientBubbles[i];
+        b.y -= b.vy;
+        if (b.y < -8) b.y = canvas.height + 8;
+        ctx.fillStyle = `rgba(186, 224, 255, ${b.a})`;
+        ctx.beginPath();
+        ctx.arc(b.x + Math.sin(b.y * 0.03 + i) * 2.5, b.y, b.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Danger thermal barrier
       const dangerY = DANGER_ROW * CELL;
       ctx.save();
-      ctx.strokeStyle = 'rgba(244, 63, 94, 0.36)';
-      ctx.setLineDash([5, 5]);
+      const dangerGrad = ctx.createLinearGradient(0, dangerY - 12, 0, dangerY + 4);
+      dangerGrad.addColorStop(0, 'rgba(251, 55, 101, 0)');
+      dangerGrad.addColorStop(1, 'rgba(251, 55, 101, 0.16)');
+      ctx.fillStyle = dangerGrad;
+      ctx.fillRect(0, dangerY - 12, canvas.width, 16);
+      ctx.strokeStyle = 'rgba(251, 55, 101, 0.52)';
+      ctx.setLineDash([6, 5]);
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(0, dangerY);
@@ -5097,19 +5781,26 @@ input[type="date"].sbt-input {
       ctx.stroke();
       ctx.restore();
 
+      // Wall energy contact indicators
+      let touchLeft = false, touchRight = false;
       for (let r = 0; r < ROWS; r++) {
         const leftColor = grid[r][0];
         if (leftColor !== 0) {
-          ctx.fillStyle = FLAVORS[leftColor].main;
-          ctx.fillRect(0, r * CELL, 3, CELL);
+          touchLeft = true;
+          ctx.fillStyle = FLAVORS[leftColor].light;
+          ctx.fillRect(0, r * CELL, 3.5, CELL);
         }
         const rightColor = grid[r][COLS - 1];
         if (rightColor !== 0) {
-          ctx.fillStyle = FLAVORS[rightColor].main;
-          ctx.fillRect(canvas.width - 3, r * CELL, 3, CELL);
+          touchRight = true;
+          ctx.fillStyle = FLAVORS[rightColor].light;
+          ctx.fillRect(canvas.width - 3.5, r * CELL, 3.5, CELL);
         }
       }
+      if (elPortalLeft) elPortalLeft.classList.toggle('has-contact', touchLeft);
+      if (elPortalRight) elPortalRight.classList.toggle('has-contact', touchRight);
 
+      // Settled organic translucent jelly mass
       for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
           const colorId = grid[r][c];
@@ -5121,34 +5812,75 @@ input[type="date"].sbt-input {
 
           if (popMask[r][c]) {
             const pulse = (popTimer % 4 < 2);
-            ctx.fillStyle = pulse ? '#ffffff' : flv.light;
+            ctx.fillStyle = pulse ? '#ffffff' : flv.glow;
             ctx.beginPath();
-            ctx.arc(px + CELL / 2, py + CELL / 2, CELL * 0.72, 0, Math.PI * 2);
+            ctx.arc(px + CELL / 2, py + CELL / 2, CELL * 0.78, 0, Math.PI * 2);
             ctx.fill();
             continue;
           }
 
+          const sameTop = r > 0 && grid[r - 1][c] === colorId;
+          const sameBot = r + 1 < ROWS && grid[r + 1][c] === colorId;
+          const sameL = c > 0 && grid[r][c - 1] === colorId;
+          const sameR = c + 1 < COLS && grid[r][c + 1] === colorId;
+
+          const rTL = (!sameTop && !sameL) ? CELL * 0.48 : 0;
+          const rTR = (!sameTop && !sameR) ? CELL * 0.48 : 0;
+          const rBR = (!sameBot && !sameR) ? CELL * 0.48 : 0;
+          const rBL = (!sameBot && !sameL) ? CELL * 0.48 : 0;
+
+          // Saturated base mass
           ctx.fillStyle = flv.main;
-          ctx.fillRect(px, py, CELL + 0.4, CELL + 0.4);
           ctx.beginPath();
-          ctx.arc(px + CELL / 2, py + CELL / 2, CELL * 0.54, 0, Math.PI * 2);
+          ctx.roundRect(px - 0.35, py - 0.35, CELL + 0.7, CELL + 0.7, [rTL, rTR, rBR, rBL]);
           ctx.fill();
 
-          const topEmpty = (r === 0 || grid[r - 1][c] !== colorId);
-          const bottomSame = (r + 1 < ROWS && grid[r + 1][c] === colorId);
-          if (topEmpty && bottomSame) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
-            ctx.fillRect(px + 1, py + 1.5, CELL - 2, 2.5);
+          // Luminous subsurface core sheen
+          if (sameTop && sameBot && ((r + c) & 1) === 0) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.13)';
+            ctx.beginPath();
+            ctx.arc(px + CELL * 0.5, py + CELL * 0.45, CELL * 0.42, 0, Math.PI * 2);
+            ctx.fill();
           }
 
-          const bottomDiff = (r === ROWS - 1 || grid[r + 1][c] !== colorId);
-          if (bottomDiff) {
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.1)';
-            ctx.fillRect(px, py + CELL - 2, CELL, 2);
+          // Top exposed wet glossy meniscus
+          if (!sameTop) {
+            ctx.fillStyle = flv.light;
+            ctx.beginPath();
+            ctx.roundRect(px + (sameL ? 0 : 1), py + 0.5, CELL - (sameL ? 0 : 1) - (sameR ? 0 : 1), 2.8, 1.5);
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.62)';
+            ctx.fillRect(px + (sameL ? 0 : 1.5), py + 0.8, CELL - (sameL ? 0 : 3), 1.4);
+          }
+
+          // Left specular edge sheen
+          if (!sameL) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.24)';
+            ctx.fillRect(px + 0.6, py + (sameTop ? 0 : 1.5), 1.6, CELL - (sameTop ? 0 : 1.5));
+          }
+
+          // Deep 3D bottom & right shadow rim
+          if (!sameBot) {
+            ctx.fillStyle = flv.shade;
+            ctx.fillRect(px, py + CELL - 2.3, CELL, 2.3);
+            ctx.fillStyle = 'rgba(4, 8, 20, 0.22)';
+            ctx.fillRect(px, py + CELL - 1.1, CELL, 1.1);
+          }
+          if (!sameR) {
+            ctx.fillStyle = 'rgba(4, 8, 20, 0.2)';
+            ctx.fillRect(px + CELL - 1.6, py, 1.6, CELL);
+          }
+
+          // Freshly agitated gelatin shimmer
+          if (freshness[r][c] > 0) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.28, freshness[r][c] * 0.008)})`;
+            ctx.fillRect(px + 1, py + 1, CELL - 2, CELL - 2);
           }
         }
       }
 
+      // Active falling piece & translucent ghost silhouette
       if (activePiece && popTimer === 0) {
         const { x, y, subMatrix, colorId } = activePiece;
         const flv = FLAVORS[colorId];
@@ -5158,12 +5890,19 @@ input[type="date"].sbt-input {
 
         if (ghostY > y) {
           ctx.save();
-          ctx.fillStyle = flv.main;
-          ctx.globalAlpha = 0.16;
+          ctx.fillStyle = flv.light;
+          ctx.strokeStyle = flv.light;
+          ctx.lineWidth = 1;
           for (let r = 0; r < sRows; r++) {
             for (let c = 0; c < sCols; c++) {
-              if (subMatrix[r][c]) {
-                ctx.fillRect((x + c) * CELL, (ghostY + r) * CELL, CELL, CELL);
+              if (!subMatrix[r][c]) continue;
+              const gx = (x + c) * CELL;
+              const gy = (ghostY + r) * CELL;
+              ctx.globalAlpha = 0.14;
+              ctx.fillRect(gx, gy, CELL, CELL);
+              if (r === 0 || !subMatrix[r - 1][c]) {
+                ctx.globalAlpha = 0.45;
+                ctx.fillRect(gx + 1, gy, CELL - 2, 1.5);
               }
             }
           }
@@ -5177,28 +5916,52 @@ input[type="date"].sbt-input {
         ctx.scale(wobbleScaleX, wobbleScaleY);
         ctx.translate(-centerX, -centerY);
 
+        const bodyGrad = ctx.createLinearGradient(0, y * CELL, 0, (y + sRows) * CELL);
+        bodyGrad.addColorStop(0, flv.light);
+        bodyGrad.addColorStop(0.35, flv.main);
+        bodyGrad.addColorStop(1, flv.shade);
+
         for (let r = 0; r < sRows; r++) {
           for (let c = 0; c < sCols; c++) {
             if (!subMatrix[r][c]) continue;
             const px = (x + c) * CELL;
             const py = (y + r) * CELL;
+            const sT = r > 0 && subMatrix[r - 1][c];
+            const sB = r + 1 < sRows && subMatrix[r + 1][c];
+            const sL = c > 0 && subMatrix[r][c - 1];
+            const sR = c + 1 < sCols && subMatrix[r][c + 1];
+            const rTL = (!sT && !sL) ? CELL * 0.45 : 0;
+            const rTR = (!sT && !sR) ? CELL * 0.45 : 0;
+            const rBR = (!sB && !sR) ? CELL * 0.45 : 0;
+            const rBL = (!sB && !sL) ? CELL * 0.45 : 0;
 
-            ctx.fillStyle = flv.main;
-            ctx.fillRect(px, py, CELL + 0.5, CELL + 0.5);
+            ctx.fillStyle = bodyGrad;
             ctx.beginPath();
-            ctx.arc(px + CELL / 2, py + CELL / 2, CELL * 0.54, 0, Math.PI * 2);
+            ctx.roundRect(px - 0.35, py - 0.35, CELL + 0.7, CELL + 0.7, [rTL, rTR, rBR, rBL]);
             ctx.fill();
 
-            const topExposed = (r === 0 || !subMatrix[r - 1][c]);
-            if (topExposed) {
-              ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-              ctx.fillRect(px + 1, py + 1.5, CELL - 2, 2.5);
+            if (!sT) {
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+              ctx.beginPath();
+              ctx.roundRect(px + (sL ? 0 : 1.5), py + 0.8, CELL - (sL ? 0 : 2.5), 2.1, 1);
+              ctx.fill();
+            }
+            if (!sT && !sL) {
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+              ctx.beginPath();
+              ctx.arc(px + 2.6, py + 2.6, 1.3, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            if (!sB) {
+              ctx.fillStyle = 'rgba(4, 8, 20, 0.25)';
+              ctx.fillRect(px, py + CELL - 1.6, CELL, 1.6);
             }
           }
         }
         ctx.restore();
       }
 
+      // Glossy flying syrup droplets
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         ctx.save();
@@ -5207,6 +5970,25 @@ input[type="date"].sbt-input {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.beginPath();
+        ctx.arc(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.32, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Floating combo & score popups directly on game stage
+      for (let i = floatingTexts.length - 1; i >= 0; i--) {
+        const ft = floatingTexts[i];
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, Math.min(1, ft.alpha));
+        ctx.font = '800 15px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(6, 10, 22, 0.86)';
+        ctx.strokeText(ft.text, ft.x, ft.y);
+        ctx.fillStyle = ft.color;
+        ctx.fillText(ft.text, ft.x, ft.y);
         ctx.restore();
       }
     }
@@ -5225,23 +6007,18 @@ input[type="date"].sbt-input {
       const offsetX = Math.floor((targetCanvas.width - totalW) / 2);
       const offsetY = Math.floor((targetCanvas.height - totalH) / 2);
 
+      targetCtx.save();
+      targetCtx.shadowColor = flv.main;
+      targetCtx.shadowBlur = 10;
       for (let r = 0; r < bRows; r++) {
         for (let c = 0; c < bCols; c++) {
           if (!blocks[r][c]) continue;
           const x = offsetX + c * cellPx;
           const y = offsetY + r * cellPx;
-
-          targetCtx.fillStyle = flv.main;
-          targetCtx.beginPath();
-          targetCtx.roundRect(x - 0.5, y - 0.5, cellPx + 1, cellPx + 1, Math.max(3, Math.floor(cellPx * 0.25)));
-          targetCtx.fill();
-
-          if (r === 0 || !blocks[r - 1][c]) {
-            targetCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-            targetCtx.fillRect(x + 2, y + 1.5, Math.max(2, cellPx - 4), 2);
-          }
+          drawGlossyDroplet(targetCtx, x - 0.5, y - 0.5, cellPx + 1, cellPx + 1, flv, Math.max(3, Math.floor(cellPx * 0.28)));
         }
       }
+      targetCtx.restore();
     }
 
     function drawNextPreview() {
@@ -5267,8 +6044,15 @@ input[type="date"].sbt-input {
           p.x += p.vx;
           p.y += p.vy;
           p.vy += 0.28;
-          p.alpha -= 0.035;
+          p.alpha -= 0.032;
           if (p.alpha <= 0) particles.splice(i, 1);
+        }
+
+        for (let i = floatingTexts.length - 1; i >= 0; i--) {
+          const ft = floatingTexts[i];
+          ft.y += ft.vy;
+          ft.alpha -= 0.022;
+          if (ft.alpha <= 0) floatingTexts.splice(i, 1);
         }
 
         if (popTimer > 0) {
@@ -5456,20 +6240,37 @@ input[type="date"].sbt-input {
       }
     }
 
+    function syncSoundUI() {
+      if (!elSoundBtn) return;
+      elSoundBtn.classList.toggle('is-muted', !sfxEnabled);
+      if (elSoundBtnIcon) {
+        elSoundBtnIcon.innerHTML = window.SubtilsIcons
+          ? window.SubtilsIcons.svg(sfxEnabled ? 'speaker-high' : 'speaker-slash')
+          : '';
+      }
+    }
+
+    function toggleSound() {
+      sfxEnabled = !sfxEnabled;
+      try { localStorage.setItem(STORAGE_KEY_SFX, sfxEnabled ? '1' : '0'); } catch (e) {}
+      syncSoundUI();
+      if (sfxEnabled) jlSfx.rotate();
+    }
+
     function syncMenuAndPauseUI() {
       const showPauseBtn = hasStartedRun && !isGameOver;
       elPauseBtn.hidden = !showPauseBtn;
 
       if (isPaused) {
-        elPauseBtn.className = 'sbt-btn-fiksiblu';
+        elPauseBtn.className = 'jl-hw-btn jl-icon-hw-btn is-blue';
+        elPauseBtn.title = 'Lanjutkan Permainan (P)';
         elPauseBtnIcon.innerHTML = window.SubtilsIcons ? window.SubtilsIcons.svg('play') : '';
         elPauseBtnIcon.classList.add('sbt-icon-glow-white');
-        elPauseBtnLabel.textContent = 'Lanjut';
       } else {
-        elPauseBtn.className = 'sbt-btn-ceramic';
+        elPauseBtn.className = 'jl-hw-btn jl-icon-hw-btn';
+        elPauseBtn.title = 'Jeda Permainan (P)';
         elPauseBtnIcon.innerHTML = window.SubtilsIcons ? window.SubtilsIcons.svg('pause') : '';
         elPauseBtnIcon.classList.remove('sbt-icon-glow-white');
-        elPauseBtnLabel.textContent = 'Jeda';
       }
 
       elMenuOverlay.classList.toggle('active', isMenuOpen);
@@ -5479,22 +6280,21 @@ input[type="date"].sbt-input {
       elBtnMenuContinue.hidden = !canContinue;
       elBtnMenuCert.hidden = !(canContinue && hasBoardActivity());
 
+      const newLbl = elBtnMenuNew.querySelector('span:last-child');
       if (canContinue) {
-        elBtnMenuNew.className = 'sbt-btn-fiksiblu sbt-btn--block';
-        elBtnMenuNew.querySelector('.sbt-icon').classList.remove('sbt-icon-glow-suboren');
-        elBtnMenuNew.querySelector('.sbt-icon').classList.add('sbt-icon-glow-white');
-        elMenuBadge.textContent = 'Permainan Dijeda';
-        elMenuBadge.className = 'sbt-status sbt-status--draf';
-        elMenuTitle.textContent = 'Menu JELAI';
-        elMenuSummary.textContent = `Level ${level} · Skor ${score.toLocaleString('id-ID')} · Combo Maks ${maxCombo}x`;
+        elBtnMenuNew.className = 'jl-hw-btn is-blue jl-btn-block';
+        elBtnMenuNew.querySelector('.sbt-icon').innerHTML = window.SubtilsIcons ? window.SubtilsIcons.svg('arrows-clockwise') : '';
+        if (newLbl) newLbl.textContent = 'Ulangi';
+        elMenuBadge.textContent = 'Dijeda';
+        elMenuTitle.textContent = 'JELAI';
+        elMenuSummary.textContent = `Lv.${level} · ${score.toLocaleString('id-ID')} pts`;
       } else {
-        elBtnMenuNew.className = 'sbt-btn-obsidian sbt-btn--block';
-        elBtnMenuNew.querySelector('.sbt-icon').classList.remove('sbt-icon-glow-white');
-        elBtnMenuNew.querySelector('.sbt-icon').classList.add('sbt-icon-glow-suboren');
-        elMenuBadge.textContent = 'Menu Utama';
-        elMenuBadge.className = 'sbt-status sbt-status--terbit';
-        elMenuTitle.textContent = 'Alkimia JELAI';
-        elMenuSummary.textContent = 'Susun huruf kenyal hingga menyambung kiri ke kanan.';
+        elBtnMenuNew.className = 'jl-hw-btn is-amber jl-btn-block';
+        elBtnMenuNew.querySelector('.sbt-icon').innerHTML = window.SubtilsIcons ? window.SubtilsIcons.svg('play') : '';
+        if (newLbl) newLbl.textContent = 'Mulai';
+        elMenuBadge.textContent = 'Alkimia Jeli';
+        elMenuTitle.textContent = 'JELAI';
+        elMenuSummary.textContent = 'Sambungkan warna kiri ke kanan.';
       }
     }
 
@@ -5534,6 +6334,7 @@ input[type="date"].sbt-input {
       hasStartedRun = false;
       isPaused = true;
       isMenuOpen = false;
+      jlSfx.gameover();
       clearSavedSession();
       scoreSavedThisGame = false;
       const rankInfo = getRankPredicate(score);
@@ -5559,6 +6360,7 @@ input[type="date"].sbt-input {
       clearSavedSession();
       createEmptyGrid();
       particles = [];
+      floatingTexts = [];
       popCellsList = [];
       popTimer = 0;
       letterBag = [];
@@ -5754,6 +6556,10 @@ input[type="date"].sbt-input {
         togglePause();
         return;
       }
+      if (e.key === 'm' || e.key === 'M') {
+        toggleSound();
+        return;
+      }
       if (isPaused || isGameOver || isMenuOpen) return;
 
       switch (e.key) {
@@ -5888,7 +6694,8 @@ input[type="date"].sbt-input {
       btn.addEventListener('click', () => setSpeedMode(btn.dataset.speed));
     });
 
-    document.getElementById('btn-open-guide-inline').addEventListener('click', openGuideModal);
+    document.getElementById('btn-open-guide-top')?.addEventListener('click', openGuideModal);
+    document.getElementById('btn-open-guide-inline')?.addEventListener('click', openGuideModal);
     document.getElementById('btn-close-guide').addEventListener('click', closeGuideModal);
     document.getElementById('btn-close-guide-x').addEventListener('click', closeGuideModal);
     document.getElementById('btn-close-result-x').addEventListener('click', () => {
@@ -5896,8 +6703,9 @@ input[type="date"].sbt-input {
       openMenu();
     });
 
+    if (elSoundBtn) elSoundBtn.addEventListener('click', toggleSound);
     document.getElementById('btn-pause').addEventListener('click', togglePause);
-    document.getElementById('btn-finish-early').addEventListener('click', () => {
+    document.getElementById('btn-finish-early')?.addEventListener('click', () => {
       if (!hasStartedRun && score === 0) {
         openMenu();
         return;
@@ -5933,7 +6741,10 @@ input[type="date"].sbt-input {
       try {
         const savedSpeed = localStorage.getItem(STORAGE_KEY_SPEED);
         if (savedSpeed) setSpeedMode(savedSpeed);
+        const savedSfx = localStorage.getItem(STORAGE_KEY_SFX);
+        if (savedSfx === '0') sfxEnabled = false;
       } catch (e) {}
+      syncSoundUI();
 
       const restored = restoreSavedSession();
       if (!restored) {
