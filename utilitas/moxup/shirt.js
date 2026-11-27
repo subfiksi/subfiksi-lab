@@ -301,3 +301,308 @@ export function annotateHoodie(g) {
   g.setAttribute('aMockZone', new THREE.BufferAttribute(attr, 3));
   return g;
 }
+
+function shirtHemY(pos, find, torsoRoot, x0, x1) {
+  const bins = new Map();
+  const yCut = x1;
+  for (let i = 0; i < pos.count; i++) {
+    if (find(i) !== torsoRoot || pos.getY(i) > yCut) continue;
+    const x = pos.getX(i), y = pos.getY(i), b = Math.round(x * 32);
+    if (!bins.has(b) || y < bins.get(b).y) bins.set(b, { x, y });
+  }
+  const pts = [...bins.values()].sort((a, b) => a.x - b.x);
+  return (x) => {
+    if (!pts.length) return x0;
+    if (x <= pts[0].x) return pts[0].y;
+    if (x >= pts[pts.length - 1].x) return pts[pts.length - 1].y;
+    for (let i = 1; i < pts.length; i++) {
+      if (x <= pts[i].x) {
+        const a = pts[i - 1], b = pts[i];
+        const t = (x - a.x) / Math.max(1e-5, b.x - a.x);
+        return a.y + (b.y - a.y) * t;
+      }
+    }
+    return pts[pts.length - 1].y;
+  };
+}
+
+/** Annotate multi-part `kemeja_putih_mockup.glb` & `kemeja_lapangan_mockup.glb` mesh (`partName`) with `aMockZone`, crease AO, and front/back/pocket/sleeve UVs. */
+export function annotateKemeja(g, partName, box) {
+  const pos = g.attributes.position, nrm = g.attributes.normal, uv = g.attributes.uv;
+  const count = pos.count;
+  const W = box.max.x - box.min.x || 1;
+  const H = box.max.y - box.min.y || 1;
+  const torsoCx = (box.min.x + box.max.x) * 0.5;
+  const torsoW = 0.566 * W;
+  const uvScale = 0.44 / torsoW;
+  const baseBottomY = box.min.y + 0.008 * H;
+  const torsoBaseV = 0.255; // reserve v in 0.01..0.245 for left/right outer upper sleeves
+  const attr = new Float32Array(count * 3);
+
+  const mapFrontUv = (i) => {
+    const x = pos.getX(i), y = pos.getY(i);
+    const u = Math.min(0.49, Math.max(0.01, 0.25 + (x - torsoCx) * uvScale));
+    const v = Math.min(0.99, Math.max(torsoBaseV, torsoBaseV + (y - baseBottomY) * uvScale));
+    uv.setXY(i, u, v);
+  };
+
+  const mapBackUv = (i) => {
+    const x = pos.getX(i), y = pos.getY(i);
+    const u = Math.min(0.99, Math.max(0.51, 0.75 - (x - torsoCx) * uvScale));
+    const v = Math.min(0.99, Math.max(torsoBaseV, torsoBaseV + (y - baseBottomY) * uvScale));
+    uv.setXY(i, u, v);
+  };
+
+  // Build smoothed (cx(y), cz(y)) centerline for a sleeve vertex index list and map outer upper arm to [0.01..0.225].
+  const mapSleeveVerts = (indices, isLeft) => {
+    if (!indices.length) return;
+    let y0 = 1e9, y1 = -1e9;
+    for (const i of indices) {
+      const y = pos.getY(i);
+      if (y < y0) y0 = y;
+      if (y > y1) y1 = y;
+    }
+    const BINS = 16;
+    const minX = new Float64Array(BINS).fill(1e9), maxX = new Float64Array(BINS).fill(-1e9);
+    const minZ = new Float64Array(BINS).fill(1e9), maxZ = new Float64Array(BINS).fill(-1e9);
+    const cnt = new Int32Array(BINS);
+    const ySpan = Math.max(1e-4, y1 - y0);
+    for (const i of indices) {
+      const b = Math.min(BINS - 1, Math.max(0, Math.floor(((pos.getY(i) - y0) / ySpan) * BINS)));
+      const x = pos.getX(i), z = pos.getZ(i);
+      if (x < minX[b]) minX[b] = x;
+      if (x > maxX[b]) maxX[b] = x;
+      if (z < minZ[b]) minZ[b] = z;
+      if (z > maxZ[b]) maxZ[b] = z;
+      cnt[b]++;
+    }
+    const binCx = [], binCz = [], binOuter = [], binY = [];
+    for (let b = 0; b < BINS; b++) {
+      if (!cnt[b]) continue;
+      binY.push(y0 + ((b + 0.5) / BINS) * ySpan);
+      binCx.push((minX[b] + maxX[b]) * 0.5);
+      binCz.push((minZ[b] + maxZ[b]) * 0.5);
+      binOuter.push(isLeft ? minX[b] : maxX[b]);
+    }
+    // Cumulative vertical arc length along outer sleeve slope so slanted shoulder cap doesn't squash vertically
+    const binArcY = new Float64Array(binY.length);
+    for (let k = 1; k < binY.length; k++) {
+      binArcY[k] = binArcY[k - 1] + Math.hypot(binOuter[k] - binOuter[k - 1], binY[k] - binY[k - 1]);
+    }
+    const sampleBins = (y) => {
+      if (!binY.length) return [torsoCx, 0, y];
+      if (y <= binY[0]) return [binCx[0], binCz[0], binArcY[0] - (binY[0] - y)];
+      const last = binY.length - 1;
+      if (y >= binY[last]) return [binCx[last], binCz[last], binArcY[last] + (y - binY[last])];
+      for (let k = 1; k < binY.length; k++) {
+        if (y <= binY[k]) {
+          const t = (y - binY[k - 1]) / Math.max(1e-5, binY[k] - binY[k - 1]);
+          return [
+            binCx[k - 1] + (binCx[k] - binCx[k - 1]) * t,
+            binCz[k - 1] + (binCz[k] - binCz[k - 1]) * t,
+            binArcY[k - 1] + (binArcY[k] - binArcY[k - 1]) * t,
+          ];
+        }
+      }
+      return [binCx[last], binCz[last], binArcY[last]];
+    };
+
+    const uCenter = isLeft ? 0.17 : 0.67;
+    const ySlvMid = box.min.y + 0.65 * H;
+    const arcMid = sampleBins(ySlvMid)[2];
+    const rzNom = 0.078 * W; // ~6 cm front-back half-width for gentle edge arc compensation
+    for (const i of indices) {
+      const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+      const [cx, cz, arcY] = sampleBins(y);
+      const dx = x - cx, dz = z - cz;
+      // Use direct front-back distance dz (independent of shoulder rx tapering!) + mild cylindrical curve term
+      const sSign = isLeft ? dz : -dz;
+      const curve = 1 + 0.18 * Math.min(1, (dz / rzNom) ** 2);
+      const uClamped = Math.min(uCenter + 0.10, Math.max(uCenter - 0.10, uCenter + sSign * curve * uvScale));
+      const vRaw = 0.105 + (arcY - arcMid) * uvScale;
+      const isOuter = isLeft ? dx <= 0.005 * W : dx >= -0.005 * W;
+      if (!isOuter || vRaw < 0.01) {
+        uv.setXY(i, uClamped, -0.15);
+      } else {
+        uv.setXY(i, uClamped, Math.min(0.245, vRaw));
+      }
+    }
+  };
+
+  if (partName.includes('Collar_Leaf')) {
+    g.computeBoundingBox();
+    const cy0 = g.boundingBox.min.y, cyH = g.boundingBox.max.y - cy0 || 1;
+    for (let i = 0; i < count; i++) {
+      const t = (pos.getY(i) - cy0) / cyH;
+      attr[i * 3] = 4;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = t < 0.25 ? 0.87 + 0.13 * (t / 0.25) : 1;
+      uv.setXY(i, -1, -1);
+    }
+  } else if (partName.includes('Collar_Stand')) {
+    g.computeBoundingBox();
+    const cy0 = g.boundingBox.min.y, cyH = g.boundingBox.max.y - cy0 || 1;
+    for (let i = 0; i < count; i++) {
+      const t = (pos.getY(i) - cy0) / cyH;
+      attr[i * 3] = 9;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = t > 0.72 ? 0.88 + 0.12 * ((1 - t) / 0.28) : 1;
+      uv.setXY(i, -1, -1);
+    }
+  } else if (partName.includes('Epaulet')) {
+    g.computeBoundingBox();
+    const eb = g.boundingBox;
+    const ez0 = eb.min.z, ezH = eb.max.z - ez0 || 1;
+    const ex0 = eb.min.x, exW = eb.max.x - ex0 || 1;
+    for (let i = 0; i < count; i++) {
+      const ez = 1 - Math.abs(((pos.getZ(i) - ez0) / ezH) * 2 - 1);
+      const ex = 1 - Math.abs(((pos.getX(i) - ex0) / exW) * 2 - 1);
+      const edge = Math.min(ez, ex * 1.4);
+      attr[i * 3] = 12;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = edge < 0.18 ? 0.90 + 0.10 * Math.max(0, edge / 0.18) : 1;
+      uv.setXY(i, -1, -1);
+    }
+  } else if (partName.includes('Yoke')) {
+    g.computeBoundingBox();
+    const yb = g.boundingBox;
+    const y0 = yb.min.y, yH = yb.max.y - y0 || 1;
+    for (let i = 0; i < count; i++) {
+      const x = pos.getX(i), y = pos.getY(i);
+      const t = (y - y0) / yH;
+      attr[i * 3] = 13;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = t < 0.12 ? 0.88 + 0.12 * Math.max(0, t / 0.12) : 1;
+      if (!nrm || nrm.getZ(i) < -0.1) {
+        mapBackUv(i);
+      } else {
+        uv.setXY(i, -1, -1);
+      }
+    }
+  } else if (partName.includes('Sleeve_')) {
+    g.computeBoundingBox();
+    const sb = g.boundingBox;
+    const scx = (sb.min.x + sb.max.x) * 0.5;
+    const sy0 = sb.min.y, syH = sb.max.y - sy0 || 1;
+    const isLeft = scx < torsoCx;
+    const zid = isLeft ? 2 : 3;
+    const isUpper = partName.includes('Sleeve_Upper');
+    const isRoll = partName.includes('RollCuff');
+    const isTab = partName.includes('Tab');
+    const allIdx = [];
+    for (let i = 0; i < count; i++) {
+      let ao = 1;
+      if (isRoll) {
+        const ty = (pos.getY(i) - sy0) / syH;
+        if (ty < 0.18) ao = 0.90 + 0.10 * Math.max(0, ty / 0.18);
+        else if (ty > 0.85) ao = 0.92 + 0.08 * Math.max(0, (1 - ty) / 0.15);
+      } else if (isTab) {
+        const ty = (pos.getY(i) - sy0) / syH;
+        if (ty > 0.88) ao = 0.91 + 0.09 * Math.max(0, (1 - ty) / 0.12);
+      }
+      attr[i * 3] = zid;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = ao;
+      if (isUpper) allIdx.push(i);
+      else uv.setXY(i, -1, -1);
+    }
+    if (isUpper) mapSleeveVerts(allIdx, isLeft);
+  } else if (partName.includes('Cuff_R') || partName.includes('Cuff_L')) {
+    g.computeBoundingBox();
+    const cy1 = g.boundingBox.max.y, cyH = cy1 - g.boundingBox.min.y || 1;
+    // Viewer coordinates: Cuff_R sits at -X (left on screen -> zone 10), Cuff_L at +X (right on screen -> zone 11).
+    const zid = g.boundingBox.max.x < torsoCx ? 10 : 11;
+    for (let i = 0; i < count; i++) {
+      const topDist = (cy1 - pos.getY(i)) / cyH;
+      attr[i * 3] = zid;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = topDist < 0.16 ? 0.90 + 0.10 * Math.max(0, topDist / 0.16) : 1;
+      uv.setXY(i, -1, -1);
+    }
+  } else if (partName.includes('Placket')) {
+    g.computeBoundingBox();
+    const px = Math.max(Math.abs(g.boundingBox.min.x - torsoCx), Math.abs(g.boundingBox.max.x - torsoCx)) || 1;
+    for (let i = 0; i < count; i++) {
+      const edge = 1 - Math.abs(pos.getX(i) - torsoCx) / px;
+      attr[i * 3] = 7;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = edge < 0.2 ? 0.88 + 0.12 * Math.max(0, edge / 0.2) : 1;
+      uv.setXY(i, -1, -1);
+    }
+  } else if (partName.includes('Pocket')) {
+    g.computeBoundingBox();
+    const pk = g.boundingBox;
+    const pw = (pk.max.x - pk.min.x) * 0.5 || 1, ph = pk.max.y - pk.min.y || 1;
+    const pkCx = (pk.min.x + pk.max.x) * 0.5;
+    for (let i = 0; i < count; i++) {
+      const ex = 1 - Math.abs(pos.getX(i) - pkCx) / pw;
+      const ey = (pos.getY(i) - pk.min.y) / ph;
+      const edge = Math.min(ex, ey);
+      attr[i * 3] = 8;
+      attr[i * 3 + 1] = 99;
+      attr[i * 3 + 2] = edge < 0.15 ? 0.90 + 0.10 * Math.max(0, edge / 0.15) : 1;
+      if (!nrm || nrm.getZ(i) > 0.1) mapFrontUv(i);
+      else uv.setXY(i, -1, -1);
+    }
+  } else if (partName.includes('Body')) {
+    const { find, map } = triComponents(pos, nrm, g.index);
+    const comps = [...map.values()].sort((a, b) => b.count - a.count);
+    const torsoRoot = comps[0]?.root ?? -1;
+    let seamSum = 0, seamCnt = 0;
+    for (let i = 0; i < count; i++) {
+      if (find(i) !== torsoRoot) continue;
+      const ax = Math.abs(pos.getX(i) - torsoCx);
+      if (ax > 0.23 * W && (!nrm || Math.abs(nrm.getZ(i)) < 0.35)) {
+        seamSum += pos.getZ(i);
+        seamCnt++;
+      }
+    }
+    const seamZ = seamCnt ? seamSum / seamCnt : (box.min.z + box.max.z) * 0.5;
+    const hemAt = shirtHemY(pos, find, torsoRoot, box.min.y, box.min.y + 0.18 * H);
+    const backNeckY = box.min.y + 0.84 * H;
+    const neckSpan = 0.13 * W;
+
+    const slvLIdx = [], slvRIdx = [];
+    for (let i = 0; i < count; i++) {
+      const r = find(i);
+      const comp = map.get(r);
+      const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+      let id = 0, d = 99, ao = 1;
+
+      if (r === torsoRoot) {
+        const isFront = z >= seamZ;
+        id = isFront ? 0 : 1;
+        d = Math.max(0, (y - hemAt(x)) / H * 0.65);
+        if (isFront) {
+          mapFrontUv(i);
+          if (Math.abs(x - torsoCx) < 0.032 * W && y < box.min.y + 0.88 * H) ao = 0.90;
+        } else {
+          mapBackUv(i);
+          if (Math.abs(x - torsoCx) < neckSpan && y > backNeckY) {
+            ao = 1 - 0.18 * clamp01((y - backNeckY) / (0.08 * H));
+          }
+        }
+      } else {
+        const isLeft = (comp?.cx ?? x) < torsoCx;
+        id = isLeft ? 2 : 3;
+        if (isLeft) slvLIdx.push(i);
+        else slvRIdx.push(i);
+      }
+
+      attr[i * 3] = id;
+      attr[i * 3 + 1] = d;
+      attr[i * 3 + 2] = ao;
+    }
+    mapSleeveVerts(slvLIdx, true);
+    mapSleeveVerts(slvRIdx, false);
+  } else {
+    for (let i = 0; i < count; i++) {
+      attr[i * 3] = 0; attr[i * 3 + 1] = 99; attr[i * 3 + 2] = 1;
+      uv.setXY(i, -1, -1);
+    }
+  }
+
+  uv.needsUpdate = true;
+  g.setAttribute('aMockZone', new THREE.BufferAttribute(attr, 3));
+  return g;
+}

@@ -15,6 +15,8 @@
 | T-Shirt | T_Shirt_male (`shirt_baked.glb`) | accodes21 / tshirt3d | MIT | https://github.com/accodes21/tshirt3d |
 | Kaos Polo | White polo (`white_polo.glb`) | hasar | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | https://sketchfab.com/3d-models/white-polo-e72910b19cc949919584e0ba60678c31 |
 | Hoodie | Hoodie (`hoodie.glb`) | yogaminggames | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/) | https://sketchfab.com/3d-models/hoodie-2c674228f1e946b5b8f508f8f818e130 |
+| Kemeja | Kemeja Putih (`kemeja_putih_mockup.glb`) | Bendrat | - | - |
+| Kemeja PDL | Kemeja Lapangan (`kemeja_lapangan_mockup.glb`) | Bendrat | - | - |
 
 Perubahan dari file asli:
 - Semua model kecuali Mug: tekstur, peta UV, dan data yang tidak dipakai dilepas, lalu disimpan sebagai satu `.glb`.

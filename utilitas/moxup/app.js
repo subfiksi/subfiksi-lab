@@ -16,8 +16,10 @@ const DEFAULTS = {
   product: 'mug',
   colors: { body: '#ffffff', two: false, inner: '#FF6600', handle: '#FF6600', parts: {} },
   shirt: {
-    preset: 'solid', band: 0.35, splitSides: false, splitBack: false,
-    collar: '#ffffff', placket: '#ffffff', sleeve: '#ffffff', sleeveL: '#ffffff', sleeveR: '#ffffff',
+    preset: 'solid', band: 0.35, splitSides: false, splitBack: false, rollL: false, rollR: false,
+    collar: '#ffffff', collarIn: '#ffffff', placket: '#ffffff', pocket: '#ffffff',
+    epaulet: '#ffffff', yoke: '#ffffff',
+    sleeve: '#ffffff', sleeveL: '#ffffff', sleeveR: '#ffffff',
     cuff: '#ffffff', cuffL: '#ffffff', cuffR: '#ffffff', hem: '#ffffff', back: '#ffffff',
   },
   finish: { preset: 'glossy', ...FINISHES.glossy.v },
@@ -144,24 +146,25 @@ function applyShirtPreset(preset) {
   sh.preset = preset;
   if (preset === 'solid') {
     sh.splitSides = sh.splitBack = false;
-    sh.collar = sh.placket = sh.sleeve = sh.sleeveL = sh.sleeveR = sh.cuff = sh.cuffL = sh.cuffR = sh.hem = sh.back = body;
+    sh.collar = sh.collarIn = sh.placket = sh.pocket = sh.epaulet = sh.yoke = sh.sleeve = sh.sleeveL = sh.sleeveR = sh.cuff = sh.cuffL = sh.cuffR = sh.hem = sh.back = body;
     clearJerseyTemplate();
   } else if (preset === 'ringer') {
-    sh.collar = sh.placket = sh.cuff = sh.cuffL = sh.cuffR = sh.hem = accent;
+    sh.collar = sh.collarIn = sh.placket = sh.pocket = sh.epaulet = sh.cuff = sh.cuffL = sh.cuffR = sh.hem = accent;
+    sh.yoke = body;
     sh.sleeve = sh.sleeveL = sh.sleeveR = body;
     if (!sh.splitBack) sh.back = body;
     if (sh.band < 0.1) sh.band = 0.35;
     clearJerseyTemplate();
   } else if (preset === 'raglan') {
-    sh.collar = sh.placket = sh.sleeve = sh.sleeveL = sh.sleeveR = sh.cuff = sh.cuffL = sh.cuffR = accent;
-    sh.hem = body;
+    sh.collar = sh.collarIn = sh.placket = sh.epaulet = sh.yoke = sh.sleeve = sh.sleeveL = sh.sleeveR = sh.cuff = sh.cuffL = sh.cuffR = accent;
+    sh.pocket = sh.hem = body;
     if (!sh.splitBack) sh.back = body;
     clearJerseyTemplate();
   } else if (preset === 'jersey') {
     sh.splitSides = false;
     sh.splitBack = true;
-    sh.collar = sh.placket = sh.sleeve = sh.sleeveL = sh.sleeveR = sh.hem = sh.back = accent;
-    sh.cuff = sh.cuffL = sh.cuffR = '#FF6600';
+    sh.collar = sh.collarIn = sh.placket = sh.pocket = sh.yoke = sh.sleeve = sh.sleeveL = sh.sleeveR = sh.hem = sh.back = accent;
+    sh.cuff = sh.cuffL = sh.cuffR = sh.epaulet = '#FF6600';
     if (sh.band < 0.1) sh.band = 0.35;
     addJerseyTemplate();
   }
@@ -288,7 +291,7 @@ function changed(path) {
     else { sh.sleeve = sh.sleeveR = sh.sleeveL; sh.cuff = sh.cuffR = sh.cuffL; }
   } else if (path === 'shirt.splitBack') {
     if (state.shirt.splitBack) state.shirt.back = state.colors.body;
-  } else if (top === 'shirt' && path !== 'shirt.band') {
+  } else if (top === 'shirt' && path !== 'shirt.band' && path !== 'shirt.rollL' && path !== 'shirt.rollR') {
     const sh = state.shirt;
     if (!sh.splitSides) { sh.sleeveL = sh.sleeveR = sh.sleeve; sh.cuffL = sh.cuffR = sh.cuff; }
     sh.preset = 'custom';
@@ -399,7 +402,9 @@ function buildParts() {
 function buildPlaces() {
   const el = $('#uvPlaces');
   if (!el) return;
-  el.innerHTML = (model.places || []).map((p, i) =>
+  const list = model.places || [];
+  el.classList.toggle('mox-places-grid', list.length > 5 || (list.length > 4 && list.some((p) => p.label.length > 8)));
+  el.innerHTML = list.map((p, i) =>
     `<button type="button" class="sbt-seg-btn" data-act="place-uv" data-i="${i}">${p.label}</button>`).join('');
 }
 

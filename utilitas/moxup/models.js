@@ -168,6 +168,39 @@ export const MODELS = [
     credit: '"White polo" oleh hasar, CC-BY 4.0, via Sketchfab',
   },
   {
+    id: 'kemeja', cat: 'apparel', name: 'Kemeja', file: 'models/kemeja_putih_mockup.glb', mode: 'uv', keepUvY: true, realCm: 75, finish: 'fabric', texture: 'fabric',
+    parts: {
+      Mat_Shirt_Buttons: { label: 'Kancing', color: '#f4f4f0', roughness: 0.2, metal: 0.04, clearcoat: 0.3 },
+    },
+    safe: { x: 0.147, y: 0.735, w: 0.12, h: 0.14, y0: 0.27, y1: 0.91 },
+    places: [
+      { label: 'Dada Kanan', x: 0.147, y: 0.735, az: 0, el: 8 },
+      { label: 'Saku', x: 0.353, y: 0.715, az: 0, el: 8 },
+      { label: 'Punggung', x: 0.75, y: 0.735, az: 180, el: 8 },
+      { label: 'Lengan Kiri', x: 0.17, y: 0.105, az: -90, el: 10 },
+      { label: 'Lengan Kanan', x: 0.67, y: 0.105, az: 90, el: 10 },
+    ],
+    view: [0, 8],
+    credit: 'Kemeja Putih 3D dibuat oleh Bendrat',
+  },
+  {
+    id: 'kemeja-lapangan', cat: 'apparel', name: 'Kemeja PDL', file: 'models/kemeja_lapangan_mockup.glb', mode: 'uv', keepUvY: true, realCm: 75, finish: 'fabric', texture: 'fabric',
+    parts: {
+      Mat_Shirt_Buttons: { label: 'Kancing', color: '#e6dfd0', roughness: 0.22, metal: 0.04, clearcoat: 0.25 },
+    },
+    safe: { x: 0.353, y: 0.835, w: 0.11, h: 0.11, y0: 0.27, y1: 0.94 },
+    places: [
+      { label: 'Dada Kiri', x: 0.353, y: 0.835, az: 0, el: 8 },
+      { label: 'Dada Kanan', x: 0.147, y: 0.835, az: 0, el: 8 },
+      { label: 'Saku', x: 0.353, y: 0.695, az: 0, el: 8 },
+      { label: 'Lengan Kiri', x: 0.17, y: 0.105, az: -90, el: 10 },
+      { label: 'Lengan Kanan', x: 0.67, y: 0.105, az: 90, el: 10 },
+      { label: 'Punggung', x: 0.75, y: 0.835, az: 180, el: 8 },
+    ],
+    view: [0, 8],
+    credit: 'Kemeja Lapangan (PDL) 3D dibuat oleh Bendrat',
+  },
+  {
     id: 'hoodie', cat: 'apparel', name: 'Hoodie', file: 'models/hoodie.glb', mode: 'uv', keepUvY: true, realCm: 74, finish: 'fabric', texture: 'fabric',
     safe: { x: 0.26, y: 0.64, w: 0.20, h: 0.24, y0: 0.42, y1: 0.86 },
     places: [

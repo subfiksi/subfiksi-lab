@@ -229,6 +229,11 @@
     gap: 8px;
   }
 
+  .mox-stack[hidden],
+  .mox-line-row[hidden] {
+    display: none;
+  }
+
   /* Controls & Sliders */
   .mox-range {
     display: grid;
@@ -618,6 +623,11 @@
     background: var(--sbt-obsidian-grad);
     color: var(--sbt-ink-on-dark);
     box-shadow: var(--sbt-shadow-obsidian);
+  }
+
+  #uvPlaces.mox-places-grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   /* Swatches */
@@ -1671,6 +1681,18 @@
             </div>
             <div id="parts" class="mox-stack"></div>
 
+            <div data-if="model.id=kemeja-lapangan" class="mox-stack">
+              <label class="sbt-check mox-check-row">
+                <input type="checkbox" data-k="shirt.rollL">
+                <span class="sbt-check-box sbt-check-box--compact"><i data-sbt-icon="check" class="sbt-icon sbt-icon--sm"></i></span>
+                <span>Gulung lengan kiri</span>
+              </label>
+              <label class="sbt-check mox-check-row">
+                <input type="checkbox" data-k="shirt.rollR">
+                <span class="sbt-check-box sbt-check-box--compact"><i data-sbt-icon="check" class="sbt-icon sbt-icon--sm"></i></span>
+                <span>Gulung lengan kanan</span>
+              </label>
+            </div>
             <div data-if="model.cat=apparel" class="mox-stack">
               <div class="mox-chips-grid" data-chips="shirt.preset">
                 <button type="button" data-v="solid">Polos</button>
@@ -1679,22 +1701,36 @@
                 <button type="button" data-v="jersey">Jersey</button>
               </div>
               <details class="mox-details" id="shirtDetails">
-                <summary>Detail warna bagian kaos <i data-sbt-icon="caret-down" class="sbt-icon sbt-icon--sm"></i></summary>
+                <summary>Detail warna bagian baju <i data-sbt-icon="caret-down" class="sbt-icon sbt-icon--sm"></i></summary>
                 <div class="mox-details-body">
                   <label class="mox-range"><span>Lebar list</span><output></output><input type="range" data-k="shirt.band" data-fmt="pct" min="0" max="1" step="0.02" title="Klik 2x untuk reset"></label>
-                  <label class="mox-line-row" data-if="model.id!=hoodie"><span>Lingkar leher</span><button type="button" class="mox-color-btn" data-color="shirt.collar" data-title="Lingkar Leher" data-def="#ffffff"></button></label>
+                  <label class="mox-line-row" data-if="model.id!=hoodie|kemeja|kemeja-lapangan"><span>Lingkar leher</span><button type="button" class="mox-color-btn" data-color="shirt.collar" data-title="Lingkar Leher" data-def="#ffffff"></button></label>
+                  <label class="mox-line-row" data-if="model.id=kemeja|kemeja-lapangan"><span>Daun kerah</span><button type="button" class="mox-color-btn" data-color="shirt.collar" data-title="Daun Kerah" data-def="#ffffff"></button></label>
+                  <label class="mox-line-row" data-if="model.id=kemeja|kemeja-lapangan"><span>Kaki kerah</span><button type="button" class="mox-color-btn" data-color="shirt.collarIn" data-title="Kaki Kerah" data-def="#ffffff"></button></label>
                   <label class="mox-line-row" data-if="model.id=hoodie"><span>Tudung (Hood)</span><button type="button" class="mox-color-btn" data-color="shirt.collar" data-title="Tudung (Hood)" data-def="#ffffff"></button></label>
-                  <label class="mox-line-row" data-if="model.id=polo"><span>Plaket kancing</span><button type="button" class="mox-color-btn" data-color="shirt.placket" data-title="Plaket Kancing" data-def="#ffffff"></button></label>
+                  <label class="mox-line-row" data-if="model.id=polo|kemeja|kemeja-lapangan"><span>Plaket kancing</span><button type="button" class="mox-color-btn" data-color="shirt.placket" data-title="Plaket Kancing" data-def="#ffffff"></button></label>
+                  <label class="mox-line-row" data-if="model.id=kemeja|kemeja-lapangan"><span>Saku dada</span><button type="button" class="mox-color-btn" data-color="shirt.pocket" data-title="Saku Dada" data-def="#ffffff"></button></label>
+                  <label class="mox-line-row" data-if="model.id=kemeja-lapangan"><span>Pengait pundak</span><button type="button" class="mox-color-btn" data-color="shirt.epaulet" data-title="Pengait Pundak" data-def="#ffffff"></button></label>
+                  <label class="mox-line-row" data-if="model.id=kemeja-lapangan"><span>Yoke punggung</span><button type="button" class="mox-color-btn" data-color="shirt.yoke" data-title="Yoke Punggung" data-def="#ffffff"></button></label>
                   <label class="mox-line-row" data-if="model.id=hoodie"><span>Saku depan</span><button type="button" class="mox-color-btn" data-color="shirt.placket" data-title="Saku Depan" data-def="#ffffff"></button></label>
                   <label class="mox-line-row" data-if="!shirt.splitSides"><span>Kedua lengan</span><button type="button" class="mox-color-btn" data-color="shirt.sleeve" data-title="Kedua Lengan" data-def="#ffffff"></button></label>
                   <div data-if="shirt.splitSides" class="mox-stack">
                     <label class="mox-line-row"><span>Lengan kiri</span><button type="button" class="mox-color-btn" data-color="shirt.sleeveL" data-title="Lengan Kiri" data-def="#ffffff"></button></label>
                     <label class="mox-line-row"><span>Lengan kanan</span><button type="button" class="mox-color-btn" data-color="shirt.sleeveR" data-title="Lengan Kanan" data-def="#ffffff"></button></label>
                   </div>
-                  <label class="mox-line-row" data-if="!shirt.splitSides"><span>Lingkar lengan</span><button type="button" class="mox-color-btn" data-color="shirt.cuff" data-title="Lingkar Lengan" data-def="#ffffff"></button></label>
-                  <div data-if="shirt.splitSides" class="mox-stack">
-                    <label class="mox-line-row"><span>Lingkar lengan kiri</span><button type="button" class="mox-color-btn" data-color="shirt.cuffL" data-title="Lingkar Lengan Kiri" data-def="#ffffff"></button></label>
-                    <label class="mox-line-row"><span>Lingkar lengan kanan</span><button type="button" class="mox-color-btn" data-color="shirt.cuffR" data-title="Lingkar Lengan Kanan" data-def="#ffffff"></button></label>
+                  <div data-if="model.id!=kemeja|kemeja-lapangan" class="mox-stack">
+                    <label class="mox-line-row" data-if="!shirt.splitSides"><span>Lingkar lengan</span><button type="button" class="mox-color-btn" data-color="shirt.cuff" data-title="Lingkar Lengan" data-def="#ffffff"></button></label>
+                    <div data-if="shirt.splitSides" class="mox-stack">
+                      <label class="mox-line-row"><span>Lingkar lengan kiri</span><button type="button" class="mox-color-btn" data-color="shirt.cuffL" data-title="Lingkar Lengan Kiri" data-def="#ffffff"></button></label>
+                      <label class="mox-line-row"><span>Lingkar lengan kanan</span><button type="button" class="mox-color-btn" data-color="shirt.cuffR" data-title="Lingkar Lengan Kanan" data-def="#ffffff"></button></label>
+                    </div>
+                  </div>
+                  <div data-if="model.id=kemeja|kemeja-lapangan" class="mox-stack">
+                    <label class="mox-line-row" data-if="!shirt.splitSides"><span>Manset lengan</span><button type="button" class="mox-color-btn" data-color="shirt.cuff" data-title="Manset Lengan" data-def="#ffffff"></button></label>
+                    <div data-if="shirt.splitSides" class="mox-stack">
+                      <label class="mox-line-row"><span>Manset kiri</span><button type="button" class="mox-color-btn" data-color="shirt.cuffL" data-title="Manset Kiri" data-def="#ffffff"></button></label>
+                      <label class="mox-line-row"><span>Manset kanan</span><button type="button" class="mox-color-btn" data-color="shirt.cuffR" data-title="Manset Kanan" data-def="#ffffff"></button></label>
+                    </div>
                   </div>
                   <label class="mox-line-row"><span>Lingkar bawah</span><button type="button" class="mox-color-btn" data-color="shirt.hem" data-title="Lingkar Bawah" data-def="#ffffff"></button></label>
                   <label class="sbt-check mox-check-row">

@@ -9,7 +9,7 @@ import { analyze, SLICES } from './analyze.js';
 import { buildBox } from './boxes.js';
 import { buildContainer } from './containers.js';
 import { getSurfaceTexture } from './textures.js';
-import { annotateShirt, annotatePolo, annotateHoodie } from './shirt.js';
+import { annotateShirt, annotatePolo, annotateHoodie, annotateKemeja } from './shirt.js';
 
 const rad = THREE.MathUtils.degToRad;
 
@@ -109,6 +109,8 @@ const U = {
   uShirtSlvL: { value: new THREE.Color() }, uShirtSlvR: { value: new THREE.Color() },
   uShirtCuffL: { value: new THREE.Color() }, uShirtCuffR: { value: new THREE.Color() },
   uShirtHem: { value: new THREE.Color() }, uShirtPlacket: { value: new THREE.Color() },
+  uShirtPocket: { value: new THREE.Color() }, uShirtCollarIn: { value: new THREE.Color() },
+  uShirtEpaulet: { value: new THREE.Color() }, uShirtYoke: { value: new THREE.Color() },
 };
 
 const TEX_DECL = `
@@ -140,7 +142,7 @@ varying vec2 vMockUv; varying vec3 vMockZone;
 uniform sampler2D uArt;
 uniform float uMode, uMul, uR, uH, uY0, uTwo, uCapV, uBaseV, uTexOn, uShirtOn, uShirtBand;
 uniform float uProf[${SLICES}]; // body radius per height band, see analyze.js
-uniform vec3 uInner, uHandle, uCap, uBase, uShirtBack, uShirtCollar, uShirtSlvL, uShirtSlvR, uShirtCuffL, uShirtCuffR, uShirtHem, uShirtPlacket;
+uniform vec3 uInner, uHandle, uCap, uBase, uShirtBack, uShirtCollar, uShirtCollarIn, uShirtSlvL, uShirtSlvR, uShirtCuffL, uShirtCuffR, uShirtHem, uShirtPlacket, uShirtPocket, uShirtEpaulet, uShirtYoke;
 float mockInk = 0.0;  // how much print covers this pixel
 float mockPart = 0.0; // 1 on a cap / base zone
 vec3 mockTex = vec3(0.5);
@@ -190,7 +192,13 @@ const FRAG_BODY = `
   if (uShirtOn > 0.5) {
     float zid = floor(vMockZone.x + 0.5);
     vec3 zc = diffuseColor.rgb;
-    if (zid > 6.5) zc = uShirtPlacket;
+    if (zid > 12.5) zc = uShirtYoke;
+    else if (zid > 11.5) zc = uShirtEpaulet;
+    else if (zid > 10.5) zc = uShirtCuffR;
+    else if (zid > 9.5) zc = uShirtCuffL;
+    else if (zid > 8.5) zc = uShirtCollarIn;
+    else if (zid > 7.5) zc = uShirtPocket;
+    else if (zid > 6.5) zc = uShirtPlacket;
     else if (zid > 5.5) zc = uShirtBand > 0.0001 ? uShirtCuffR : uShirtSlvR;
     else if (zid > 4.5) zc = uShirtBand > 0.0001 ? uShirtCuffL : uShirtSlvL;
     else if (zid > 3.5) zc = uShirtCollar;
@@ -301,10 +309,33 @@ export function setLook(k) {
     U.uShirtHem.value.set(sh.hem || k.body);
     U.uShirtBack.value.set(sh.splitBack ? (sh.back || k.body) : k.body);
     U.uShirtPlacket.value.set(sh.placket || sh.collar || k.body);
+    U.uShirtPocket.value.set(sh.pocket || k.body);
+    U.uShirtCollarIn.value.set(sh.collarIn || sh.collar || k.body);
+    U.uShirtEpaulet.value.set(sh.epaulet || k.body);
+    U.uShirtYoke.value.set(sh.yoke || (sh.splitBack ? (sh.back || k.body) : k.body));
+    syncSleeveRoll(product, model?.id, sh);
   } else {
     U.uShirtOn.value = 0;
   }
   requestRender();
+}
+
+const LONG_SUFFIX = ['Shirt_Sleeve_Lower_', 'Shirt_Cuff_', 'Shirt_Sleeve_Placket_', 'Shirt_Button_Cuff_', 'Shirt_Button_SleevePlacket_', 'Shirt_Button_RollAnchor_'];
+const ROLLED_SUFFIX = ['Shirt_Sleeve_RollCuff_', 'Shirt_Sleeve_Tab_', 'Shirt_Button_Roll_'];
+
+function syncSleeveRoll(group, modelId, sh) {
+  if (!group || modelId !== 'kemeja-lapangan') return;
+  // Viewer left (-X) corresponds to Blender *_R meshes; viewer right (+X) corresponds to Blender *_L meshes.
+  const rollBlenderL = !!sh?.rollR;
+  const rollBlenderR = !!sh?.rollL;
+  for (const child of group.children) {
+    const n = child.name || '';
+    if (LONG_SUFFIX.some((p) => n.startsWith(p))) {
+      child.visible = n.endsWith('_L') ? !rollBlenderL : !rollBlenderR;
+    } else if (ROLLED_SUFFIX.some((p) => n.startsWith(p))) {
+      child.visible = n.endsWith('_L') ? rollBlenderL : rollBlenderR;
+    }
+  }
 }
 
 // ---------- products ----------
@@ -329,7 +360,7 @@ async function rawParts(m) {
     if (!o.isMesh) return;
     const g = o.geometry.clone().applyMatrix4(o.matrixWorld);
     if (rotM) g.applyMatrix4(rotM);
-    out.push({ name: o.material?.name || 'body', g });
+    out.push({ name: o.material?.name || 'body', node: o.name || o.parent?.name || '', g });
   });
   return out;
 }
@@ -368,13 +399,14 @@ async function build(m) {
         if (m.id === 'tshirt') annotateShirt(g);
         else if (m.id === 'polo' && !part) annotatePolo(g, p.name, box);
         else if (m.id === 'hoodie' && !part) annotateHoodie(g);
+        else if ((m.id === 'kemeja' || m.id === 'kemeja-lapangan') && !part) annotateKemeja(g, p.node, box);
         if (!part && m.file && !m.keepUvY && g.attributes.uv) {
           // glTF UVs start top-left (v=0 top); CanvasTexture has flipY=true (v=1 top)
           const uv = g.attributes.uv;
           for (let i = 0; i < uv.count; i++) uv.setY(i, 1 - uv.getY(i));
           uv.needsUpdate = true;
         }
-        return { name: p.name, part, g };
+        return { name: p.name, node: p.node, part, g };
       }),
       R: 1,
       prof: new Float32Array(SLICES),
@@ -441,6 +473,7 @@ function meshesOf(p, bodyMat, matOf) {
   const group = new THREE.Group();
   for (const part of p.parts) {
     const mesh = new THREE.Mesh(part.g, part.part ? matOf(part.name) : bodyMat);
+    mesh.name = part.node || part.name || '';
     mesh.castShadow = true;
     group.add(mesh);
   }
@@ -530,6 +563,7 @@ export async function thumbnails(models, size = 192) {
       const p = m.parts?.[name];
       return new THREE.MeshPhysicalMaterial({ color: p?.color || '#e5e7eb', roughness: p?.roughness ?? 0.4, metalness: p?.metal ?? 0, clearcoat: p?.clearcoat ?? 0, side: THREE.DoubleSide });
     });
+    if (m.id === 'kemeja-lapangan') syncSleeveRoll(g, m.id, { rollL: false, rollR: true });
     const [azDeg, elDeg] = m.cat === 'apparel' ? [-16, 10] : m.view || (m.mode === 'cyl' ? [-28, 16] : [0, 48]);
     const az = rad(azDeg), el = rad(elDeg);
     tCam.position.set(Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el)).multiplyScalar(5.6);
@@ -704,7 +738,7 @@ export function pick(clientX, clientY) {
   const box = canvas.getBoundingClientRect();
   ndc.set(((clientX - box.left) / box.width) * 2 - 1, -((clientY - box.top) / box.height) * 2 + 1);
   ray.setFromCamera(ndc, camera);
-  const hit = ray.intersectObject(product, true)[0];
+  const hit = ray.intersectObjects(product.children.filter((c) => c.visible), false)[0];
   if (!hit || hit.object.material !== printMat) return null;
   if (model.mode === 'uv') {
     if (!hit.uv || hit.uv.x < 0 || hit.uv.x > 1 || hit.uv.y < 0 || hit.uv.y > 1) return null;
